@@ -6,8 +6,12 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 
-import appCss from '../styles.css?url';
 import type { QueryClient } from '@tanstack/react-query';
+import { ThemeProvider } from '@/components/base/provider/theme-provider';
+import { Toaster } from 'sonner';
+
+import appCss from '../styles.css?url';
+
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -42,7 +46,13 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        <ThemeProvider
+          defaultTheme='dark'
+          storageKey='vite-ui-theme'
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',

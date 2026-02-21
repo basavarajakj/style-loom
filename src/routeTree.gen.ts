@@ -9,65 +9,116 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as store_layoutIndexRouteImport } from './routes/(store)/__layout/index'
-import { Route as store_layout_layoutRouteImport } from './routes/(store)/__layout/__layout'
+import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
+import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
+import { Route as storeAuthSignInRouteImport } from './routes/(store)/auth/sign-in'
+import { Route as storeAuthLayoutLayoutRouteImport } from './routes/(store)/auth/_layout/_layout'
 
-const store_layoutIndexRoute = store_layoutIndexRouteImport.update({
-  id: '/(store)/__layout/',
-  path: '/',
+const storeLayoutRoute = storeLayoutRouteImport.update({
+  id: '/(store)/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const store_layout_layoutRoute = store_layout_layoutRouteImport.update({
-  id: '/(store)/__layout/__layout',
+const storeLayoutIndexRoute = storeLayoutIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => storeLayoutRoute,
+} as any)
+const storeAuthSignInRoute = storeAuthSignInRouteImport.update({
+  id: '/(store)/auth/sign-in',
+  path: '/auth/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const storeAuthLayoutLayoutRoute = storeAuthLayoutLayoutRouteImport.update({
+  id: '/(store)/auth/_layout/_layout',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof store_layoutIndexRoute
+  '/auth/sign-in': typeof storeAuthSignInRoute
+  '/': typeof storeLayoutIndexRoute
+  '/auth': typeof storeAuthLayoutLayoutRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof store_layoutIndexRoute
+  '/auth/sign-in': typeof storeAuthSignInRoute
+  '/': typeof storeLayoutIndexRoute
+  '/auth': typeof storeAuthLayoutLayoutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(store)/__layout/__layout': typeof store_layout_layoutRoute
-  '/(store)/__layout/': typeof store_layoutIndexRoute
+  '/(store)/_layout': typeof storeLayoutRouteWithChildren
+  '/(store)/auth/sign-in': typeof storeAuthSignInRoute
+  '/(store)/_layout/': typeof storeLayoutIndexRoute
+  '/(store)/auth/_layout/_layout': typeof storeAuthLayoutLayoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/auth/sign-in' | '/' | '/auth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/(store)/__layout/__layout' | '/(store)/__layout/'
+  to: '/auth/sign-in' | '/' | '/auth'
+  id:
+    | '__root__'
+    | '/(store)/_layout'
+    | '/(store)/auth/sign-in'
+    | '/(store)/_layout/'
+    | '/(store)/auth/_layout/_layout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  store_layout_layoutRoute: typeof store_layout_layoutRoute
-  store_layoutIndexRoute: typeof store_layoutIndexRoute
+  storeLayoutRoute: typeof storeLayoutRouteWithChildren
+  storeAuthSignInRoute: typeof storeAuthSignInRoute
+  storeAuthLayoutLayoutRoute: typeof storeAuthLayoutLayoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/(store)/__layout/': {
-      id: '/(store)/__layout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof store_layoutIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(store)/__layout/__layout': {
-      id: '/(store)/__layout/__layout'
+    '/(store)/_layout': {
+      id: '/(store)/_layout'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof store_layout_layoutRouteImport
+      preLoaderRoute: typeof storeLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(store)/_layout/': {
+      id: '/(store)/_layout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof storeLayoutIndexRouteImport
+      parentRoute: typeof storeLayoutRoute
+    }
+    '/(store)/auth/sign-in': {
+      id: '/(store)/auth/sign-in'
+      path: '/auth/sign-in'
+      fullPath: '/auth/sign-in'
+      preLoaderRoute: typeof storeAuthSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(store)/auth/_layout/_layout': {
+      id: '/(store)/auth/_layout/_layout'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof storeAuthLayoutLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
+interface storeLayoutRouteChildren {
+  storeLayoutIndexRoute: typeof storeLayoutIndexRoute
+}
+
+const storeLayoutRouteChildren: storeLayoutRouteChildren = {
+  storeLayoutIndexRoute: storeLayoutIndexRoute,
+}
+
+const storeLayoutRouteWithChildren = storeLayoutRoute._addFileChildren(
+  storeLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  store_layout_layoutRoute: store_layout_layoutRoute,
-  store_layoutIndexRoute: store_layoutIndexRoute,
+  storeLayoutRoute: storeLayoutRouteWithChildren,
+  storeAuthSignInRoute: storeAuthSignInRoute,
+  storeAuthLayoutLayoutRoute: storeAuthLayoutLayoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
