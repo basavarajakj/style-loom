@@ -10,8 +10,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { ThemeProvider } from '@/components/base/provider/theme-provider';
 import { Toaster } from 'sonner';
 
-import appCss from '../styles.css?url';
-
+import '../styles.css';
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
@@ -26,12 +25,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         },
         {
           title: 'Style.loom - Your one stop shop for style',
-        },
-      ],
-      links: [
-        {
-          rel: 'stylesheet',
-          href: appCss,
         },
       ],
     }),

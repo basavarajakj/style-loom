@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
 import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
 import { Route as storeAuthSignInRouteImport } from './routes/(store)/auth/sign-in'
+import { Route as storeLayoutCartRouteImport } from './routes/(store)/_layout/cart'
 import { Route as storeAuthLayoutLayoutRouteImport } from './routes/(store)/auth/_layout/_layout'
 
 const storeLayoutRoute = storeLayoutRouteImport.update({
@@ -28,6 +29,11 @@ const storeAuthSignInRoute = storeAuthSignInRouteImport.update({
   path: '/auth/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const storeLayoutCartRoute = storeLayoutCartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => storeLayoutRoute,
+} as any)
 const storeAuthLayoutLayoutRoute = storeAuthLayoutLayoutRouteImport.update({
   id: '/(store)/auth/_layout/_layout',
   path: '/auth',
@@ -35,11 +41,13 @@ const storeAuthLayoutLayoutRoute = storeAuthLayoutLayoutRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/cart': typeof storeLayoutCartRoute
   '/auth/sign-in': typeof storeAuthSignInRoute
   '/': typeof storeLayoutIndexRoute
   '/auth': typeof storeAuthLayoutLayoutRoute
 }
 export interface FileRoutesByTo {
+  '/cart': typeof storeLayoutCartRoute
   '/auth/sign-in': typeof storeAuthSignInRoute
   '/': typeof storeLayoutIndexRoute
   '/auth': typeof storeAuthLayoutLayoutRoute
@@ -47,18 +55,20 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(store)/_layout': typeof storeLayoutRouteWithChildren
+  '/(store)/_layout/cart': typeof storeLayoutCartRoute
   '/(store)/auth/sign-in': typeof storeAuthSignInRoute
   '/(store)/_layout/': typeof storeLayoutIndexRoute
   '/(store)/auth/_layout/_layout': typeof storeAuthLayoutLayoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/auth/sign-in' | '/' | '/auth'
+  fullPaths: '/cart' | '/auth/sign-in' | '/' | '/auth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth/sign-in' | '/' | '/auth'
+  to: '/cart' | '/auth/sign-in' | '/' | '/auth'
   id:
     | '__root__'
     | '/(store)/_layout'
+    | '/(store)/_layout/cart'
     | '/(store)/auth/sign-in'
     | '/(store)/_layout/'
     | '/(store)/auth/_layout/_layout'
@@ -93,6 +103,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof storeAuthSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/(store)/_layout/cart': {
+      id: '/(store)/_layout/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof storeLayoutCartRouteImport
+      parentRoute: typeof storeLayoutRoute
+    }
     '/(store)/auth/_layout/_layout': {
       id: '/(store)/auth/_layout/_layout'
       path: '/auth'
@@ -104,10 +121,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface storeLayoutRouteChildren {
+  storeLayoutCartRoute: typeof storeLayoutCartRoute
   storeLayoutIndexRoute: typeof storeLayoutIndexRoute
 }
 
 const storeLayoutRouteChildren: storeLayoutRouteChildren = {
+  storeLayoutCartRoute: storeLayoutCartRoute,
   storeLayoutIndexRoute: storeLayoutIndexRoute,
 }
 
