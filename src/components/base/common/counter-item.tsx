@@ -13,7 +13,7 @@ export default function CounterItem({ label, value, extraTop }: Props) {
         'border-2 border-dashed border-b-0 border-r-0 p-[30px] 4xl:px-12 @7xl:px-[70px] @4xl:pb-8 @6xl:pb-[54px]',
         extraTop
           ? '@4xl:border-t-0 @4xl:pt-[58px] @6xl:pt-[88px]'
-          : '4xl:pt-16 @6xl:pt-[50px]'
+          : '4xl:pt-16 @6xl:pt-[50px] '
       )}
     >
       <div className='font-extrabold @4xl:text-4xl @6xl:text-[50px] text-3xl text-foreground'>
