@@ -23,7 +23,7 @@ export default function Header() {
         <div className='flex items-center justify-start @6xl:justify-center'>
           <Link
             to='/'
-            className='font-bold @6xl:text-4xl text-3xl tracking-wide dark:text-white'
+            className='font-bold @6xl:text-4xl text-2xl tracking-wide dark:text-white'
           >
             Style
             <span className='text-4xl text-primary'>.</span>
