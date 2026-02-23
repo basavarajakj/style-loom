@@ -19,14 +19,14 @@ export default function Navbar({
 }: Props) {
   return (
     <nav
-      className={cn('hidden items-center justify-center gap-6 text-sm @5xl:flex', className)}
+      className={cn('hidden items-center justify-center gap-6 text-sm @6xl:flex', className)}
     >
       {items.map((item) => (
         <Link
           key={item.to}
           to={item.to}
           className={cn(
-            'flex font-mono items-center h-12 justify-center rounded-lg border-2 border-dashed bg-transparent px-[30px] text-lg hover:border-transparent hover:bg-primary hover:text-background dark:text-body-70 transition-all dark:hover:text-background',
+            'flex font-mono items-center h-12 justify-center rounded-lg border-2 border-dashed bg-transparent px-[20px] text-lg hover:border-transparent hover:bg-primary hover:text-background dark:text-body-70 transition-all dark:hover:text-background ',
             linkClassName
           )}
           activeProps={{
