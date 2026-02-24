@@ -10,12 +10,10 @@ import {
 } from '@/components/ui/sheet';
 import { useCartStore } from '@/lib/store/cart-store';
 import { Link } from '@tanstack/react-router';
-import { ShoppingBag } from 'lucide-react';
+import { IndianRupeeIcon, ShoppingBag } from 'lucide-react';
 
 export default function CartSheet() {
   const { items, isOpen, setIsOpen, totalItems, subtotal } = useCartStore();
-
-  // const { } = useCart();
 
   return (
     <Sheet
@@ -29,7 +27,7 @@ export default function CartSheet() {
 
         {items.length > 0 ? (
           <>
-            <ScrollArea className='flex px-6'>
+            <ScrollArea className='flex-1 px-6'>
               <div className=''>
                 {items.map((item) => (
                   <CartItem
@@ -46,8 +44,9 @@ export default function CartSheet() {
               <div className='space-y-1.5 px-6'>
                 <div className='flex justify-between font-medium text-base'>
                   <span>Subtotal</span>
-                  <span className='font-semibold text-2xl text-foreground'>
-                    ${subtotal.toFixed(2)}
+                  <span className='font-semibold text-2xl text-foreground flex  items-center justify-center'>
+                    <IndianRupeeIcon />
+                    {subtotal.toFixed(2)}
                   </span>
                 </div>
                 <p className='text-muted-foreground text-sm'>

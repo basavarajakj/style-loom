@@ -19,7 +19,7 @@ export default function Hero() {
           <img
             src='https://images.unsplash.com/photo-1557771551-31ced8180633?q=80&w=1974&auto=format&fit=crop'
             alt='Hero'
-            className='h-[420px] w-full rounded-xl rounded-b-none object-cover object-[center_40%]'
+            className='h-[420px] w-full rounded-xl rounded-b-none object-cover object-[center_40%] bg-accent'
           />
           <div className='-translate-x-1/2 -bottom-12 absolute left-1/2'>
             <div className='relative flex h-[94px] w-[198px] items-center justify-center rounded-2xl bg-background'>
