@@ -30,10 +30,10 @@ export default function Marquee({ items, className, speed }: Props) {
       >
         {[
           ...items.map((el) => ({ el, key: el.key ?? undefined })),
-          ...items.map((el) => ({ el, key: `${el.key ?? 'dup'}` })),
+          ...items.map((el) => ({ el, key: el.key ?? undefined })),
         ].map((n, idx) => (
           <div
-            key={String(n.key ?? `mk-${idx}`)}
+            key={`${n.key ?? 'mk'}-${idx}`}
             className='flex items-center gap-3'
           >
             {n.el}
