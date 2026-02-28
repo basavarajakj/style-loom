@@ -4,7 +4,7 @@ import {
   type CartItem as CartItemType,
 } from '@/lib/store/cart-store';
 import { cn } from '@/lib/utils';
-import { Trash2Icon } from 'lucide-react';
+import { IndianRupeeIcon, Trash2Icon } from 'lucide-react';
 import { QuantitySelector } from '../../products/details/quantity-selector';
 
 interface Props {
@@ -58,13 +58,16 @@ export default function CartItem({ item, isCompact }: Props) {
         </div>
 
         <div className='flex items-center justify-between'>
-          <p className='font-semibold'>${item.price}</p>
+          <p className='font-semibold flex items-center'>
+            <IndianRupeeIcon className='size-4' />
+            {item.price}
+          </p>
           <div className='flex items-center gap-2'>
             <div className='flex items-center gap-2'>
               <QuantitySelector
                 value={item.quantity}
                 onChange={(value) => updateQuantity(item.id, value)}
-                max={item.quantity}
+                max={item.maxQuantity}
                 className='h-8'
                 size='sm'
               />

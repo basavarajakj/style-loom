@@ -1,4 +1,6 @@
 import Header from '@/components/base/common/header';
+import Brand from '@/components/templates/store/brand';
+import Footer from '@/components/templates/store/footer';
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/(store)/_layout')({
@@ -10,6 +12,8 @@ function RouteComponent() {
     <>
       <Header />
       <Outlet />
+      <Brand />
+      <Footer />
     </>
   );
 }

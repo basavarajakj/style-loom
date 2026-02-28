@@ -33,12 +33,12 @@ interface CartState {
 
 const calculateTotals = (items: CartItem[]) => {
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
-  const subTotal = items.reduce(
+  const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  return { totalItems, subTotal };
+  return { totalItems, subtotal };
 };
 
 export const useCartStore = create<CartState>()(
@@ -103,10 +103,10 @@ export const useCartStore = create<CartState>()(
       partialize: (state) => ({ items: state.items }),
       onRehydrateStorage: () => (state) => {
         if (state) {
-          const { totalItems, subTotal } = calculateTotals(state.items);
+          const { totalItems, subtotal } = calculateTotals(state.items);
 
           state.totalItems = totalItems;
-          state.subtotal = subTotal;
+          state.subtotal = subtotal;
         }
       },
     }
