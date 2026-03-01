@@ -4,7 +4,7 @@ export default function FooterBottom() {
   return (
     <div className="@4xl:px-12 @6xl:px-[60px] @7xl:px-20 px-5 py-8">
       <Copyright
-        brand="ShopStack"
+        brand="Style.Loom"
         legalLinks={[
           { label: "Terms & Conditions", to: "/terms" },
           { label: "Privacy Policy", to: "/privacy" },
