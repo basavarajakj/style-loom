@@ -301,7 +301,7 @@ const generateProducts = (count: number): Product[] => {
       colors: getRandomItems(COLORS, 1, 4),
       sizes: getRandomItems(SIZES, 2, 5),
       isNew: Math.random() > 0.8,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(),
       sales: getRandomInt(0, 1000),
     };
   });

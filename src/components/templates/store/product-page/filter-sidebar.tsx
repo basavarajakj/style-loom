@@ -5,7 +5,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
-import { AVAILABILITY, BRANDS, CATEGORIES, COLORS, SIZES } from '@/data/products';
+import {
+  AVAILABILITY,
+  BRANDS,
+  CATEGORIES,
+  COLORS,
+  SIZES,
+} from '@/data/products';
 import type { FilterState } from '@/lib/store/product-filter-store';
 import { cn } from '@/lib/utils';
 import { StarIcon } from 'lucide-react';
@@ -192,6 +198,12 @@ export default function FilterSidebar({
               key={rating}
               type='button'
               className='flex w-full cursor-pointer items-center space-x-2 rounded border-0 bg-transparent p-1 hover:bg-muted/50'
+              onClick={() =>
+                updateFilter(
+                  'rating',
+                  filters.rating === rating ? null : rating
+                )
+              }
             >
               <div
                 className={`h-4 w-4 rounded-full border ${filters.rating === rating ? 'border-primary bg-primary' : 'border-gray-300'}`}

@@ -1,10 +1,24 @@
+import ActiveFilterChips from '@/components/base/products/active-filter-chips';
 import SearchBar from '@/components/base/products/search-bar';
 import SortDropdown from '@/components/base/products/sort-dropdown';
-import MobileFilterDrawer from '@/components/containers/store/product-page/mobile-filter-drawer';
+import ProductGrid from '@/components/containers/store/product-list/product-grid';
+import FilterSidebar from '@/components/templates/store/product-page/filter-sidebar';
+import MobileFilterDrawer from '@/components/templates/store/product-page/mobile-filter-drawer';
 import { useProductFilter } from '@/lib/store/product-filter-store';
 
+import { mockProducts as products } from '@/data/products';
+
 export default function ProductListingTemplate() {
-  const { filters, updateFilter, totalProducts } = useProductFilter();
+  const {
+    filters,
+    updateFilter,
+    totalProducts,
+    activeFilters,
+    removeFilter,
+    clearAllFilters,
+    isPending,
+  } = useProductFilter();
+
   return (
     <div className='@container container mx-auto px-4 py-6'>
       <div className='flex flex-col gap-6'>
@@ -16,7 +30,7 @@ export default function ProductListingTemplate() {
           </div>
 
           <div className='flex flex-col @4xl:flex-row @4xl:w-auto w-full items-center gap-2'>
-            <div className='w-full @4xl:w-[300px] order-1 @4xl:order-2'>
+            <div className='w-full @4xl:w-[300px] order-1'>
               <SearchBar
                 value={filters.search}
                 onChange={(val) => updateFilter('search', val)}
@@ -37,6 +51,28 @@ export default function ProductListingTemplate() {
               />
             </div>
           </div>
+        </div>
+
+        <div className='@container flex items-start gap-8'>
+          <aside className='sticky top-24 @5xl:block hidden w-64 shrink-0'>
+            <FilterSidebar
+              filters={filters}
+              updateFilter={updateFilter}
+            />
+          </aside>
+
+          <main className='min-w-0 flex-1'>
+            <ActiveFilterChips
+              filters={activeFilters}
+              onRemove={removeFilter}
+              onClearAll={clearAllFilters}
+            />
+
+            <ProductGrid
+              products={products}
+              isLoading={isPending}
+            />
+          </main>
         </div>
       </div>
     </div>
