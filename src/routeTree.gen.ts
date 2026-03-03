@@ -14,8 +14,10 @@ import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/i
 import { Route as storeAuthSignInRouteImport } from './routes/(store)/auth/sign-in'
 import { Route as storeLayoutCartRouteImport } from './routes/(store)/_layout/cart'
 import { Route as storeLayoutProductIndexRouteImport } from './routes/(store)/_layout/product/index'
+import { Route as storeLayoutCategoryIndexRouteImport } from './routes/(store)/_layout/category/index'
 import { Route as storeAuthLayoutLayoutRouteImport } from './routes/(store)/auth/_layout/_layout'
 import { Route as storeLayoutProductProductIdRouteImport } from './routes/(store)/_layout/product/$productId'
+import { Route as storeLayoutCategorySlugRouteImport } from './routes/(store)/_layout/category/$slug'
 
 const storeLayoutRoute = storeLayoutRouteImport.update({
   id: '/(store)/_layout',
@@ -41,6 +43,12 @@ const storeLayoutProductIndexRoute = storeLayoutProductIndexRouteImport.update({
   path: '/product/',
   getParentRoute: () => storeLayoutRoute,
 } as any)
+const storeLayoutCategoryIndexRoute =
+  storeLayoutCategoryIndexRouteImport.update({
+    id: '/category/',
+    path: '/category/',
+    getParentRoute: () => storeLayoutRoute,
+  } as any)
 const storeAuthLayoutLayoutRoute = storeAuthLayoutLayoutRouteImport.update({
   id: '/(store)/auth/_layout/_layout',
   path: '/auth',
@@ -52,21 +60,30 @@ const storeLayoutProductProductIdRoute =
     path: '/product/$productId',
     getParentRoute: () => storeLayoutRoute,
   } as any)
+const storeLayoutCategorySlugRoute = storeLayoutCategorySlugRouteImport.update({
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => storeLayoutRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/cart': typeof storeLayoutCartRoute
   '/auth/sign-in': typeof storeAuthSignInRoute
   '/': typeof storeLayoutIndexRoute
+  '/category/$slug': typeof storeLayoutCategorySlugRoute
   '/product/$productId': typeof storeLayoutProductProductIdRoute
   '/auth': typeof storeAuthLayoutLayoutRoute
+  '/category/': typeof storeLayoutCategoryIndexRoute
   '/product/': typeof storeLayoutProductIndexRoute
 }
 export interface FileRoutesByTo {
   '/cart': typeof storeLayoutCartRoute
   '/auth/sign-in': typeof storeAuthSignInRoute
   '/': typeof storeLayoutIndexRoute
+  '/category/$slug': typeof storeLayoutCategorySlugRoute
   '/product/$productId': typeof storeLayoutProductProductIdRoute
   '/auth': typeof storeAuthLayoutLayoutRoute
+  '/category': typeof storeLayoutCategoryIndexRoute
   '/product': typeof storeLayoutProductIndexRoute
 }
 export interface FileRoutesById {
@@ -75,8 +92,10 @@ export interface FileRoutesById {
   '/(store)/_layout/cart': typeof storeLayoutCartRoute
   '/(store)/auth/sign-in': typeof storeAuthSignInRoute
   '/(store)/_layout/': typeof storeLayoutIndexRoute
+  '/(store)/_layout/category/$slug': typeof storeLayoutCategorySlugRoute
   '/(store)/_layout/product/$productId': typeof storeLayoutProductProductIdRoute
   '/(store)/auth/_layout/_layout': typeof storeAuthLayoutLayoutRoute
+  '/(store)/_layout/category/': typeof storeLayoutCategoryIndexRoute
   '/(store)/_layout/product/': typeof storeLayoutProductIndexRoute
 }
 export interface FileRouteTypes {
@@ -85,16 +104,20 @@ export interface FileRouteTypes {
     | '/cart'
     | '/auth/sign-in'
     | '/'
+    | '/category/$slug'
     | '/product/$productId'
     | '/auth'
+    | '/category/'
     | '/product/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/cart'
     | '/auth/sign-in'
     | '/'
+    | '/category/$slug'
     | '/product/$productId'
     | '/auth'
+    | '/category'
     | '/product'
   id:
     | '__root__'
@@ -102,8 +125,10 @@ export interface FileRouteTypes {
     | '/(store)/_layout/cart'
     | '/(store)/auth/sign-in'
     | '/(store)/_layout/'
+    | '/(store)/_layout/category/$slug'
     | '/(store)/_layout/product/$productId'
     | '/(store)/auth/_layout/_layout'
+    | '/(store)/_layout/category/'
     | '/(store)/_layout/product/'
   fileRoutesById: FileRoutesById
 }
@@ -150,6 +175,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof storeLayoutProductIndexRouteImport
       parentRoute: typeof storeLayoutRoute
     }
+    '/(store)/_layout/category/': {
+      id: '/(store)/_layout/category/'
+      path: '/category'
+      fullPath: '/category/'
+      preLoaderRoute: typeof storeLayoutCategoryIndexRouteImport
+      parentRoute: typeof storeLayoutRoute
+    }
     '/(store)/auth/_layout/_layout': {
       id: '/(store)/auth/_layout/_layout'
       path: '/auth'
@@ -164,20 +196,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof storeLayoutProductProductIdRouteImport
       parentRoute: typeof storeLayoutRoute
     }
+    '/(store)/_layout/category/$slug': {
+      id: '/(store)/_layout/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/category/$slug'
+      preLoaderRoute: typeof storeLayoutCategorySlugRouteImport
+      parentRoute: typeof storeLayoutRoute
+    }
   }
 }
 
 interface storeLayoutRouteChildren {
   storeLayoutCartRoute: typeof storeLayoutCartRoute
   storeLayoutIndexRoute: typeof storeLayoutIndexRoute
+  storeLayoutCategorySlugRoute: typeof storeLayoutCategorySlugRoute
   storeLayoutProductProductIdRoute: typeof storeLayoutProductProductIdRoute
+  storeLayoutCategoryIndexRoute: typeof storeLayoutCategoryIndexRoute
   storeLayoutProductIndexRoute: typeof storeLayoutProductIndexRoute
 }
 
 const storeLayoutRouteChildren: storeLayoutRouteChildren = {
   storeLayoutCartRoute: storeLayoutCartRoute,
   storeLayoutIndexRoute: storeLayoutIndexRoute,
+  storeLayoutCategorySlugRoute: storeLayoutCategorySlugRoute,
   storeLayoutProductProductIdRoute: storeLayoutProductProductIdRoute,
+  storeLayoutCategoryIndexRoute: storeLayoutCategoryIndexRoute,
   storeLayoutProductIndexRoute: storeLayoutProductIndexRoute,
 }
 
