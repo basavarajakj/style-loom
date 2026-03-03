@@ -1,5 +1,5 @@
 import Section from '@/components/base/common/section';
-import CtaContainer from '@/components/containers/store/CtaContainer';
+import CtaContainer from '@/components/containers/store/Cta-Container';
 import BallCircleIcon from '@/components/ui/icons/ball-circle';
 
 export default function CTABanner() {
