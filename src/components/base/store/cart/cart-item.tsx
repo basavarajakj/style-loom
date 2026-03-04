@@ -68,7 +68,7 @@ export default function CartItem({ item, isCompact }: Props) {
                 value={item.quantity}
                 onChange={(value) => updateQuantity(item.id, value)}
                 max={item.maxQuantity}
-                className='h-8'
+                className='@7xl:h-8'
                 size='sm'
               />
 
