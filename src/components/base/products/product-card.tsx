@@ -4,7 +4,7 @@ import type { Product } from '@/data/products';
 import { useCartStore } from '@/lib/store/cart-store';
 import { cn } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
-import { EyeIcon, ShoppingCartIcon, StarIcon, StoreIcon } from 'lucide-react';
+import { EyeIcon, ShoppingCartIcon, StarIcon } from 'lucide-react';
 import type React from 'react';
 import { toast } from 'sonner';
 import { ColorSwatch } from './color-radio-item';
@@ -41,7 +41,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         className
       )}
     >
-      <div className='relative aspect-3/4 overflow-hidden rounded-t-2xl bg-muted'>
+      <div className='relative aspect-square overflow-hidden rounded-t-2xl bg-muted'>
         <img
           src={product.images[0].url}
           alt={product.name}
