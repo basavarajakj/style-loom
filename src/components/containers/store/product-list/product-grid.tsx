@@ -22,7 +22,7 @@ export default function ProductGrid({
     return <ProductNotfound />;
   }
   return (
-    <div className='grid grid-cols-1 @4xl:grid-cols-2 @7xl:grid-cols-3 gap-3'>
+    <div className='grid grid-cols-2 @4xl:grid-cols-3 @7xl:grid-cols-7 gap-3'>
       {products.map((product) => (
         <ProductCard
           key={product.id}
