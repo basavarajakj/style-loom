@@ -1,4 +1,4 @@
-import CategoryTree from '@/components/base/category/category-tree';
+import CategoryTree from '@/components/base/store/category/category-tree';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { categoryTree } from '@/lib/helper/categories';
 
