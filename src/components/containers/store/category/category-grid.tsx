@@ -1,4 +1,4 @@
-import CategoryCard from '@/components/base/category/category-card';
+import CategoryCard from '@/components/base/store/category/category-card';
 import { getGridColsClass } from '@/lib/grid-utils';
 import { cn } from '@/lib/utils';
 import type { Category } from '@/types/category-types';
