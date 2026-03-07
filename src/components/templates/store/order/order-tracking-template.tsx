@@ -3,6 +3,7 @@ import { useState } from 'react';
 import OrderSearchForm from './order-search-form';
 import { mockTrackingData } from '@/data/order-tracking';
 import OrderStatusTimeline from '@/components/base/store/order/order-status-timeline';
+import TrackingDetailsCard from '@/components/base/store/order/tracking-details-card';
 
 export default function OrderTrackingTemplate() {
   const [isSearching, setIsSearching] = useState(false);
@@ -40,6 +41,18 @@ export default function OrderTrackingTemplate() {
           <div className='rounded-lg border bg-card p-6 shadow-sm'>
             <h2 className='mb-6 font-semibold text-xl'>Order Status</h2>
             <OrderStatusTimeline stages={mockTrackingData.stages} />
+          </div>
+
+          <div className='grid @5xl:grid-cols-3 gap-6'>
+            <div className='@5xl:col-span-2 space-y-6'>
+              <TrackingDetailsCard
+                carrier={mockTrackingData.carrier}
+                trackingNumber={mockTrackingData.trackingNumber}
+                currentLocation={mockTrackingData.currentLocation}
+                estimatedDelivery={mockTrackingData.estimatedDelivery}
+                packageInfo={mockTrackingData.packageInfo}
+              />
+            </div>
           </div>
         </div>
       )}
