@@ -29,9 +29,9 @@ export default function StoreBanner({ store, className }: StoreBannerProps) {
         <div className='absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent' />
       </div>
 
-      <div className='absolute right-0 bottom-0 left-0 p-6'>
+      <div className='absolute right-0 bottom-0 left-0 p-3 @2xl:p-6'>
         <div className='flex items-center gap-4 justify-between'>
-          <div className=''>
+          <div>
             {/* Logo */}
             <Avatar className='-mb-2 @2xl:h-32 h-24 @2xl:w-32 w-24 border-4 border-background shadow-xl'>
               <AvatarImage
@@ -56,21 +56,21 @@ export default function StoreBanner({ store, className }: StoreBannerProps) {
                 )}
               </div>
 
-              <div className='flex items-center gap-3 text-sm'>
+              <div className='flex flex-col @2xl:flex-row @2xl:gap-2 text-sm'>
                 <div className='flex items-center gap-1'>
                   <StarIcon className='size-4 text-yellow-400 fill-yellow-400' />
                   <span className='font-medium'>{store.rating.toFixed(2)}</span>
                   <span className='text-white/80'>
                     ({store.reviewCount} reviews)
                   </span>
+                  <span className='text-primary'>•</span>
                 </div>
-                <span className='text-primary'>•</span>
                 <span className='text-white/80'>{store.category}</span>
               </div>
             </div>
           </div>
           {/* Action button */}
-          <div className='gap-2'>
+          <div className='absolute bottom-4 right-4 transition-normal shadow-md'>
             <Button
               variant={following ? 'secondary' : 'default'}
               size={isMobile ? 'sm' : 'lg'}

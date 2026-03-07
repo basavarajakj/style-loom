@@ -146,7 +146,7 @@ export function StoreReviews({ rating, reviewCount }: StoreReviewsProps) {
       <div className='space-y-6'>
         <div className='flex items-center justify-between'>
           <h2 className='font-bold text-2xl tracking-tight'>
-            Similar Products
+            Customers insights
           </h2>
           <div className='flex gap-2'>
             <Button
@@ -243,7 +243,6 @@ export function StoreReviews({ rating, reviewCount }: StoreReviewsProps) {
           ))}
         </div>
       </div>
-
     </div>
   );
 }
