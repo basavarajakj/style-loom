@@ -5,6 +5,7 @@ import { StoreProductsSkeleton } from '@/components/base/store/store-front/store
 import StoreAbout from '@/components/containers/store/storefront/store-about';
 import StoreHeader from '@/components/containers/store/storefront/store-header';
 import StoreProducts from '@/components/containers/store/storefront/store-products';
+import { StoreReviews } from '@/components/containers/store/storefront/store-reviews';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -96,6 +97,16 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
 
           <TabsContent value='about'>
             <StoreAbout store={currentStore} />
+          </TabsContent>
+
+          <TabsContent
+            value='reviews'
+            className='space-y-4'
+          >
+            <StoreReviews 
+              rating={currentStore.rating}
+              reviewCount={currentStore.reviewCount}
+            />
           </TabsContent>
         </Tabs>
       </div>
