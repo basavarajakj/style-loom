@@ -3,8 +3,10 @@ import NotFound from '@/components/base/empty/not-found';
 import StoreHeaderSkeleton from '@/components/base/store/store-front/store-header-skeleton';
 import { StoreProductsSkeleton } from '@/components/base/store/store-front/store-product-skeleton';
 import StoreHeader from '@/components/containers/store/storefront/store-header';
+import StoreProducts from '@/components/containers/store/storefront/store-products';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useStoreFront } from '@/lib/store/store';
 import { Link, StoreIcon } from 'lucide-react';
 import { useEffect } from 'react';
@@ -71,6 +73,24 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
 
       {/* Store Header */}
       <StoreHeader store={currentStore} />
+
+      {/* Store Content */}
+      <div className='mt-8'>
+        <Tabs
+          defaultValue='products'
+          className='space-y-6'
+        >
+          <TabsList className='w-full justify-start'>
+            <TabsTrigger value='products'>Products</TabsTrigger>
+            <TabsTrigger value='about'>About</TabsTrigger>
+            <TabsTrigger value='reviews'>Reviews</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value='products' className='space-y-4'>
+            <StoreProducts storeName={currentStore.name} />
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
