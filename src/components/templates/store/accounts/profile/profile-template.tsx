@@ -8,8 +8,8 @@ export default function ProfileTemplate() {
         <div className='flex items-start justify-between'>
           <h1 className='font-bold text-2xl tracking-tight'>Profile</h1>
         </div>
+        <ProfileForm />
       </div>
-      <ProfileForm />
     </AccountLayout>
   );
 }
