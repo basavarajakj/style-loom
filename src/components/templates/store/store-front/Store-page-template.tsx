@@ -2,6 +2,7 @@ import { BreadcrumbNav } from '@/components/base/common/bread-crumb-nav';
 import NotFound from '@/components/base/empty/not-found';
 import StoreHeaderSkeleton from '@/components/base/store/store-front/store-header-skeleton';
 import { StoreProductsSkeleton } from '@/components/base/store/store-front/store-product-skeleton';
+import StoreAbout from '@/components/containers/store/storefront/store-about';
 import StoreHeader from '@/components/containers/store/storefront/store-header';
 import StoreProducts from '@/components/containers/store/storefront/store-products';
 import { Button } from '@/components/ui/button';
@@ -86,8 +87,15 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
             <TabsTrigger value='reviews'>Reviews</TabsTrigger>
           </TabsList>
 
-          <TabsContent value='products' className='space-y-4'>
+          <TabsContent
+            value='products'
+            className='space-y-4'
+          >
             <StoreProducts storeName={currentStore.name} />
+          </TabsContent>
+
+          <TabsContent value='about'>
+            <StoreAbout store={currentStore} />
           </TabsContent>
         </Tabs>
       </div>
