@@ -1,9 +1,11 @@
 import { PackageIcon } from 'lucide-react';
 import { useState } from 'react';
-import OrderSearchForm from './order-search-form';
+import OrderSearchForm from '../../../base/store/order/order-search-form';
 import { mockTrackingData } from '@/data/order-tracking';
 import OrderStatusTimeline from '@/components/base/store/order/order-status-timeline';
-import TrackingDetailsCard from '@/components/base/store/order/tracking-details-card';
+import TrackingDetailsCard from '@/components/containers/store/order/tracking-details-card';
+import ShippingUpdatesList from '@/components/containers/store/order/shipping-updates-list';
+import OrderTrackingSummary from '@/components/containers/store/order/order-tracking-summary';
 
 export default function OrderTrackingTemplate() {
   const [isSearching, setIsSearching] = useState(false);
@@ -51,6 +53,16 @@ export default function OrderTrackingTemplate() {
                 currentLocation={mockTrackingData.currentLocation}
                 estimatedDelivery={mockTrackingData.estimatedDelivery}
                 packageInfo={mockTrackingData.packageInfo}
+              />
+
+              <ShippingUpdatesList updates={mockTrackingData.updates} />
+            </div>
+            <div>
+              <OrderTrackingSummary
+                orderId={mockTrackingData.orderId}
+                orderDate={mockTrackingData.orderDate}
+                itemsCount={mockTrackingData.itemsCount}
+                total={mockTrackingData.total}
               />
             </div>
           </div>
