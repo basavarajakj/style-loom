@@ -1,5 +1,5 @@
 import { type StoreStats as StoreStatsType } from '@/types/store-types';
-import { format } from 'date-fns';
+import {formatDistanceStrict } from 'date-fns';
 import { CalendarIcon, PackageIcon, StarIcon, UsersIcon } from 'lucide-react';
 
 interface StoreStatsProps {
@@ -8,7 +8,11 @@ interface StoreStatsProps {
 }
 
 export default function StoreStats({ stats, className }: StoreStatsProps) {
-  const formattedDate = format(stats.memberSince, 'MMMM yyyy');
+  const formattedDate = `${formatDistanceStrict(
+    new Date(stats.memberSince),
+    new Date(),
+    { unit: 'year' }
+  )}`;
 
   const statsData = [
     {
@@ -34,7 +38,7 @@ export default function StoreStats({ stats, className }: StoreStatsProps) {
     },
     {
       icon: CalendarIcon,
-      label: 'Member since',
+      label: 'Membership',
       value: formattedDate,
       color: 'text-purple-500',
     },
@@ -48,7 +52,7 @@ export default function StoreStats({ stats, className }: StoreStatsProps) {
               <stat.icon className='size-5' />
             </div>
             <div className='min-w-0 flex-1'>
-              <p className='font-bold text-lg leading-none'>{stat.value}</p>
+              <p className='font-bold text-lg leading-none capitalize'>{stat.value}</p>
               <p className='text-muted-foreground text-sm'>{stat.label}</p>
             </div>
           </div>
