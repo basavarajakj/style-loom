@@ -1,14 +1,17 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
+  SidebarRail,
 } from '@/components/ui/sidebar';
 import type { VendorNavItem } from '@/types/vendor-types';
 import { HomeIcon, StoreIcon } from 'lucide-react';
 import VendorNavMenu from './vendor-nav-menu';
+import VendorUserMenu from '@/components/base/vendors/vendor-user-menu';
 
 const vendorNavItems: VendorNavItem[] = [
   {
@@ -56,6 +59,11 @@ export default function VendorDashboardSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <VendorUserMenu user={user} />
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }

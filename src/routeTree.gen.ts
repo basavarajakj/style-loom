@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as vendorLayoutRouteImport } from './routes/(vendor)/_layout'
 import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
 import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
+import { Route as vendorLayoutDashboardRouteImport } from './routes/(vendor)/_layout/dashboard'
 import { Route as storeAuthSignInRouteImport } from './routes/(store)/auth/sign-in'
 import { Route as storeLayoutWishlistRouteImport } from './routes/(store)/_layout/wishlist'
 import { Route as storeLayoutProfileRouteImport } from './routes/(store)/_layout/profile'
@@ -40,6 +41,11 @@ const storeLayoutIndexRoute = storeLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => storeLayoutRoute,
+} as any)
+const vendorLayoutDashboardRoute = vendorLayoutDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => vendorLayoutRoute,
 } as any)
 const storeAuthSignInRoute = storeAuthSignInRouteImport.update({
   id: '/(store)/auth/sign-in',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof storeLayoutProfileRoute
   '/wishlist': typeof storeLayoutWishlistRoute
   '/auth/sign-in': typeof storeAuthSignInRoute
+  '/dashboard': typeof vendorLayoutDashboardRoute
   '/': typeof storeLayoutIndexRoute
   '/category/$slug': typeof storeLayoutCategorySlugRoute
   '/product/$productId': typeof storeLayoutProductProductIdRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByTo {
   '/profile': typeof storeLayoutProfileRoute
   '/wishlist': typeof storeLayoutWishlistRoute
   '/auth/sign-in': typeof storeAuthSignInRoute
+  '/dashboard': typeof vendorLayoutDashboardRoute
   '/': typeof storeLayoutIndexRoute
   '/category/$slug': typeof storeLayoutCategorySlugRoute
   '/product/$productId': typeof storeLayoutProductProductIdRoute
@@ -160,7 +168,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(store)/_layout': typeof storeLayoutRouteWithChildren
-  '/(vendor)/_layout': typeof vendorLayoutRoute
+  '/(vendor)/_layout': typeof vendorLayoutRouteWithChildren
   '/(store)/_layout/cart': typeof storeLayoutCartRoute
   '/(store)/_layout/checkout': typeof storeLayoutCheckoutRoute
   '/(store)/_layout/order-confirmation': typeof storeLayoutOrderConfirmationRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/(store)/_layout/profile': typeof storeLayoutProfileRoute
   '/(store)/_layout/wishlist': typeof storeLayoutWishlistRoute
   '/(store)/auth/sign-in': typeof storeAuthSignInRoute
+  '/(vendor)/_layout/dashboard': typeof vendorLayoutDashboardRoute
   '/(store)/_layout/': typeof storeLayoutIndexRoute
   '/(store)/_layout/category/$slug': typeof storeLayoutCategorySlugRoute
   '/(store)/_layout/product/$productId': typeof storeLayoutProductProductIdRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/wishlist'
     | '/auth/sign-in'
+    | '/dashboard'
     | '/'
     | '/category/$slug'
     | '/product/$productId'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/wishlist'
     | '/auth/sign-in'
+    | '/dashboard'
     | '/'
     | '/category/$slug'
     | '/product/$productId'
@@ -227,6 +238,7 @@ export interface FileRouteTypes {
     | '/(store)/_layout/profile'
     | '/(store)/_layout/wishlist'
     | '/(store)/auth/sign-in'
+    | '/(vendor)/_layout/dashboard'
     | '/(store)/_layout/'
     | '/(store)/_layout/category/$slug'
     | '/(store)/_layout/product/$productId'
@@ -239,7 +251,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   storeLayoutRoute: typeof storeLayoutRouteWithChildren
-  vendorLayoutRoute: typeof vendorLayoutRoute
+  vendorLayoutRoute: typeof vendorLayoutRouteWithChildren
   storeAuthSignInRoute: typeof storeAuthSignInRoute
   storeAuthLayoutLayoutRoute: typeof storeAuthLayoutLayoutRoute
 }
@@ -266,6 +278,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof storeLayoutIndexRouteImport
       parentRoute: typeof storeLayoutRoute
+    }
+    '/(vendor)/_layout/dashboard': {
+      id: '/(vendor)/_layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof vendorLayoutDashboardRouteImport
+      parentRoute: typeof vendorLayoutRoute
     }
     '/(store)/auth/sign-in': {
       id: '/(store)/auth/sign-in'
@@ -413,9 +432,21 @@ const storeLayoutRouteWithChildren = storeLayoutRoute._addFileChildren(
   storeLayoutRouteChildren,
 )
 
+interface vendorLayoutRouteChildren {
+  vendorLayoutDashboardRoute: typeof vendorLayoutDashboardRoute
+}
+
+const vendorLayoutRouteChildren: vendorLayoutRouteChildren = {
+  vendorLayoutDashboardRoute: vendorLayoutDashboardRoute,
+}
+
+const vendorLayoutRouteWithChildren = vendorLayoutRoute._addFileChildren(
+  vendorLayoutRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   storeLayoutRoute: storeLayoutRouteWithChildren,
-  vendorLayoutRoute: vendorLayoutRoute,
+  vendorLayoutRoute: vendorLayoutRouteWithChildren,
   storeAuthSignInRoute: storeAuthSignInRoute,
   storeAuthLayoutLayoutRoute: storeAuthLayoutLayoutRoute,
 }
