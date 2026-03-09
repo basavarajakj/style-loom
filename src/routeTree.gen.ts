@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as vendorLayoutRouteImport } from './routes/(vendor)/_layout'
 import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
 import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
 import { Route as storeAuthSignInRouteImport } from './routes/(store)/auth/sign-in'
@@ -27,6 +28,10 @@ import { Route as storeLayoutStoreSlugRouteImport } from './routes/(store)/_layo
 import { Route as storeLayoutProductProductIdRouteImport } from './routes/(store)/_layout/product/$productId'
 import { Route as storeLayoutCategorySlugRouteImport } from './routes/(store)/_layout/category/$slug'
 
+const vendorLayoutRoute = vendorLayoutRouteImport.update({
+  id: '/(vendor)/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const storeLayoutRoute = storeLayoutRouteImport.update({
   id: '/(store)/_layout',
   getParentRoute: () => rootRouteImport,
@@ -155,6 +160,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(store)/_layout': typeof storeLayoutRouteWithChildren
+  '/(vendor)/_layout': typeof vendorLayoutRoute
   '/(store)/_layout/cart': typeof storeLayoutCartRoute
   '/(store)/_layout/checkout': typeof storeLayoutCheckoutRoute
   '/(store)/_layout/order-confirmation': typeof storeLayoutOrderConfirmationRoute
@@ -212,6 +218,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(store)/_layout'
+    | '/(vendor)/_layout'
     | '/(store)/_layout/cart'
     | '/(store)/_layout/checkout'
     | '/(store)/_layout/order-confirmation'
@@ -232,12 +239,20 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   storeLayoutRoute: typeof storeLayoutRouteWithChildren
+  vendorLayoutRoute: typeof vendorLayoutRoute
   storeAuthSignInRoute: typeof storeAuthSignInRoute
   storeAuthLayoutLayoutRoute: typeof storeAuthLayoutLayoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(vendor)/_layout': {
+      id: '/(vendor)/_layout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof vendorLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(store)/_layout': {
       id: '/(store)/_layout'
       path: ''
@@ -400,6 +415,7 @@ const storeLayoutRouteWithChildren = storeLayoutRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   storeLayoutRoute: storeLayoutRouteWithChildren,
+  vendorLayoutRoute: vendorLayoutRoute,
   storeAuthSignInRoute: storeAuthSignInRoute,
   storeAuthLayoutLayoutRoute: storeAuthLayoutLayoutRoute,
 }
