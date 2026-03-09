@@ -2,7 +2,7 @@ import VendorDashboardSkeleton from '@/components/base/vendors/skeleton/vendor-d
 import VendorDashboardTemplate from '@/components/templates/vendor/vendor-dashboard-template';
 import { createFileRoute } from '@tanstack/react-router';
 import {
-  BarChartIcon,
+  ChartColumnIcon,
   IndianRupeeIcon,
   PackageIcon,
   ShoppingBagIcon,
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/(vendor)/_layout/dashboard')({
     await new Promise((resolve) => setTimeout(resolve, 100));
     return {};
   },
-  pendingComponent: VendorDashboardSkeleton
+  pendingComponent: VendorDashboardSkeleton,
 });
 
 function VendorDashboardPage() {
@@ -41,7 +41,7 @@ function VendorDashboardPage() {
       title: 'Total Orders',
       value: '245',
       change: '+203 from last months',
-      icon: BarChartIcon,
+      icon: ChartColumnIcon,
     },
   ];
   return <VendorDashboardTemplate stats={stats} />;

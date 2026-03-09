@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/sidebar';
 import type { VendorNavItem } from '@/types/vendor-types';
 import { HomeIcon, StoreIcon } from 'lucide-react';
-import VendorNavMenu from './vendor-nav-menu';
+import VendorNavMenu from '../../base/vendors/vendor-nav-menu';
 import VendorUserMenu from '@/components/base/vendors/vendor-user-menu';
 
 const vendorNavItems: VendorNavItem[] = [

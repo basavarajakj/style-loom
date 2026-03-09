@@ -1,5 +1,6 @@
 import {
   SidebarMenu,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -39,6 +40,9 @@ export default function VendorNavMenu({
               <Link to={item.href}>
                 <Icon />
                 <span>{item.title}</span>
+                {item.badge && (
+                  <SidebarMenuBadge className='bg-primary rounded-full'>{item.badge}</SidebarMenuBadge>
+                )}
               </Link>
             </SidebarMenuButton>
 
