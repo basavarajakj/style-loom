@@ -21,7 +21,7 @@ const vendorNavItems: VendorNavItem[] = [
   },
   {
     title: 'My Shops',
-    href: 'my-shop',
+    href: '/my-shop',
     icon: StoreIcon,
     badge: 5,
   },
