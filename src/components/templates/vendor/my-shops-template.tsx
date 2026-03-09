@@ -1,5 +1,5 @@
 import ShopCard from '@/components/base/vendors/my-shop/shop-card';
-import ShopHeader from '@/components/containers/vendors/shop-header';
+import ShopHeader from '@/components/containers/vendors/my-shop/shop-header';
 
 interface Shop {
   id: string;
