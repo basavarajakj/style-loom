@@ -89,7 +89,7 @@ export function DataTablePagination({
           disabled={!canPrev}
           aria-label='Previous page'
         >
-          <ArrowLeftIcon />
+          <ArrowLeftIcon className='@2xl:hidden' />
           <span className='hidden @2xl:flex'>Prev</span>
         </Button>
         <Button
@@ -105,7 +105,7 @@ export function DataTablePagination({
           aria-label='Next page'
         >
           <span className='hidden @2xl:flex'>Next</span>
-          <ArrowRightIcon />
+          <ArrowRightIcon className='@2xl:hidden' />
         </Button>
       </div>
     </div>

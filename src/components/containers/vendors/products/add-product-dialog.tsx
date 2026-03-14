@@ -16,6 +16,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -109,7 +110,11 @@ export function AddProductDialog({
       open={open}
       onOpenChange={onOpenChange}
     >
-      <DialogContent className='max-h-[90vh] overflow-y-auto sm:max-w-150'>
+      <DialogOverlay className='backdrop-blur-sm bg-black/40'/>
+      <DialogContent
+        className='max-h-[90vh] overflow-y-auto sm:max-w-150 min-w-[70vw]'
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className='text-xl'>Add New Product</DialogTitle>
           <DialogDescription>
