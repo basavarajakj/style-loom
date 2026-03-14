@@ -243,37 +243,30 @@ code {
 }
 
 /* Base scrollbar */
-* {
+html {
   scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
 /* Chrome, Edge, Safari */
-*::-webkit-scrollbar {
+html::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-*::-webkit-scrollbar-track {
+html::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* 🌞 Light theme */
-:root *::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--border));
+/* Thumb */
+html::-webkit-scrollbar-thumb {
+  background-color: var(--border);
   border-radius: 9999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
-:root *::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--foreground) / 0.25);
-}
-
-/* 🌙 Dark theme */
-.dark *::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--border));
-}
-
-.dark *::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--foreground) / 0.35);
+/* Hover */
+html::-webkit-scrollbar-thumb:hover {
+  background-color: var(--foreground);
 }

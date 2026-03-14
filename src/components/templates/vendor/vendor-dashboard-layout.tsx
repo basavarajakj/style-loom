@@ -20,7 +20,7 @@ export default function VendorDashboardLayout({
   return (
     <SidebarProvider>
       <VendorDashboardSidebar />
-      <SidebarInset>
+      <SidebarInset className='rounded-t-xl overflow-hidden'>
         <VendorHeader
           title={headerTitle}
           showSearch={showSearch}
