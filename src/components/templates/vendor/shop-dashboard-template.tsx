@@ -23,7 +23,7 @@ export default function ShopDashboardTemplate({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-bold text-3xl tracking-tight">Shop Overview</h2>
+        <h2 className="font-bold text-3xl">Shop Overview</h2>
         <p className="text-muted-foreground">
           Monitor your shop's performance and key metrics
         </p>

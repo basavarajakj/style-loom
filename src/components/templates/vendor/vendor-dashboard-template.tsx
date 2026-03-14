@@ -18,7 +18,7 @@ export default function VendorDashboardTemplate({
   return (
     <div className='space-y-2 lg:space-y-6'>
       <div>
-        <h2 className='font-bold text-3xl tracking-tight'>Welcome back!</h2>
+        <h2 className='font-bold text-3xl'>Welcome back!</h2>
         <p className='text-muted-foreground'>
           Here's what's happening with your shops today.
         </p>

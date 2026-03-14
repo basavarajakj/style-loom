@@ -21,7 +21,7 @@ export default function ShopHeader({
       <div className='flex items-center justify-between'>
         <div>
           <h2 className='font-bold text-3xl tracking-tight'>My Shops</h2>
-          <p className='text-muted-foreground'>
+          <p className='text-muted-foreground line-clamp-1'>
             Manage and monitor all your shops in one place
           </p>
         </div>
@@ -29,7 +29,7 @@ export default function ShopHeader({
           <TooltipTrigger asChild>
             <Button onClick={onCreateShop}>
               <PlusIcon className='size-4' />
-              <span className='hidden @2xl:flex'>Create New Shop</span>
+              <span className='flex'>Create New Shop</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
