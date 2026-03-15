@@ -16,7 +16,7 @@ export default function AdminProductsTemplate({
         description="Manage all products across the platform"
       />
 
-      <AdminProductsTable products={products} />
+      <AdminProductsTable products={products}/>
     </>
   );
 }

@@ -55,14 +55,14 @@ export default function AdminProductsTable({
         const price = row.original.price;
         return (
           <div className='font-medium'>
-            {price.currency}
-            {price.current.toFixed(2)}
             {price.discountPercentage > 0 && (
-              <span className='ml-2 text-muted-foreground text-xs line-through'>
+              <span className='text-muted-foreground text-xs line-through block'>
                 {price.currency}
                 {price.original.toFixed(2)}
               </span>
             )}
+            {price.currency}
+            {price.current.toFixed(2)}
           </div>
         );
       },
@@ -87,7 +87,7 @@ export default function AdminProductsTable({
         return (
           <div className='flex items-center gap-2'>
             <span className='font-medium'>{rating.average.toFixed(1)}</span>
-            <span className='text-muted-foreground text-xs'>
+            <span className='text-muted-foreground text-xs block'>
               ({rating.count} reviews)
             </span>
           </div>
