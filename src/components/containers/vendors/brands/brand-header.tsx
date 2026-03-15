@@ -1,4 +1,4 @@
-import VendorPageHeader from '@/components/base/common/vendor-page-header';
+import VendorPageHeader from '@/components/base/common/page-header';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 

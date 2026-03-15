@@ -1,4 +1,4 @@
-import VendorPageHeader from "@/components/base/common/vendor-page-header";
+import VendorPageHeader from "@/components/base/common/page-header";
 
 interface TransactionsHeaderProps {
   className?: string;

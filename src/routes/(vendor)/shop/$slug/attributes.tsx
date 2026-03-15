@@ -1,4 +1,4 @@
-import AddAttributeDialog from '@/components/containers/vendors/attributes/add-attribute-dialog';
+import { AddAttributeDialog } from '@/components/containers/shared/attributes/add-attribute-dialog';
 import ShopAttributeTemplate from '@/components/templates/vendor/shop-attribute-template';
 import { mockAttributes } from '@/data/attributes';
 import type { Attribute } from '@/types/attributes-types';

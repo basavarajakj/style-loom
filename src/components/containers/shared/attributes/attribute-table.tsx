@@ -1,3 +1,5 @@
+import type { ColumnDef } from '@tanstack/react-table';
+import { MoreHorizontal } from 'lucide-react';
 import DataTable from '@/components/base/data-table/data-table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,17 +17,25 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import type { Attribute, AttributeValue } from '@/types/attributes-types';
-import type { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontalIcon } from 'lucide-react';
+import type {
+  Attribute,
+  AttributePermissions,
+  AttributeValue,
+} from '@/types/attributes-types';
 
 interface AttributeTableProps {
   attributes: Attribute[];
+  permissions?: AttributePermissions;
+  onDeleteAttribute?: (attributeId: string) => void;
+  onEditAttribute?: (attributeId: string) => void;
   className?: string;
 }
 
 export default function AttributeTable({
   attributes,
+  permissions = { canDelete: false, canEdit: true, canView: true },
+  onDeleteAttribute,
+  onEditAttribute,
   className,
 }: AttributeTableProps) {
   const columns: ColumnDef<Attribute>[] = [
@@ -33,7 +43,7 @@ export default function AttributeTable({
       accessorKey: 'id',
       header: 'ID',
       cell: ({ row }) => (
-        <div className='w-20 truncate text-muted-foreground text-xs'>
+        <div className="w-20 truncate text-muted-foreground text-xs">
           {row.getValue('id')}
         </div>
       ),
@@ -42,7 +52,7 @@ export default function AttributeTable({
       accessorKey: 'name',
       header: 'Name',
       cell: ({ row }) => (
-        <div className='font-medium'>{row.getValue('name')}</div>
+        <div className="font-medium">{row.getValue('name')}</div>
       ),
     },
     {
@@ -53,7 +63,7 @@ export default function AttributeTable({
         const type = row.original.type;
 
         return (
-          <div className='flex flex-wrap gap-1'>
+          <div className="flex flex-wrap gap-1">
             {values.slice(0, 5).map((val) => {
               if (type === 'color') {
                 return (
@@ -61,7 +71,7 @@ export default function AttributeTable({
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div
-                          className='size-6 rounded-full border shadow-sm'
+                          className="size-6 rounded-full border shadow-sm"
                           style={{ backgroundColor: val.value }}
                         />
                       </TooltipTrigger>
@@ -78,11 +88,11 @@ export default function AttributeTable({
                   <TooltipProvider key={val.id}>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <div className='size-8 overflow-hidden rounded-md border bg-muted'>
+                        <div className="size-8 overflow-hidden rounded-md border bg-muted">
                           <img
                             src={val.value || '/placeholder.svg'}
                             alt={val.name}
-                            className='h-full w-full object-cover'
+                            className="h-full w-full object-cover"
                           />
                         </div>
                       </TooltipTrigger>
@@ -95,20 +105,13 @@ export default function AttributeTable({
               }
 
               return (
-                <Badge
-                  key={val.id}
-                  variant='secondary'
-                  className='text-xs'
-                >
+                <Badge key={val.id} variant="secondary" className="text-xs">
                   {val.name}
                 </Badge>
               );
             })}
             {values.length > 5 && (
-              <Badge
-                variant='outline'
-                className='text-xs'
-              >
+              <Badge variant="outline" className="text-xs">
                 +{values.length - 5} more
               </Badge>
             )}
@@ -120,49 +123,59 @@ export default function AttributeTable({
       accessorKey: 'slug',
       header: 'Slug',
       cell: ({ row }) => (
-        <code className='relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono font-semibold text-sm'>
+        <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono font-semibold text-sm">
           {row.getValue('slug')}
         </code>
       ),
     },
     {
       id: 'actions',
-      header: () => <div className='text-right'>Actions</div>,
+      header: () => <div className="text-right">Actions</div>,
       cell: ({ row }) => (
-        <div className='flex justify-end'>
+        <div className="flex justify-end">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant='ghost'
-                className='h-8 w-8 p-0'
-              >
-                <span className='sr-only'>Open menu</span>
-                <MoreHorizontalIcon className='size-4' />
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="size-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
+            <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(row.original.id)}
               >
                 Copy ID
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem className='text-destructive'>
-                Delete
-              </DropdownMenuItem>
+              {permissions.canView && (
+                <DropdownMenuItem>View Details</DropdownMenuItem>
+              )}
+              {permissions.canEdit && (
+                <DropdownMenuItem
+                  onClick={() => onEditAttribute?.(row.original.id)}
+                >
+                  Edit
+                </DropdownMenuItem>
+              )}
+              {permissions.canDelete && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => onDeleteAttribute?.(row.original.id)}
+                    className="text-destructive"
+                  >
+                    Delete
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
       ),
     },
   ];
+
   return (
-    <DataTable
-      columns={columns}
-      data={attributes}
-      className={className}
-    />
+    <DataTable columns={columns} data={attributes} className={className} />
   );
 }

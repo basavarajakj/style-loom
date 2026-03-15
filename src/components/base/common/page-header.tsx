@@ -7,7 +7,7 @@ interface VendorPageHeaderProps {
   className?: string;
 }
 
-export default function VendorPageHeader({
+export default function PageHeader({
   className,
   title,
   description,

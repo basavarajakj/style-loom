@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import VendorPageHeader from "@/components/base/common/vendor-page-header";
+import VendorPageHeader from "@/components/base/common/page-header";
 
 interface CouponHeaderProps {
   onAddCoupon: () => void;

@@ -1,4 +1,4 @@
-import VendorPageHeader from '@/components/base/common/vendor-page-header';
+import VendorPageHeader from '@/components/base/common/page-header';
 import ShopCard from '@/components/base/vendors/my-shop/shop-card';
 import { Button } from '@/components/ui/button';
 import type { Shop } from '@/types/shop-types';

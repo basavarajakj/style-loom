@@ -1,3 +1,12 @@
+import { useForm } from '@tanstack/react-form';
+import {
+  Check,
+  ImageIcon,
+  Palette,
+  Plus,
+  Trash2,
+  TypeIcon,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,30 +26,20 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import getFieldErrors from '@/lib/helper/field-errors';
 import { cn } from '@/lib/utils';
-import type {
-  AttributeFormValues,
-  AttributeValue,
-} from '@/types/attributes-types';
-import { useForm } from '@tanstack/react-form';
-import {
-  Check,
-  ImageIcon,
-  Palette,
-  Plus,
-  Trash2,
-  TypeIcon,
-} from 'lucide-react';
+import type { AttributeFormValues, AttributeValue } from '@/types/attributes-types';
 
 interface AddAttributeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: AttributeFormValues) => void;
+  role?: 'admin' | 'vendor';
 }
 
-export default function AddAttributeDialog({
+export function AddAttributeDialog({
   open,
   onOpenChange,
   onSubmit,
+  role = 'vendor',
 }: AddAttributeDialogProps) {
   const form = useForm({
     defaultValues: {
@@ -62,10 +61,10 @@ export default function AddAttributeDialog({
       label: 'Color',
       icon: Palette,
       preview: (
-        <div className='flex gap-1'>
-          <div className='size-4 rounded-full border bg-white' />
-          <div className='size-4 rounded-full border bg-yellow-200' />
-          <div className='size-4 rounded-full border bg-blue-200' />
+        <div className="flex gap-1">
+          <div className="size-4 rounded-full border bg-white" />
+          <div className="size-4 rounded-full border bg-yellow-200" />
+          <div className="size-4 rounded-full border bg-blue-200" />
         </div>
       ),
     },
@@ -74,12 +73,9 @@ export default function AddAttributeDialog({
       label: 'Image',
       icon: ImageIcon,
       preview: (
-        <div className='flex gap-1'>
+        <div className="flex gap-1">
           {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className='size-4 rounded bg-muted'
-            />
+            <div key={i} className="size-4 rounded bg-muted" />
           ))}
         </div>
       ),
@@ -89,11 +85,11 @@ export default function AddAttributeDialog({
       label: 'Label',
       icon: TypeIcon,
       preview: (
-        <div className='flex gap-1'>
-          <div className='flex h-4 w-4 items-center justify-center rounded border bg-white text-[8px]'>
+        <div className="flex gap-1">
+          <div className="flex h-4 w-4 items-center justify-center rounded border bg-white text-[8px]">
             XL
           </div>
-          <div className='flex h-4 w-4 items-center justify-center rounded border bg-white text-[8px]'>
+          <div className="flex h-4 w-4 items-center justify-center rounded border bg-white text-[8px]">
             L
           </div>
         </div>
@@ -103,24 +99,19 @@ export default function AddAttributeDialog({
       value: 'select',
       label: 'Select',
       icon: Check,
-      preview: <div className='h-4 w-12 rounded border bg-white' />,
+      preview: <div className="h-4 w-12 rounded border bg-white" />,
     },
   ] as const;
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={onOpenChange}
-    >
-      <DialogContent
-        className='max-h-[90vh] overflow-y-auto min-w-[70vw]'
-        onInteractOutside={(e) => e.preventDefault()}
-        onEscapeKeyDown={(e) => e.preventDefault()}
-      >
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[90vh] @xl:max-w-150 overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Attribute</DialogTitle>
           <DialogDescription>
-            Create a new attribute to define product variations.
+            {role === 'admin'
+              ? 'Create a new attribute to define product variations across the platform.'
+              : 'Create a new attribute to define product variations for your shop.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -130,11 +121,11 @@ export default function AddAttributeDialog({
             e.stopPropagation;
             form.handleSubmit();
           }}
-          className='space-y-6'
+          className="space-y-6"
         >
           <FieldGroup>
-            <div className='grid gap-4'>
-              <form.Field name='name'>
+            <div className="grid gap-4">
+              <form.Field name="name">
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -148,13 +139,12 @@ export default function AddAttributeDialog({
                         onBlur={field.handleBlur}
                         onChange={(e) => {
                           field.handleChange(e.target.value);
-                          // Auto-generate slug
                           form.setFieldValue(
                             'slug',
                             e.target.value.toLowerCase().replace(/\s+/g, '-')
                           );
                         }}
-                        placeholder='e.g. Color, Size, Material'
+                        placeholder="e.g. Color, Size, Material"
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -167,8 +157,7 @@ export default function AddAttributeDialog({
                 }}
               </form.Field>
 
-              {/* Slug Field */}
-              <form.Field name='slug'>
+              <form.Field name="slug">
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -181,7 +170,7 @@ export default function AddAttributeDialog({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder='e.g. color, size, material'
+                        placeholder="e.g. color, size, material"
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -194,12 +183,11 @@ export default function AddAttributeDialog({
                 }}
               </form.Field>
 
-              {/* Type Selection */}
-              <form.Field name='type'>
+              <form.Field name="type">
                 {(field) => (
-                  <div className='space-y-3'>
+                  <div className="space-y-3">
                     <FieldLabel>Type</FieldLabel>
-                    <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                       {typeOptions.map((option) => (
                         <div
                           key={option.value}
@@ -215,26 +203,26 @@ export default function AddAttributeDialog({
                               field.handleChange(option.value);
                             }
                           }}
-                          role='button'
+                          role="button"
                           tabIndex={0}
                         >
-                          <div className='mb-3 flex justify-between'>
-                            <span className='font-medium text-sm'>
+                          <div className="mb-3 flex justify-between">
+                            <span className="font-medium text-sm">
                               {option.label}
                             </span>
                             {field.state.value === option.value && (
-                              <div className='flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground'>
-                                <Check className='size-3' />
+                              <div className="flex size-4 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                                <Check className="size-3" />
                               </div>
                             )}
                           </div>
-                          <div className='flex h-12 items-center justify-center rounded-md bg-muted/50'>
+                          <div className="flex h-12 items-center justify-center rounded-md bg-muted/50">
                             {option.preview}
                           </div>
                         </div>
                       ))}
                     </div>
-                    <p className='text-muted-foreground text-xs'>
+                    <p className="text-muted-foreground text-xs">
                       Determines how this attribute's values are displayed.
                     </p>
                   </div>
@@ -243,24 +231,20 @@ export default function AddAttributeDialog({
 
               <Separator />
 
-              {/* Attribute Values Section */}
-              <form.Field
-                name='values'
-                mode='array'
-              >
+              <form.Field name="values" mode="array">
                 {(field) => (
-                  <div className='space-y-4'>
-                    <div className='flex items-center justify-between'>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
                       <div>
-                        <h3 className='font-medium text-sm'>Values</h3>
-                        <p className='text-muted-foreground text-xs'>
+                        <h3 className="font-medium text-sm">Values</h3>
+                        <p className="text-muted-foreground text-xs">
                           Add values for this attribute.
                         </p>
                       </div>
                       <Button
-                        type='button'
-                        variant='outline'
-                        size='sm'
+                        type="button"
+                        variant="outline"
+                        size="sm"
                         onClick={() =>
                           field.pushValue({
                             name: '',
@@ -270,24 +254,24 @@ export default function AddAttributeDialog({
                           })
                         }
                       >
-                        <Plus className='mr-2 size-3' />
+                        <Plus className="mr-2 size-3" />
                         Add Value
                       </Button>
                     </div>
 
-                    <div className='space-y-3'>
+                    <div className="space-y-3">
                       {field.state.value.map((_, i) => (
                         <div
                           key={i}
-                          className='grid gap-3 rounded-lg border p-4 sm:grid-cols-12'
+                          className="grid gap-3 rounded-lg border p-4 sm:grid-cols-12"
                         >
-                          <div className='sm:col-span-4'>
+                          <div className="sm:col-span-4">
                             <form.Field name={`values[${i}].name`}>
                               {(subField) => (
-                                <div className='space-y-1'>
+                                <div className="space-y-1">
                                   <label
                                     htmlFor={`value-name-${i}`}
-                                    className='font-medium text-xs'
+                                    className="font-medium text-xs"
                                   >
                                     Name
                                   </label>
@@ -296,7 +280,6 @@ export default function AddAttributeDialog({
                                     value={subField.state.value}
                                     onChange={(e) => {
                                       subField.handleChange(e.target.value);
-                                      // Auto-generate slug for value
                                       form.setFieldValue(
                                         `values[${i}].slug`,
                                         e.target.value
@@ -304,21 +287,21 @@ export default function AddAttributeDialog({
                                           .replace(/\s+/g, '-')
                                       );
                                     }}
-                                    placeholder='Name'
-                                    className='h-8'
+                                    placeholder="Name"
+                                    className="h-8"
                                   />
                                 </div>
                               )}
                             </form.Field>
                           </div>
 
-                          <div className='sm:col-span-4'>
+                          <div className="sm:col-span-4">
                             <form.Field name={`values[${i}].slug`}>
                               {(subField) => (
-                                <div className='space-y-1'>
+                                <div className="space-y-1">
                                   <label
                                     htmlFor={`value-slug-${i}`}
-                                    className='font-medium text-xs'
+                                    className="font-medium text-xs"
                                   >
                                     Slug
                                   </label>
@@ -328,8 +311,8 @@ export default function AddAttributeDialog({
                                     onChange={(e) =>
                                       subField.handleChange(e.target.value)
                                     }
-                                    placeholder='Slug'
-                                    className='h-8'
+                                    placeholder="Slug"
+                                    className="h-8"
                                   />
                                 </div>
                               )}
@@ -341,19 +324,19 @@ export default function AddAttributeDialog({
                             children={(type) => (
                               <>
                                 {type === 'color' && (
-                                  <div className='sm:col-span-3'>
+                                  <div className="sm:col-span-3">
                                     <form.Field name={`values[${i}].value`}>
                                       {(subField) => (
-                                        <div className='space-y-1'>
+                                        <div className="space-y-1">
                                           <label
                                             htmlFor={`value-color-${i}`}
-                                            className='font-medium text-xs'
+                                            className="font-medium text-xs"
                                           >
                                             Color
                                           </label>
-                                          <div className='flex gap-2'>
+                                          <div className="flex gap-2">
                                             <Input
-                                              type='color'
+                                              type="color"
                                               id={`value-color-picker-${i}`}
                                               value={
                                                 subField.state.value ||
@@ -364,8 +347,8 @@ export default function AddAttributeDialog({
                                                   e.target.value
                                                 )
                                               }
-                                              className='h-8 w-12 p-1'
-                                              aria-label='Color Picker'
+                                              className="h-8 w-12 p-1"
+                                              aria-label="Color Picker"
                                             />
                                             <Input
                                               id={`value-color-${i}`}
@@ -375,8 +358,8 @@ export default function AddAttributeDialog({
                                                   e.target.value
                                                 )
                                               }
-                                              placeholder='#000000'
-                                              className='h-8'
+                                              placeholder="#000000"
+                                              className="h-8"
                                             />
                                           </div>
                                         </div>
@@ -386,13 +369,13 @@ export default function AddAttributeDialog({
                                 )}
 
                                 {type === 'image' && (
-                                  <div className='sm:col-span-3'>
+                                  <div className="sm:col-span-3">
                                     <form.Field name={`values[${i}].value`}>
                                       {(subField) => (
-                                        <div className='space-y-1'>
+                                        <div className="space-y-1">
                                           <label
                                             htmlFor={`value-image-${i}`}
-                                            className='font-medium text-xs'
+                                            className="font-medium text-xs"
                                           >
                                             Image URL
                                           </label>
@@ -404,8 +387,8 @@ export default function AddAttributeDialog({
                                                 e.target.value
                                               )
                                             }
-                                            placeholder='https://...'
-                                            className='h-8'
+                                            placeholder="https://..."
+                                            className="h-8"
                                           />
                                         </div>
                                       )}
@@ -416,24 +399,24 @@ export default function AddAttributeDialog({
                             )}
                           />
 
-                          <div className='flex items-end justify-end sm:col-span-1'>
+                          <div className="flex items-end justify-end sm:col-span-1">
                             <Button
-                              type='button'
-                              variant='ghost'
-                              size='icon'
-                              className='h-8 w-8 text-muted-foreground hover:text-destructive'
+                              type="button"
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-muted-foreground hover:text-destructive"
                               onClick={() => field.removeValue(i)}
                             >
-                              <Trash2 className='size-4' />
+                              <Trash2 className="size-4" />
                             </Button>
                           </div>
                         </div>
                       ))}
 
                       {field.state.value.length === 0 && (
-                        <div className='flex h-24 flex-col items-center justify-center rounded-lg border border-dashed text-muted-foreground text-sm'>
+                        <div className="flex h-24 flex-col items-center justify-center rounded-lg border border-dashed text-muted-foreground text-sm">
                           <p>No values added yet.</p>
-                          <p className='text-xs'>
+                          <p className="text-xs">
                             Click "Add Value" to start adding options.
                           </p>
                         </div>
@@ -447,13 +430,13 @@ export default function AddAttributeDialog({
 
           <DialogFooter>
             <Button
-              type='button'
-              variant='outline'
+              type="button"
+              variant="outline"
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button type='submit'>Create Attribute</Button>
+            <Button type="submit">Create Attribute</Button>
           </DialogFooter>
         </form>
       </DialogContent>

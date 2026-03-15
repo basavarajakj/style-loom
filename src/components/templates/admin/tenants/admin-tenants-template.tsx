@@ -1,4 +1,4 @@
-import VendorPageHeader from '@/components/base/common/vendor-page-header';
+import VendorPageHeader from '@/components/base/common/page-header';
 import AdminTenantTable from '@/components/containers/admin/tenant/admin-tenant-table';
 import type { AdminTenant } from '@/types/tenant-types';
 
