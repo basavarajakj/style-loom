@@ -1,11 +1,11 @@
-import { useForm } from "@tanstack/react-form";
+import { useForm } from '@tanstack/react-form';
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/field';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -13,64 +13,71 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import type { CouponFormValues } from "@/types/coupon";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import type { CouponFormValues } from '@/types/coupon-types';
 
 // Helper function to safely get string errors from field meta
 function getFieldErrors(errors: any): string[] {
   if (!Array.isArray(errors)) return [];
-  return errors.filter((error): error is string => typeof error === "string");
+  return errors.filter((error): error is string => typeof error === 'string');
 }
 
 interface AddCouponDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: CouponFormValues) => void;
+  role?: 'admin' | 'vendor';
 }
 
 export function AddCouponDialog({
   open,
   onOpenChange,
   onSubmit,
+  role = 'vendor',
 }: AddCouponDialogProps) {
   const form = useForm({
     defaultValues: {
-      code: "",
-      description: "",
-      type: "percentage" as "percentage" | "fixed" | "free_shipping",
+      code: '',
+      description: '',
+      type: 'percentage' as 'percentage' | 'fixed' | 'free_shipping',
       discountAmount: 10,
       minimumCartAmount: 0,
-      activeFrom: new Date().toISOString().split("T")[0],
+      activeFrom: new Date().toISOString().split('T')[0],
       activeTo: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
         .toISOString()
-        .split("T")[0], // 30 days from now
-      status: "active" as "active" | "expired" | "inactive",
+        .split('T')[0], // 30 days from now
+      status: 'active' as 'active' | 'expired' | 'inactive',
       image: null as FileList | null,
       usageLimit: undefined as number | undefined,
     },
     onSubmit: async ({ value }) => {
-      onSubmit(value);
+      await onSubmit(value);
       onOpenChange(false);
       form.reset();
     },
   });
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-150">
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <DialogContent className='max-h-[90vh] overflow-y-auto sm:max-w-150'>
         <DialogHeader>
           <DialogTitle>Create New Coupon</DialogTitle>
           <DialogDescription>
-            Add a new coupon to offer discounts to your customers.
+            {role === 'admin'
+              ? 'Create a new discount coupon for the platform.'
+              : 'Create a new discount coupon for your shop.'}
           </DialogDescription>
         </DialogHeader>
 
@@ -80,12 +87,12 @@ export function AddCouponDialog({
             e.stopPropagation();
             form.handleSubmit();
           }}
-          className="space-y-6"
+          className='space-y-6'
         >
           <FieldGroup>
-            <div className="grid gap-4">
+            <div className='grid gap-4'>
               {/* Code Field */}
-              <form.Field name="code">
+              <form.Field name='code'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -100,7 +107,7 @@ export function AddCouponDialog({
                         onChange={(e) =>
                           field.handleChange(e.target.value.toUpperCase())
                         }
-                        placeholder="e.g. SAVE10"
+                        placeholder='e.g. SAVE10'
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -114,7 +121,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Description Field */}
-              <form.Field name="description">
+              <form.Field name='description'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -127,9 +134,9 @@ export function AddCouponDialog({
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        placeholder="Describe this coupon..."
+                        placeholder='Describe this coupon...'
                         aria-invalid={isInvalid}
-                        className="resize-none"
+                        className='resize-none'
                       />
                       {isInvalid && (
                         <FieldError
@@ -142,7 +149,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Type Select */}
-              <form.Field name="type">
+              <form.Field name='type'>
                 {(field) => {
                   return (
                     <Field>
@@ -153,17 +160,17 @@ export function AddCouponDialog({
                         value={field.state.value}
                         onValueChange={(value) =>
                           field.handleChange(
-                            value as "percentage" | "fixed" | "free_shipping"
+                            value as 'percentage' | 'fixed' | 'free_shipping'
                           )
                         }
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select discount type" />
+                          <SelectValue placeholder='Select discount type' />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="percentage">Percentage</SelectItem>
-                          <SelectItem value="fixed">Fixed Amount</SelectItem>
-                          <SelectItem value="free_shipping">
+                          <SelectItem value='percentage'>Percentage</SelectItem>
+                          <SelectItem value='fixed'>Fixed Amount</SelectItem>
+                          <SelectItem value='free_shipping'>
                             Free Shipping
                           </SelectItem>
                         </SelectContent>
@@ -174,7 +181,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Discount Amount Field */}
-              <form.Field name="discountAmount">
+              <form.Field name='discountAmount'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -186,13 +193,13 @@ export function AddCouponDialog({
                       <Input
                         id={field.name}
                         name={field.name}
-                        type="number"
+                        type='number'
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
                           field.handleChange(parseFloat(e.target.value))
                         }
-                        placeholder="e.g. 10"
+                        placeholder='e.g. 10'
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -206,7 +213,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Minimum Cart Amount Field */}
-              <form.Field name="minimumCartAmount">
+              <form.Field name='minimumCartAmount'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -218,13 +225,13 @@ export function AddCouponDialog({
                       <Input
                         id={field.name}
                         name={field.name}
-                        type="number"
+                        type='number'
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
                           field.handleChange(parseFloat(e.target.value))
                         }
-                        placeholder="e.g. 50"
+                        placeholder='e.g. 50'
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -238,7 +245,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Active From Field */}
-              <form.Field name="activeFrom">
+              <form.Field name='activeFrom'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -248,7 +255,7 @@ export function AddCouponDialog({
                       <Input
                         id={field.name}
                         name={field.name}
-                        type="date"
+                        type='date'
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
@@ -265,7 +272,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Active To Field */}
-              <form.Field name="activeTo">
+              <form.Field name='activeTo'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -275,7 +282,7 @@ export function AddCouponDialog({
                       <Input
                         id={field.name}
                         name={field.name}
-                        type="date"
+                        type='date'
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
@@ -292,7 +299,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Status Select */}
-              <form.Field name="status">
+              <form.Field name='status'>
                 {(field) => {
                   return (
                     <Field>
@@ -301,17 +308,17 @@ export function AddCouponDialog({
                         value={field.state.value}
                         onValueChange={(value) =>
                           field.handleChange(
-                            value as "active" | "expired" | "inactive"
+                            value as 'active' | 'expired' | 'inactive'
                           )
                         }
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select status" />
+                          <SelectValue placeholder='Select status' />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="expired">Expired</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
+                          <SelectItem value='active'>Active</SelectItem>
+                          <SelectItem value='expired'>Expired</SelectItem>
+                          <SelectItem value='inactive'>Inactive</SelectItem>
                         </SelectContent>
                       </Select>
                     </Field>
@@ -321,7 +328,7 @@ export function AddCouponDialog({
 
               {/* Usage Limit Field */}
               <form.Field
-                name="usageLimit"
+                name='usageLimit'
                 defaultValue={undefined as number | undefined}
               >
                 {(field) => {
@@ -335,8 +342,8 @@ export function AddCouponDialog({
                       <Input
                         id={field.name}
                         name={field.name}
-                        type="number"
-                        value={field.state.value || ""}
+                        type='number'
+                        value={field.state.value || ''}
                         onBlur={field.handleBlur}
                         onChange={(e) =>
                           field.handleChange(
@@ -345,7 +352,7 @@ export function AddCouponDialog({
                               : undefined
                           )
                         }
-                        placeholder="Leave empty for unlimited"
+                        placeholder='Leave empty for unlimited'
                         aria-invalid={isInvalid}
                       />
                       {isInvalid && (
@@ -359,7 +366,7 @@ export function AddCouponDialog({
               </form.Field>
 
               {/* Image Field */}
-              <form.Field name="image">
+              <form.Field name='image'>
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
@@ -369,12 +376,12 @@ export function AddCouponDialog({
                       <Input
                         id={field.name}
                         name={field.name}
-                        type="file"
-                        accept="image/*"
+                        type='file'
+                        accept='image/*'
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.files)}
                         aria-invalid={isInvalid}
-                        className="cursor-pointer"
+                        className='cursor-pointer'
                       />
                       {isInvalid && (
                         <FieldError
@@ -390,8 +397,8 @@ export function AddCouponDialog({
 
           <DialogFooter>
             <Button
-              type="button"
-              variant="outline"
+              type='button'
+              variant='outline'
               onClick={() => onOpenChange(false)}
             >
               Cancel
@@ -400,8 +407,11 @@ export function AddCouponDialog({
               selector={(state) => [state.canSubmit, state.isSubmitting]}
             >
               {([canSubmit, isSubmitting]) => (
-                <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                  {isSubmitting ? "Creating..." : "Create Coupon"}
+                <Button
+                  type='submit'
+                  disabled={!canSubmit || isSubmitting}
+                >
+                  {isSubmitting ? 'Creating...' : 'Create Coupon'}
                 </Button>
               )}
             </form.Subscribe>

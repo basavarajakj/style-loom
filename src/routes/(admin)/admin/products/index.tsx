@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import type { Product } from '@/data/products';
 import { mockProducts } from '@/data/products';
-import AdminProductsTemplate from '@/components/templates/admin/admin-product-template';
+import AdminProductsTemplate from '@/components/templates/admin/admin-products-template';
 
 export const Route = createFileRoute('/(admin)/admin/products/')({
   component: AdminProductsPage,

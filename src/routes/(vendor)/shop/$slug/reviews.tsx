@@ -1,5 +1,5 @@
 
-import { AddReviewDialog } from "@/components/containers/vendors/reviews/add-review-dialog";
+import { AddReviewDialog } from "@/components/containers/shared/reviews/add-review-dialog";
 import ShopReviewsTemplate from "@/components/templates/vendor/shop-reviews-template";
 import { mockReviews } from "@/data/review";
 import type { Review, ReviewFormValues } from "@/types/review-types";
