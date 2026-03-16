@@ -1,7 +1,7 @@
-import { AddCouponDialog } from '@/components/containers/vendors/coupons/add-coupon-dialog';
+import { AddCouponDialog } from '@/components/containers/shared/coupons/add-coupon-dialog';
 import ShopCouponsTemplate from '@/components/templates/vendor/shop-coupons-template';
 import { mockCoupons } from '@/data/coupons';
-import type { Coupon, CouponFormValues } from '@/types/coupon';
+import type { Coupon, CouponFormValues } from '@/types/coupon-types';
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 

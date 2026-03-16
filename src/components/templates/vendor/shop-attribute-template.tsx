@@ -1,5 +1,5 @@
-import AttributeHeader from '@/components/containers/vendors/attributes/attribute-header';
-import AttributeTable from '@/components/containers/vendors/attributes/attribute-table';
+import AttributeHeader from '@/components/containers/shared/attributes/attribute-header';
+import AttributeTable from '@/components/containers/shared/attributes/attribute-table';
 import type { Attribute } from '@/types/attributes-types';
 
 interface ShopAttributeTemplateProps {

@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { RefreshCwIcon } from 'lucide-react';
+import { ListFilterIcon, RefreshCwIcon } from 'lucide-react';
 
 type ToolbarProps<TData> = {
   title?: string;
@@ -132,7 +132,8 @@ export function DataTableToolbar<TData>({
               className='h-9'
               aria-label='Toggle columns'
             >
-              Columns
+              <ListFilterIcon />
+              <span className='hidden @2xl:flex'>Columns</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -164,7 +165,7 @@ export function DataTableToolbar<TData>({
           <RefreshCwIcon
             className={cn('mr-1.5 h-3.5 w-3.5', isFetching && 'animate-spin')}
           />
-          Refresh
+          <span className='hidden @2xl:flex'>Refresh</span>
         </Button>
       </div>
     </div>

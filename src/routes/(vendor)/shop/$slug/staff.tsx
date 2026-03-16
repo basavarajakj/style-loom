@@ -1,5 +1,5 @@
 
-import { AddStaffDialog } from "@/components/containers/vendors/staff/add-staff-dialog";
+import { AddStaffDialog } from "@/components/containers/shared/staff/add-staff-dialog";
 import ShopStaffTemplate from "@/components/templates/vendor/shop-staff-template";
 import { mockStaff } from "@/data/staff";
 import type { Staff, StaffFormValues } from "@/types/staff-types";

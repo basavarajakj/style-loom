@@ -1,5 +1,5 @@
 
-import { AddBrandDialog } from "@/components/containers/vendors/brands/add-brand-dialog";
+import { AddBrandDialog } from "@/components/containers/shared/brands/add-brand-dialog";
 import { ShopBrandsTemplate } from "@/components/templates/vendor/shop-brands-template";
 import { mockBrands } from "@/data/brand";
 import type { Brand } from "@/types/brands-types";

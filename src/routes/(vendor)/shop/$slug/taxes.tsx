@@ -1,4 +1,4 @@
-import { AddTaxDialog } from "@/components/containers/vendors/taxes/add-tax-dialog";
+import { AddTaxDialog } from "@/components/containers/shared/taxes/add-tax-dialog";
 import ShopTaxesTemplate from "@/components/templates/vendor/shop-taxes-template";
 import { mockTaxes } from "@/data/taxes";
 import type { Taxes as Tax, TaxFormValues } from "@/types/taxes-types";
