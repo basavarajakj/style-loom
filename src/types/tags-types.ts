@@ -10,3 +10,10 @@ export interface TagFormValues {
   name: string;
   description: string;
 }
+
+export interface TagPermissions {
+  canDelete: boolean;
+  canEdit: boolean;
+  canView: boolean;
+  canCreate: boolean;
+}

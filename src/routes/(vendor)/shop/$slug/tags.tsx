@@ -1,4 +1,4 @@
-import { AddTagDialog } from '@/components/containers/vendors/tags/add-tag-dialog';
+import { AddTagDialog } from '@/components/containers/shared/tags/add-tag-dialog';
 import ShopTagsTemplate from '@/components/templates/vendor/shop-tags-template';
 import { mockTags } from '@/data/tags';
 import type { Tag, TagFormValues } from '@/types/tags-types';
