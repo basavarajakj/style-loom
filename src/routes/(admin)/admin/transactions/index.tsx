@@ -1,14 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import ShopTransactionsTemplate from '@/components/templates/vendor/shop-transactions-template';
+import AdminTransactionsTemplate from '@/components/templates/admin/admin-transactions-template';
 import { mockTransactions } from '@/data/transactions';
 import type { Transaction } from '@/types/transaction-types';
 
-export const Route = createFileRoute('/(vendor)/shop/$slug/transactions')({
-  component: TransactionsPage,
+export const Route = createFileRoute('/(admin)/admin/transactions/')({
+  component: AdminTransactionsPage,
 });
 
-function TransactionsPage() {
+function AdminTransactionsPage() {
   const [transactions] = useState<Transaction[]>(mockTransactions);
 
   const handleViewTransaction = (transactionId: string) => {
@@ -19,11 +19,16 @@ function TransactionsPage() {
     console.log('Refund transaction:', transactionId);
   };
 
+  const handleDeleteTransaction = (transactionId: string) => {
+    console.log('Delete transaction:', transactionId);
+  };
+
   return (
-    <ShopTransactionsTemplate
+    <AdminTransactionsTemplate
       transactions={transactions}
       onViewTransaction={handleViewTransaction}
       onRefundTransaction={handleRefundTransaction}
+      onDeleteTransaction={handleDeleteTransaction}
     />
   );
 }

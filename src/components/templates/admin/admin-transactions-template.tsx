@@ -1,27 +1,31 @@
 import TransactionHeader from '@/components/containers/shared/transactions/transaction-header';
 import TransactionsTable from '@/components/containers/shared/transactions/transaction-table';
-import { VENDOR_TRANSACTION_PERMISSIONS } from '@/lib/config/transaction-permissions';
+import { ADMIN_TRANSACTION_PERMISSIONS } from '@/lib/config/transaction-permissions';
 import type { Transaction } from '@/types/transaction-types';
 
-interface ShopTransactionsTemplateProps {
+interface AdminTransactionsTemplateProps {
   transactions: Transaction[];
   onViewTransaction?: (transactionId: string) => void;
   onRefundTransaction?: (transactionId: string) => void;
+  onDeleteTransaction?: (transactionId: string) => void;
 }
 
-export default function ShopTransactionsTemplate({
+export default function AdminTransactionsTemplate({
   transactions,
   onViewTransaction,
   onRefundTransaction,
-}: ShopTransactionsTemplateProps) {
+  onDeleteTransaction,
+}: AdminTransactionsTemplateProps) {
   return (
-    <div className="space-y-6">
-      <TransactionHeader role="vendor" />
+    <div className="flex flex-col gap-6">
+      <TransactionHeader role="admin" />
+
       <TransactionsTable
         transactions={transactions}
-        permissions={VENDOR_TRANSACTION_PERMISSIONS}
+        permissions={ADMIN_TRANSACTION_PERMISSIONS}
         onViewTransaction={onViewTransaction}
         onRefundTransaction={onRefundTransaction}
+        onDeleteTransaction={onDeleteTransaction}
       />
     </div>
   );

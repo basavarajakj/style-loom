@@ -1,11 +1,5 @@
-import { useForm } from "@tanstack/react-form";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
-import { Button } from "@/components/ui/button";
+import { useForm } from '@tanstack/react-form';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -13,40 +7,44 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/dialog';
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import type { StaffFormValues } from "@/types/staff-types";
+} from '@/components/ui/select';
+import type { UserFormValues } from '@/types/user-types';
 
-// Helper function to safely get string errors from field meta
 function getFieldErrors(errors: any): string[] {
   if (!Array.isArray(errors)) return [];
-  return errors.filter((error): error is string => typeof error === "string");
+  return errors.filter((error): error is string => typeof error === 'string');
 }
 
-interface AddStaffDialogProps {
+interface AddUserDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: StaffFormValues) => void;
+  onSubmit: (data: UserFormValues) => void;
 }
 
-export function AddStaffDialog({
+export function AddUserDialog({
   open,
   onOpenChange,
   onSubmit,
-}: AddStaffDialogProps) {
+}: AddUserDialogProps) {
   const form = useForm({
     defaultValues: {
-      name: "",
-      email: "",
-      role: "staff" as "admin" | "manager" | "staff",
-      status: "invited" as "active" | "invited" | "inactive",
+      name: '',
+      email: '',
+      status: 'active' as 'active' | 'inactive' | 'suspended',
       avatar: null as FileList | null,
     },
     onSubmit: async ({ value }) => {
@@ -60,10 +58,8 @@ export function AddStaffDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-150">
         <DialogHeader>
-          <DialogTitle>Add New Staff Member</DialogTitle>
-          <DialogDescription>
-            Add a new staff member to your shop.
-          </DialogDescription>
+          <DialogTitle>Add New User</DialogTitle>
+          <DialogDescription>Add a new user to the platform.</DialogDescription>
         </DialogHeader>
 
         <form
@@ -76,16 +72,13 @@ export function AddStaffDialog({
         >
           <FieldGroup>
             <div className="grid gap-4">
-              {/* Name Field */}
               <form.Field name="name">
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>
-                        Name*
-                      </FieldLabel>
+                      <FieldLabel htmlFor={field.name}>Name*</FieldLabel>
                       <Input
                         id={field.name}
                         name={field.name}
@@ -105,16 +98,13 @@ export function AddStaffDialog({
                 }}
               </form.Field>
 
-              {/* Email Field */}
               <form.Field name="email">
                 {(field) => {
                   const isInvalid =
                     field.state.meta.isTouched && !field.state.meta.isValid;
                   return (
                     <Field data-invalid={isInvalid}>
-                      <FieldLabel htmlFor={field.name}>
-                        Email*
-                      </FieldLabel>
+                      <FieldLabel htmlFor={field.name}>Email*</FieldLabel>
                       <Input
                         id={field.name}
                         name={field.name}
@@ -135,31 +125,6 @@ export function AddStaffDialog({
                 }}
               </form.Field>
 
-              {/* Role Select */}
-              <form.Field name="role">
-                {(field) => {
-                  return (
-                    <Field>
-                      <FieldLabel htmlFor={field.name}>Role</FieldLabel>
-                      <Select
-                        value={field.state.value}
-                        onValueChange={(value) => field.handleChange(value as "admin" | "manager" | "staff")}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="admin">Admin</SelectItem>
-                          <SelectItem value="manager">Manager</SelectItem>
-                          <SelectItem value="staff">Staff</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </Field>
-                  );
-                }}
-              </form.Field>
-
-              {/* Status Select */}
               <form.Field name="status">
                 {(field) => {
                   return (
@@ -167,15 +132,19 @@ export function AddStaffDialog({
                       <FieldLabel htmlFor={field.name}>Status</FieldLabel>
                       <Select
                         value={field.state.value}
-                        onValueChange={(value) => field.handleChange(value as "active" | "invited" | "inactive")}
+                        onValueChange={(value) =>
+                          field.handleChange(
+                            value as 'active' | 'inactive' | 'suspended'
+                          )
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="invited">Invited</SelectItem>
                           <SelectItem value="inactive">Inactive</SelectItem>
+                          <SelectItem value="suspended">Suspended</SelectItem>
                         </SelectContent>
                       </Select>
                     </Field>
@@ -183,7 +152,6 @@ export function AddStaffDialog({
                 }}
               </form.Field>
 
-              {/* Avatar Field */}
               <form.Field name="avatar">
                 {(field) => {
                   const isInvalid =
@@ -228,7 +196,7 @@ export function AddStaffDialog({
             >
               {([canSubmit, isSubmitting]) => (
                 <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                  {isSubmitting ? "Adding..." : "Add Staff Member"}
+                  {isSubmitting ? 'Adding...' : 'Add User'}
                 </Button>
               )}
             </form.Subscribe>
