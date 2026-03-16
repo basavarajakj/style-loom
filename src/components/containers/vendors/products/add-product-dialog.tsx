@@ -249,7 +249,7 @@ export function AddProductDialog({
               <div className='grid grid-cols-2 gap-4'>
                 <form.Field name='categoryId'>
                   {(field) => (
-                    <Field>
+                    <Field >
                       <FieldLabel>Category</FieldLabel>
                       <Select
                         value={field.state.value}
