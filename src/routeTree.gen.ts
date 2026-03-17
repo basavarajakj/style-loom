@@ -14,6 +14,7 @@ import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
 import { Route as adminAdminRouteImport } from './routes/(admin)/admin'
 import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
 import { Route as adminAdminIndexRouteImport } from './routes/(admin)/admin/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as vendorShopSlugRouteImport } from './routes/(vendor)/shop/$slug'
 import { Route as vendorLayoutMyShopRouteImport } from './routes/(vendor)/_layout/my-shop'
 import { Route as vendorLayoutDashboardRouteImport } from './routes/(vendor)/_layout/dashboard'
@@ -84,6 +85,11 @@ const adminAdminIndexRoute = adminAdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => adminAdminRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const vendorShopSlugRoute = vendorShopSlugRouteImport.update({
   id: '/(vendor)/shop/$slug',
@@ -348,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof vendorLayoutDashboardRoute
   '/my-shop': typeof vendorLayoutMyShopRoute
   '/shop/$slug': typeof vendorShopSlugRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin/': typeof adminAdminIndexRoute
   '/': typeof storeLayoutIndexRoute
   '/admin/tenants/$tenantId': typeof adminAdminTenantsTenantIdRoute
@@ -398,6 +405,7 @@ export interface FileRoutesByTo {
   '/auth/sign-in': typeof storeAuthSignInRoute
   '/dashboard': typeof vendorLayoutDashboardRoute
   '/my-shop': typeof vendorLayoutMyShopRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin': typeof adminAdminIndexRoute
   '/': typeof storeLayoutIndexRoute
   '/admin/tenants/$tenantId': typeof adminAdminTenantsTenantIdRoute
@@ -453,6 +461,7 @@ export interface FileRoutesById {
   '/(vendor)/_layout/dashboard': typeof vendorLayoutDashboardRoute
   '/(vendor)/_layout/my-shop': typeof vendorLayoutMyShopRoute
   '/(vendor)/shop/$slug': typeof vendorShopSlugRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/(admin)/admin/': typeof adminAdminIndexRoute
   '/(store)/_layout/': typeof storeLayoutIndexRoute
   '/(admin)/admin/tenants/$tenantId': typeof adminAdminTenantsTenantIdRoute
@@ -507,6 +516,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/my-shop'
     | '/shop/$slug'
+    | '/api/auth/$'
     | '/admin/'
     | '/'
     | '/admin/tenants/$tenantId'
@@ -557,6 +567,7 @@ export interface FileRouteTypes {
     | '/auth/sign-in'
     | '/dashboard'
     | '/my-shop'
+    | '/api/auth/$'
     | '/admin'
     | '/'
     | '/admin/tenants/$tenantId'
@@ -611,6 +622,7 @@ export interface FileRouteTypes {
     | '/(vendor)/_layout/dashboard'
     | '/(vendor)/_layout/my-shop'
     | '/(vendor)/shop/$slug'
+    | '/api/auth/$'
     | '/(admin)/admin/'
     | '/(store)/_layout/'
     | '/(admin)/admin/tenants/$tenantId'
@@ -656,6 +668,7 @@ export interface RootRouteChildren {
   vendorLayoutRoute: typeof vendorLayoutRouteWithChildren
   storeAuthSignInRoute: typeof storeAuthSignInRoute
   vendorShopSlugRoute: typeof vendorShopSlugRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   storeAuthLayoutLayoutRoute: typeof storeAuthLayoutLayoutRoute
 }
 
@@ -695,6 +708,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof adminAdminIndexRouteImport
       parentRoute: typeof adminAdminRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(vendor)/shop/$slug': {
       id: '/(vendor)/shop/$slug'
@@ -1166,6 +1186,7 @@ const rootRouteChildren: RootRouteChildren = {
   vendorLayoutRoute: vendorLayoutRouteWithChildren,
   storeAuthSignInRoute: storeAuthSignInRoute,
   vendorShopSlugRoute: vendorShopSlugRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   storeAuthLayoutLayoutRoute: storeAuthLayoutLayoutRoute,
 }
 export const routeTree = rootRouteImport
