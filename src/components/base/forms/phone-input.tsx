@@ -19,9 +19,10 @@ interface PhoneInputProps {
 }
 
 const COUNTRY_CODES = [
-  { value: 'IND', label: 'IND' },
+  { value: 'BD', label: 'BD' },
   { value: 'USA', label: 'USA' },
   { value: 'UK', label: 'UK' },
+  { value: 'IND', label: 'IND' },
 ] as const;
 
 export function PhoneInput({
@@ -35,43 +36,30 @@ export function PhoneInput({
   const isInvalid = Boolean(error);
 
   return (
-    <Field
-      data-invalid={isInvalid}
-      className='flex-1'
-    >
-      <FieldLabel>
-        Phone number
-        {required && <span className='ml-1 text-destructive'>*</span>}
-      </FieldLabel>
-      <div className='flex gap-2'>
+    <Field data-invalid={isInvalid} className="flex-1">
+      <FieldLabel required={required}>Phone number</FieldLabel>
+      <div className="flex gap-2">
         <Select
-          value={(countryCodeValue as string)}
+          value={(countryCodeValue as string) ?? ''}
           onValueChange={onCountryCodeChange}
-          defaultValue='IND'
         >
-          <SelectTrigger
-            className='w-24 shadow-none'
-            aria-invalid={isInvalid}
-          >
+          <SelectTrigger className="w-24 shadow-none" aria-invalid={isInvalid}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             {COUNTRY_CODES.map((country) => (
-              <SelectItem
-                key={country.value}
-                value={country.value}
-              >
+              <SelectItem key={country.value} value={country.value}>
                 {country.label}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Input
-          type='tel'
+          type="tel"
           value={(phoneValue as string) ?? ''}
           onChange={(e) => onPhoneChange(e.target.value)}
-          placeholder='+91 1234567890'
-          autoComplete='tel'
+          placeholder="+91 1234567890"
+          autoComplete="tel"
           className={cn('flex-1 shadow-none')}
           aria-invalid={isInvalid}
         />
