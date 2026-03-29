@@ -9,15 +9,19 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthVendorSignUpRouteImport } from './routes/auth/vendor-sign-up'
+import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
+import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as vendorLayoutRouteImport } from './routes/(vendor)/_layout'
 import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
 import { Route as adminAdminRouteImport } from './routes/(admin)/admin'
 import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
 import { Route as adminAdminIndexRouteImport } from './routes/(admin)/admin/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as vendorShopSlugRouteImport } from './routes/(vendor)/shop/$slug'
 import { Route as vendorLayoutMyShopRouteImport } from './routes/(vendor)/_layout/my-shop'
 import { Route as vendorLayoutDashboardRouteImport } from './routes/(vendor)/_layout/dashboard'
-import { Route as storeAuthSignInRouteImport } from './routes/(store)/auth/sign-in'
+import { Route as storeAuthStoreSignInRouteImport } from './routes/(store)/auth/store-sign-in'
 import { Route as storeLayoutWishlistRouteImport } from './routes/(store)/_layout/wishlist'
 import { Route as storeLayoutProfileRouteImport } from './routes/(store)/_layout/profile'
 import { Route as storeLayoutOrdersRouteImport } from './routes/(store)/_layout/orders'
@@ -62,6 +66,21 @@ import { Route as adminAdminTenantsTenantIdRouteImport } from './routes/(admin)/
 import { Route as vendorShopSlugOrdersIndexRouteImport } from './routes/(vendor)/shop/$slug/orders/index'
 import { Route as vendorShopSlugOrdersOrderIdRouteImport } from './routes/(vendor)/shop/$slug/orders/$orderId'
 
+const AuthVendorSignUpRoute = AuthVendorSignUpRouteImport.update({
+  id: '/auth/vendor-sign-up',
+  path: '/auth/vendor-sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthSignUpRoute = AuthSignUpRouteImport.update({
+  id: '/auth/sign-up',
+  path: '/auth/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthSignInRoute = AuthSignInRouteImport.update({
+  id: '/auth/sign-in',
+  path: '/auth/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const vendorLayoutRoute = vendorLayoutRouteImport.update({
   id: '/(vendor)/_layout',
   getParentRoute: () => rootRouteImport,
@@ -85,6 +104,11 @@ const adminAdminIndexRoute = adminAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => adminAdminRoute,
 } as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const vendorShopSlugRoute = vendorShopSlugRouteImport.update({
   id: '/(vendor)/shop/$slug',
   path: '/shop/$slug',
@@ -100,9 +124,9 @@ const vendorLayoutDashboardRoute = vendorLayoutDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => vendorLayoutRoute,
 } as any)
-const storeAuthSignInRoute = storeAuthSignInRouteImport.update({
-  id: '/(store)/auth/sign-in',
-  path: '/auth/sign-in',
+const storeAuthStoreSignInRoute = storeAuthStoreSignInRouteImport.update({
+  id: '/(store)/auth/store-sign-in',
+  path: '/auth/store-sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
 const storeLayoutWishlistRoute = storeLayoutWishlistRouteImport.update({
@@ -336,6 +360,9 @@ const vendorShopSlugOrdersOrderIdRoute =
 
 export interface FileRoutesByFullPath {
   '/admin': typeof adminAdminRouteWithChildren
+  '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/auth/vendor-sign-up': typeof AuthVendorSignUpRoute
   '/admin/my-store': typeof adminAdminMyStoreRoute
   '/cart': typeof storeLayoutCartRoute
   '/checkout': typeof storeLayoutCheckoutRoute
@@ -344,10 +371,11 @@ export interface FileRoutesByFullPath {
   '/orders': typeof storeLayoutOrdersRoute
   '/profile': typeof storeLayoutProfileRoute
   '/wishlist': typeof storeLayoutWishlistRoute
-  '/auth/sign-in': typeof storeAuthSignInRoute
+  '/auth/store-sign-in': typeof storeAuthStoreSignInRoute
   '/dashboard': typeof vendorLayoutDashboardRoute
   '/my-shop': typeof vendorLayoutMyShopRoute
   '/shop/$slug': typeof vendorShopSlugRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin/': typeof adminAdminIndexRoute
   '/': typeof storeLayoutIndexRoute
   '/admin/tenants/$tenantId': typeof adminAdminTenantsTenantIdRoute
@@ -387,6 +415,9 @@ export interface FileRoutesByFullPath {
   '/shop/$slug/orders/': typeof vendorShopSlugOrdersIndexRoute
 }
 export interface FileRoutesByTo {
+  '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/auth/vendor-sign-up': typeof AuthVendorSignUpRoute
   '/admin/my-store': typeof adminAdminMyStoreRoute
   '/cart': typeof storeLayoutCartRoute
   '/checkout': typeof storeLayoutCheckoutRoute
@@ -395,9 +426,10 @@ export interface FileRoutesByTo {
   '/orders': typeof storeLayoutOrdersRoute
   '/profile': typeof storeLayoutProfileRoute
   '/wishlist': typeof storeLayoutWishlistRoute
-  '/auth/sign-in': typeof storeAuthSignInRoute
+  '/auth/store-sign-in': typeof storeAuthStoreSignInRoute
   '/dashboard': typeof vendorLayoutDashboardRoute
   '/my-shop': typeof vendorLayoutMyShopRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/admin': typeof adminAdminIndexRoute
   '/': typeof storeLayoutIndexRoute
   '/admin/tenants/$tenantId': typeof adminAdminTenantsTenantIdRoute
@@ -441,6 +473,9 @@ export interface FileRoutesById {
   '/(admin)/admin': typeof adminAdminRouteWithChildren
   '/(store)/_layout': typeof storeLayoutRouteWithChildren
   '/(vendor)/_layout': typeof vendorLayoutRouteWithChildren
+  '/auth/sign-in': typeof AuthSignInRoute
+  '/auth/sign-up': typeof AuthSignUpRoute
+  '/auth/vendor-sign-up': typeof AuthVendorSignUpRoute
   '/(admin)/admin/my-store': typeof adminAdminMyStoreRoute
   '/(store)/_layout/cart': typeof storeLayoutCartRoute
   '/(store)/_layout/checkout': typeof storeLayoutCheckoutRoute
@@ -449,10 +484,11 @@ export interface FileRoutesById {
   '/(store)/_layout/orders': typeof storeLayoutOrdersRoute
   '/(store)/_layout/profile': typeof storeLayoutProfileRoute
   '/(store)/_layout/wishlist': typeof storeLayoutWishlistRoute
-  '/(store)/auth/sign-in': typeof storeAuthSignInRoute
+  '/(store)/auth/store-sign-in': typeof storeAuthStoreSignInRoute
   '/(vendor)/_layout/dashboard': typeof vendorLayoutDashboardRoute
   '/(vendor)/_layout/my-shop': typeof vendorLayoutMyShopRoute
   '/(vendor)/shop/$slug': typeof vendorShopSlugRouteWithChildren
+  '/api/auth/$': typeof ApiAuthSplatRoute
   '/(admin)/admin/': typeof adminAdminIndexRoute
   '/(store)/_layout/': typeof storeLayoutIndexRoute
   '/(admin)/admin/tenants/$tenantId': typeof adminAdminTenantsTenantIdRoute
@@ -495,6 +531,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/admin'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/auth/vendor-sign-up'
     | '/admin/my-store'
     | '/cart'
     | '/checkout'
@@ -503,10 +542,11 @@ export interface FileRouteTypes {
     | '/orders'
     | '/profile'
     | '/wishlist'
-    | '/auth/sign-in'
+    | '/auth/store-sign-in'
     | '/dashboard'
     | '/my-shop'
     | '/shop/$slug'
+    | '/api/auth/$'
     | '/admin/'
     | '/'
     | '/admin/tenants/$tenantId'
@@ -546,6 +586,9 @@ export interface FileRouteTypes {
     | '/shop/$slug/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/auth/vendor-sign-up'
     | '/admin/my-store'
     | '/cart'
     | '/checkout'
@@ -554,9 +597,10 @@ export interface FileRouteTypes {
     | '/orders'
     | '/profile'
     | '/wishlist'
-    | '/auth/sign-in'
+    | '/auth/store-sign-in'
     | '/dashboard'
     | '/my-shop'
+    | '/api/auth/$'
     | '/admin'
     | '/'
     | '/admin/tenants/$tenantId'
@@ -599,6 +643,9 @@ export interface FileRouteTypes {
     | '/(admin)/admin'
     | '/(store)/_layout'
     | '/(vendor)/_layout'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/auth/vendor-sign-up'
     | '/(admin)/admin/my-store'
     | '/(store)/_layout/cart'
     | '/(store)/_layout/checkout'
@@ -607,10 +654,11 @@ export interface FileRouteTypes {
     | '/(store)/_layout/orders'
     | '/(store)/_layout/profile'
     | '/(store)/_layout/wishlist'
-    | '/(store)/auth/sign-in'
+    | '/(store)/auth/store-sign-in'
     | '/(vendor)/_layout/dashboard'
     | '/(vendor)/_layout/my-shop'
     | '/(vendor)/shop/$slug'
+    | '/api/auth/$'
     | '/(admin)/admin/'
     | '/(store)/_layout/'
     | '/(admin)/admin/tenants/$tenantId'
@@ -654,13 +702,38 @@ export interface RootRouteChildren {
   adminAdminRoute: typeof adminAdminRouteWithChildren
   storeLayoutRoute: typeof storeLayoutRouteWithChildren
   vendorLayoutRoute: typeof vendorLayoutRouteWithChildren
-  storeAuthSignInRoute: typeof storeAuthSignInRoute
+  AuthSignInRoute: typeof AuthSignInRoute
+  AuthSignUpRoute: typeof AuthSignUpRoute
+  AuthVendorSignUpRoute: typeof AuthVendorSignUpRoute
+  storeAuthStoreSignInRoute: typeof storeAuthStoreSignInRoute
   vendorShopSlugRoute: typeof vendorShopSlugRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   storeAuthLayoutLayoutRoute: typeof storeAuthLayoutLayoutRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth/vendor-sign-up': {
+      id: '/auth/vendor-sign-up'
+      path: '/auth/vendor-sign-up'
+      fullPath: '/auth/vendor-sign-up'
+      preLoaderRoute: typeof AuthVendorSignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/sign-up': {
+      id: '/auth/sign-up'
+      path: '/auth/sign-up'
+      fullPath: '/auth/sign-up'
+      preLoaderRoute: typeof AuthSignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth/sign-in': {
+      id: '/auth/sign-in'
+      path: '/auth/sign-in'
+      fullPath: '/auth/sign-in'
+      preLoaderRoute: typeof AuthSignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(vendor)/_layout': {
       id: '/(vendor)/_layout'
       path: ''
@@ -696,6 +769,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof adminAdminIndexRouteImport
       parentRoute: typeof adminAdminRoute
     }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(vendor)/shop/$slug': {
       id: '/(vendor)/shop/$slug'
       path: '/shop/$slug'
@@ -717,11 +797,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof vendorLayoutDashboardRouteImport
       parentRoute: typeof vendorLayoutRoute
     }
-    '/(store)/auth/sign-in': {
-      id: '/(store)/auth/sign-in'
-      path: '/auth/sign-in'
-      fullPath: '/auth/sign-in'
-      preLoaderRoute: typeof storeAuthSignInRouteImport
+    '/(store)/auth/store-sign-in': {
+      id: '/(store)/auth/store-sign-in'
+      path: '/auth/store-sign-in'
+      fullPath: '/auth/store-sign-in'
+      preLoaderRoute: typeof storeAuthStoreSignInRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(store)/_layout/wishlist': {
@@ -1164,8 +1244,12 @@ const rootRouteChildren: RootRouteChildren = {
   adminAdminRoute: adminAdminRouteWithChildren,
   storeLayoutRoute: storeLayoutRouteWithChildren,
   vendorLayoutRoute: vendorLayoutRouteWithChildren,
-  storeAuthSignInRoute: storeAuthSignInRoute,
+  AuthSignInRoute: AuthSignInRoute,
+  AuthSignUpRoute: AuthSignUpRoute,
+  AuthVendorSignUpRoute: AuthVendorSignUpRoute,
+  storeAuthStoreSignInRoute: storeAuthStoreSignInRoute,
   vendorShopSlugRoute: vendorShopSlugRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
   storeAuthLayoutLayoutRoute: storeAuthLayoutLayoutRoute,
 }
 export const routeTree = rootRouteImport
