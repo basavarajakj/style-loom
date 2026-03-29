@@ -14,6 +14,7 @@ import { Route as AuthSignUpRouteImport } from './routes/auth/sign-up'
 import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as vendorLayoutRouteImport } from './routes/(vendor)/_layout'
 import { Route as storeLayoutRouteImport } from './routes/(store)/_layout'
+import { Route as adminForbidenRouteImport } from './routes/(admin)/forbiden'
 import { Route as adminAdminRouteImport } from './routes/(admin)/admin'
 import { Route as storeLayoutIndexRouteImport } from './routes/(store)/_layout/index'
 import { Route as adminAdminIndexRouteImport } from './routes/(admin)/admin/index'
@@ -87,6 +88,11 @@ const vendorLayoutRoute = vendorLayoutRouteImport.update({
 } as any)
 const storeLayoutRoute = storeLayoutRouteImport.update({
   id: '/(store)/_layout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const adminForbidenRoute = adminForbidenRouteImport.update({
+  id: '/(admin)/forbiden',
+  path: '/forbiden',
   getParentRoute: () => rootRouteImport,
 } as any)
 const adminAdminRoute = adminAdminRouteImport.update({
@@ -360,6 +366,7 @@ const vendorShopSlugOrdersOrderIdRoute =
 
 export interface FileRoutesByFullPath {
   '/admin': typeof adminAdminRouteWithChildren
+  '/forbiden': typeof adminForbidenRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/auth/vendor-sign-up': typeof AuthVendorSignUpRoute
@@ -415,6 +422,7 @@ export interface FileRoutesByFullPath {
   '/shop/$slug/orders/': typeof vendorShopSlugOrdersIndexRoute
 }
 export interface FileRoutesByTo {
+  '/forbiden': typeof adminForbidenRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/auth/vendor-sign-up': typeof AuthVendorSignUpRoute
@@ -471,6 +479,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(admin)/admin': typeof adminAdminRouteWithChildren
+  '/(admin)/forbiden': typeof adminForbidenRoute
   '/(store)/_layout': typeof storeLayoutRouteWithChildren
   '/(vendor)/_layout': typeof vendorLayoutRouteWithChildren
   '/auth/sign-in': typeof AuthSignInRoute
@@ -531,6 +540,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/admin'
+    | '/forbiden'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/auth/vendor-sign-up'
@@ -586,6 +596,7 @@ export interface FileRouteTypes {
     | '/shop/$slug/orders/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/forbiden'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/auth/vendor-sign-up'
@@ -641,6 +652,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/(admin)/admin'
+    | '/(admin)/forbiden'
     | '/(store)/_layout'
     | '/(vendor)/_layout'
     | '/auth/sign-in'
@@ -700,6 +712,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   adminAdminRoute: typeof adminAdminRouteWithChildren
+  adminForbidenRoute: typeof adminForbidenRoute
   storeLayoutRoute: typeof storeLayoutRouteWithChildren
   vendorLayoutRoute: typeof vendorLayoutRouteWithChildren
   AuthSignInRoute: typeof AuthSignInRoute
@@ -746,6 +759,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof storeLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(admin)/forbiden': {
+      id: '/(admin)/forbiden'
+      path: '/forbiden'
+      fullPath: '/forbiden'
+      preLoaderRoute: typeof adminForbidenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(admin)/admin': {
@@ -1242,6 +1262,7 @@ const vendorShopSlugRouteWithChildren = vendorShopSlugRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   adminAdminRoute: adminAdminRouteWithChildren,
+  adminForbidenRoute: adminForbidenRoute,
   storeLayoutRoute: storeLayoutRouteWithChildren,
   vendorLayoutRoute: vendorLayoutRouteWithChildren,
   AuthSignInRoute: AuthSignInRoute,

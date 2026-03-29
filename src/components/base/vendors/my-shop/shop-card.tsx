@@ -37,7 +37,7 @@ export default function ShopCard({
       console.error('Failed to update shop:', error);
     }
   };
-  console.log(shop)
+  console.log(shop);
   return (
     <>
       <Card className={cn('pt-0', className)}>
@@ -78,7 +78,15 @@ export default function ShopCard({
                 {shop.description}
               </p>
             </div>
-            <Badge variant={shop.status === 'active' ? 'default' : 'secondary'}>
+            <Badge
+              variant={
+                shop.status === 'active'
+                  ? 'default'
+                  : shop.status === 'suspended'
+                    ? 'destructive'
+                    : 'secondary'
+              }
+            >
               {shop.status}
             </Badge>
           </div>

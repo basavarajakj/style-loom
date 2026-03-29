@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import DataTableContainer from "./data-table-container";
 import type { DataTableProps } from "./types";
-import { useServerPagination } from "@/hooks/user-server-pagination";
+import { useServerPagination } from "@/hooks/common/user-server-pagination";
 
 export default function DataTable<TData, TValue>({
   columns,

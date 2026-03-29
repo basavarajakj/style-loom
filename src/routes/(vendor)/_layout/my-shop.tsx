@@ -1,11 +1,14 @@
 import { MyShopsPageSkeleton } from '@/components/base/vendors/skeleton/shop-card-skeleton';
 import { AddShopDialog } from '@/components/containers/shared/shops/add-shop-dialog';
 import MyShopsTemplate from '@/components/templates/vendor/my-shops-template';
-import { useShops, vendorShopsQueryOptions } from '@/hooks/vendors/use-shops';
+import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import {
+  useShops,
+  useTransformedShops,
+  vendorShopsQueryOptions,
+} from '@/hooks/vendors/use-shops';
 import type { ShopFormValues } from '@/types/shop-types';
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
 
 export const Route = createFileRoute('/(vendor)/_layout/my-shop')({
   component: MyShopPage,
@@ -17,46 +20,19 @@ export const Route = createFileRoute('/(vendor)/_layout/my-shop')({
 });
 
 function MyShopPage() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { createShop, isCreating, shopQueryOptions } = useShops();
+  const { createShop, isCreating } = useShops();
+  const { shops, vendorId: currentVendorId } = useTransformedShops();
 
-  // Fetch shops data
-  const { data } = useSuspenseQuery(vendorShopsQueryOptions());
-  const shops = data.shops ?? [];
-  const currentVendorId = data?.vendorId;
-
-  const transformedShops = shops.map((shop) => ({
-    id: shop.id,
-    vendorId: shop.vendorId,
-    slug: shop.slug,
-    name: shop.name,
-    description: shop.description || null,
-    logo: shop.logo || null,
-    banner: shop.banner || null,
-    category: shop.category || null,
-    address: shop.address || null,
-    phone: shop.phone || null,
-    email: shop.email || null,
-    enableNotifications: shop.enableNotifications || false,
-    monthlyRevenue: new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'INR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(shop.totalRevenue || 0),
-    status: (shop.status === 'active' ? 'active' : 'pending') as
-      | 'active'
-      | 'pending',
-    rating: (shop.rating || '0.0') as string,
-    totalProducts: shop.totalProducts || 0,
-    totalOrders: shop.totalOrders || 0,
-    createdAt: shop.createdAt || new Date(),
-    updatedAt: shop.updatedAt || new Date(),
-  }));
-
-  const handleCreateShop = () => {
-    setIsDialogOpen(true);
-  };
+  const {
+    isDialogOpen,
+    setIsDialogOpen,
+    handleAdd: handleAddShop,
+    handleDialogClose,
+  } = useEntityCRUD<any>({
+    onDelete: async (_id) => {
+      // Delete logic if needed
+    },
+  });
 
   const handleShopSubmit = async (data: ShopFormValues) => {
     try {
@@ -79,13 +55,16 @@ function MyShopPage() {
   return (
     <>
       <MyShopsTemplate
-        shops={transformedShops}
-        onCreateShop={handleCreateShop}
+        shops={shops}
+        onCreateShop={handleAddShop}
         currentVendorId={currentVendorId}
       />
       <AddShopDialog
         open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
+        onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) handleDialogClose();
+        }}
         onSubmit={handleShopSubmit}
         isSubmitting={isCreating}
       />

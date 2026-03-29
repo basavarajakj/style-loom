@@ -1,37 +1,39 @@
 import {
+  queryOptions,
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { useMemo } from "react";
+import { toast } from "sonner";
+import {
   createShop,
   deleteShop,
   getShopBySlug,
   getVendorShops,
   updateShop,
-} from '@/lib/functions/shops';
-import type { CreateShopInput, UpdateShopInput } from '@/lib/validators/shop';
-import {
-  queryOptions,
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
-import { useMemo } from 'react';
-import { toast } from 'sonner';
+} from "@/lib/functions/shops";
+import type { CreateShopInput, UpdateShopInput } from "@/lib/validators/shop";
 
 export const vendorShopsQueryOptions = () =>
   queryOptions({
-    queryKey: ['vendor', 'shops'],
+    queryKey: ["vendor", "shops"],
     queryFn: () => getVendorShops(),
   });
+
 export const shopBySlugQueryOptions = (slug: string) =>
   queryOptions({
-    queryKey: ['vendor', 'shops', slug],
+    queryKey: ["vendor", "shops", slug],
     queryFn: () => getShopBySlug({ data: { slug } }),
     enabled: !!slug,
   });
+
 export const useShopMutations = () => {
   const queryClient = useQueryClient();
 
   const invalidateShops = () => {
     queryClient.invalidateQueries({
-      queryKey: ['vendor', 'shops'],
+      queryKey: ["vendor", "shops"],
     });
   };
 
@@ -41,11 +43,11 @@ export const useShopMutations = () => {
       return result;
     },
     onSuccess: (result) => {
-      toast.success(`Shop "${result.shop?.name}" created successfully`);
+      toast.success(`Shop "${result.shop?.name}" created successfully!`);
       invalidateShops();
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to create shop');
+      toast.error(error.message || "Failed to create shop");
     },
   });
 
@@ -61,12 +63,12 @@ export const useShopMutations = () => {
       // Also invalidate specific shop query if slug exists
       if (result.shop?.slug) {
         queryClient.invalidateQueries({
-          queryKey: ['vendor', 'shops', result.shop.slug],
+          queryKey: ["vendor", "shops", result.shop.slug],
         });
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to update shop');
+      toast.error(error.message || "Failed to update shop");
     },
   });
 
@@ -77,11 +79,11 @@ export const useShopMutations = () => {
       return result;
     },
     onSuccess: () => {
-      toast.success('Shop deleted successfully');
+      toast.success("Shop deleted successfully");
       invalidateShops();
     },
     onError: (error: Error) => {
-      toast.error(error.message || 'Failed to delete shop');
+      toast.error(error.message || "Failed to delete shop");
     },
   });
 
@@ -98,26 +100,61 @@ export const useShopMutations = () => {
 export const useShops = () => {
   const mutations = useShopMutations();
   return {
-    shopQueryOptions: vendorShopsQueryOptions,
+    shopsQueryOptions: vendorShopsQueryOptions,
     shopBySlugQueryOptions,
     ...mutations,
   };
 };
 
-// export const useTransformedShops = (options?: { filterByVendor?: boolean }) => {
-//   const { shopQueryOptions } = useShops();
-//   const { data, ...rest } = useSuspenseQuery(shopQueryOptions());
+export const useTransformedShops = (options?: { filterByVendor?: boolean }) => {
+  const { shopsQueryOptions } = useShops();
+  const { data, ...rest } = useSuspenseQuery(shopsQueryOptions());
 
-//   const shops = data?.shops ?? [];
-//   const vendorId = data?.vendorId;
+  const shops = data?.shops ?? [];
+  const vendorId = data?.vendorId;
 
-//   const transformedShops = useMemo(() => {
-//     let filteredShop = shops;
+  const transformedShops = useMemo(() => {
+    let filteredShops = shops;
 
-//     if (options?.filterByVendor && vendorId) {
-//       filteredShop = shops.filter((shop) => shop.vendorId === vendorId);
-//     } else if (options?.filterByVendor && !vendorId) {
-//       filteredShops = [];
-//     }
-//   }, []);
-// };
+    if (options?.filterByVendor && vendorId) {
+      filteredShops = shops.filter((shop) => shop.vendorId === vendorId);
+    } else if (options?.filterByVendor && !vendorId) {
+      filteredShops = [];
+    }
+
+    return filteredShops.map((shop) => ({
+      id: shop.id,
+      vendorId: shop.vendorId,
+      slug: shop.slug,
+      name: shop.name,
+      description: shop.description || null,
+      logo: shop.logo || null,
+      banner: shop.banner || null,
+      category: shop.category || null,
+      address: shop.address || null,
+      phone: shop.phone || null,
+      email: shop.email || null,
+      enableNotifications: shop.enableNotifications || false,
+      monthlyRevenue: new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(shop.totalRevenue || 0),
+      status: (shop.status === "active" ? "active" : "pending") as
+        | "active"
+        | "pending",
+      rating: (shop.rating || "0.0") as string,
+      totalProducts: shop.totalProducts || 0,
+      totalOrders: shop.totalOrders || 0,
+      createdAt: shop.createdAt || new Date(),
+      updatedAt: shop.updatedAt || new Date(),
+    }));
+  }, [shops, vendorId, options?.filterByVendor]);
+
+  return {
+    shops: transformedShops,
+    vendorId,
+    ...rest,
+  };
+};

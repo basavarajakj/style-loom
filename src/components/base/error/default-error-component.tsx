@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card';
+} from '../../ui/card';
 import {
   AlertCircle,
   ChevronDown,
@@ -25,9 +25,9 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from '../ui/collapsible';
-import { Button } from '../ui/button';
-import { ScrollArea } from '../ui/scroll-area';
+} from '../../ui/collapsible';
+import { Button } from '../../ui/button';
+import { ScrollArea } from '../../ui/scroll-area';
 
 export function DefaultErrorComponent({ error }: ErrorComponentProps) {
   const router = useRouter();
