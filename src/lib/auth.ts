@@ -1,11 +1,22 @@
 import { betterAuth } from 'better-auth';
+import { admin, twoFactor } from 'better-auth/plugins';
 import { tanstackStartCookies } from 'better-auth/tanstack-start';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { db } from '@/lib/db';
-import { account, session, user, verification } from '../db/schema/auth-schema';
+import {
+  account,
+  session,
+  user,
+  verification,
+  twoFactor as twoFactorTable,
+} from './db/schema/auth-schema';
+import { sendEmail } from './email';
+import OtpEmail from './email/otp-email';
 
 export const auth = betterAuth({
   basePath: '/api/auth', // Base path where auth routes are mounted
+
+  appName: 'Shop Loom',
 
   secret: process.env.BETTER_AUTH_SECRET ?? 'dev-secret',
   trustedOrigins: [
@@ -17,7 +28,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     disableSignUp: false,
-    requireEmailVerification: true,
+    requireEmailVerification: false,
     minPasswordLength: 8,
     maxPasswordLength: 128,
     autoSignIn: true,
@@ -69,7 +80,32 @@ export const auth = betterAuth({
         }
       : {}),
   },
-  plugins: [tanstackStartCookies()],
+  plugins: [
+    admin({ defaultRole: 'customer' }),
+    twoFactor({
+      skipVerificationOnEnable: true,
+      otpOptions: {
+        async sendOTP({ user, otp }) {
+          try {
+            const result = await sendEmail({
+              to: user.email!,
+              subject: 'Your OTP Code',
+              body: OtpEmail({
+                otp,
+                userName: user.name || user.email || 'User',
+                expiresInMinutes: 5,
+              }),
+            });
+            console.log('Email send successfully, MessageId', result.messageId);
+          } catch (error) {
+            console.error('Failed to send OTP email:', error);
+            throw new Error('Failed to send verification code');
+          }
+        },
+      },
+    }),
+    tanstackStartCookies(),
+  ],
 
   // Drizzle adapter with explicit schema mapping
   database: drizzleAdapter(db, {
@@ -79,6 +115,7 @@ export const auth = betterAuth({
       account,
       session,
       verification,
+      twoFactor: twoFactorTable,
     },
   }),
 });
