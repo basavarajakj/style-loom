@@ -1,11 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import AdminCategoriesTemplate from "@/components/templates/admin/admin-categories-template";
+import { mockCategories } from "@/data/categories";
+import type { Category, CategoryFormValues } from "@/types/category-types";
 
-import { mockCategories } from '@/data/categories';
-import type { Category, CategoryFormValues } from '@/types/category-types';
-import AdminCategoriesTemplate from '@/components/templates/admin/admin-categories-template';
-
-export const Route = createFileRoute('/(admin)/admin/categories/')({
+export const Route = createFileRoute("/(admin)/admin/categories/")({
   component: AdminCategoriesPage,
 });
 

@@ -1,53 +1,145 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { AddCategoryDialog } from '@/components/containers/shared/categories/add-category-dialog';
 import ShopCategoriesTemplate from '@/components/templates/vendor/shop-categories-template';
-import { mockCategories } from '@/data/categories';
-import type { Category, CategoryFormValues } from '@/types/category-types';
+import type {
+  CategoryFormValues,
+  NormalizedCategory,
+} from '@/types/category-types';
+import { PageSkeleton } from '@/components/base/common/page-skeleton';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { shopBySlugQueryOptions } from '@/hooks/vendors/use-shops';
+import { createVendorCategoriesFetcher } from '@/hooks/vendors/use-vendor-entity-fetcher';
+import { useCategories } from '@/hooks/vendors/use-categories';
+import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import { ConfirmDeleteDialog } from '@/components/base/common/confirm-delete-dialog';
 
 export const Route = createFileRoute('/(vendor)/shop/$slug/categories')({
   component: CategoriesPage,
+  pendingComponent: PageSkeleton,
 });
 
 function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>(mockCategories);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { slug } = Route.useParams();
+  const { data: shopData } = useSuspenseQuery(shopBySlugQueryOptions(slug));
+  const shopId = shopData?.shop.id ?? '';
 
-  const handleAddCategory = () => {
-    setIsDialogOpen(true);
-  };
+  const fetcher = useMemo(
+    () => createVendorCategoriesFetcher(shopId),
+    [shopId]
+  );
 
-  const handleCategorySubmit = (data: CategoryFormValues) => {
-    const newCategory: Category = {
-      id: String(categories.length + 1),
-      name: data.name,
-      slug: data.slug,
-      description: data.description,
-      icon: data.icon,
-      parentId: data.parentId === 'none' ? undefined : data.parentId,
-      level: data.parentId && data.parentId !== 'none' ? 1 : 0,
-      productCount: 0,
-      isActive: true,
-      sortOrder: categories.length + 1,
-      image: data.image ? URL.createObjectURL(data.image[0]) : undefined,
-    };
+  const {
+    categoriesQueryOptions: categoriesOptions,
+    createCategory,
+    updateCategory,
+    deleteCategory,
+    mutationState,
+    isCategoryMutating,
+  } = useCategories(shopId);
 
-    setCategories([...categories, newCategory]);
-    console.log('Created category:', newCategory);
+  const { data: categoriesData } = useSuspenseQuery(
+    categoriesOptions({
+      limit: 100,
+      offset: 0,
+      sortBy: 'sortOrder',
+      sortDirection: 'asc',
+    })
+  );
+
+  const {
+    isDialogOpen,
+    setIsDialogOpen,
+    editingItem: editingCategory,
+    deletingItem: deletingCategory,
+    setDeletingItem: setDeletingCategory,
+    handleAdd: handleAddCategory,
+    handleEdit: handleEditCategory,
+    handleDelete: handleDeleteCategory,
+    confirmDelete,
+    handleDialogClose,
+  } = useEntityCRUD<NormalizedCategory>({
+    onDelete: async (id) => {
+      await deleteCategory(id);
+    },
+  });
+
+  const categoryOptions = (categoriesData?.data ?? []).map((c) => ({
+    id: c.id,
+    name: c.name,
+  }));
+
+  const handleCategorySubmit = async (data: CategoryFormValues) => {
+    try {
+      if (editingCategory) {
+        await updateCategory({
+          id: editingCategory.id,
+          name: data.name,
+          slug: data.slug,
+          description: data.description || undefined,
+          icon: data.icon || undefined,
+          parentId: data.parentId === 'none' ? undefined : data.parentId,
+          image: data.image || undefined,
+        });
+      } else {
+        await createCategory({
+          name: data.name,
+          slug: data.slug,
+          description: data.description || undefined,
+          icon: data.icon || undefined,
+          parentId: data.parentId === 'none' ? undefined : data.parentId,
+          sortOrder: 0,
+          isActive: true,
+          featured: false,
+          image: data.image || undefined,
+        });
+      }
+    } catch (error) {
+      console.error('Failed to save category:', error);
+    }
   };
 
   return (
     <>
       <ShopCategoriesTemplate
-        categories={categories}
+        fetcher={fetcher}
         onAddCategory={handleAddCategory}
+        onEditCategory={handleEditCategory}
+        onDeleteCategory={handleDeleteCategory}
+        mutationState={mutationState}
+        isCategoryMutating={isCategoryMutating}
       />
 
       <AddCategoryDialog
         open={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
+        onOpenChange={(open) => {
+          setIsDialogOpen(open);
+          if (!open) handleDialogClose();
+        }}
         onSubmit={handleCategorySubmit}
-        role="vendor"
+        categories={categoryOptions}
+        isSubmitting={mutationState.isAnyMutating}
+        initialValues={
+          editingCategory
+            ? {
+                name: editingCategory.name,
+                slug: editingCategory.slug,
+                description: editingCategory.description ?? '',
+                image: editingCategory.image ?? null,
+                icon: editingCategory.icon ?? '',
+                parentId: editingCategory.parentId ?? 'none',
+              }
+            : null
+        }
+      />
+
+      <ConfirmDeleteDialog
+        open={!!deletingCategory}
+        onOpenChange={(open) => !open && setDeletingCategory(null)}
+        onConfirm={confirmDelete}
+        isDeleting={mutationState.deletingId === deletingCategory?.id}
+        itemName={deletingCategory?.name}
+        entityType='category'
       />
     </>
   );

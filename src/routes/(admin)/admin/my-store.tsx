@@ -1,7 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { MyShopsPageSkeleton } from '@/components/base/vendors/skeleton/shop-card-skeleton';
 import { AddShopDialog } from '@/components/containers/shared/shops/add-shop-dialog';
-import MyStoreTemplate from '@/components/templates/admin/my-store-template';
 import type { ShopFormValues } from '@/types/shop-types';
 import {
   useShops,
@@ -9,6 +8,7 @@ import {
   vendorShopsQueryOptions,
 } from '@/hooks/vendors/use-shops';
 import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import MyShopsTemplate from '@/components/templates/vendor/my-shops-template';
 
 export const Route = createFileRoute('/(admin)/admin/my-store')({
   component: AdminMyStorePage,
@@ -21,7 +21,9 @@ export const Route = createFileRoute('/(admin)/admin/my-store')({
 
 function AdminMyStorePage() {
   const { createShop, isCreating } = useShops();
-  const { shops, vendorId: currentVendorId } = useTransformedShops();
+  const { shops, vendorId: currentVendorId } = useTransformedShops({
+    filterByVendor: true,
+  });
 
   const {
     isDialogOpen,
@@ -54,7 +56,7 @@ function AdminMyStorePage() {
 
   return (
     <>
-      <MyStoreTemplate
+      <MyShopsTemplate
         shops={shops}
         onCreateShop={handleAddShop}
         currentVendorId={currentVendorId}

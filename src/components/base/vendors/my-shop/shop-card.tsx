@@ -37,7 +37,6 @@ export default function ShopCard({
       console.error('Failed to update shop:', error);
     }
   };
-  console.log(shop);
   return (
     <>
       <Card className={cn('pt-0', className)}>
