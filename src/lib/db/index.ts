@@ -3,6 +3,7 @@ import { drizzle, type NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import { account, session, user, verification } from './schema/auth-schema';
 import { shops, vendors } from './schema/shop-schema';
 import { categories } from './schema/category-schema';
+import { brands } from './schema/brand-schema';
 
 const schema = {
   user,
@@ -11,7 +12,8 @@ const schema = {
   verification,
   vendors,
   shops,
-  categories
+  categories,
+  brands,
 };
 
 // Lazy initialization - only connect to DB when first accessed

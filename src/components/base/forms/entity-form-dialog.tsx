@@ -1,14 +1,14 @@
-import { useForm } from "@tanstack/react-form";
-import { FileUploaderRegular } from "@uploadcare/react-uploader";
+import { useForm } from '@tanstack/react-form';
+import { FileUploaderRegular } from '@uploadcare/react-uploader';
 import '@uploadcare/react-uploader/core.css';
-import { X } from "lucide-react";
-import type React from "react";
-import { useEffect, useRef } from "react";
-import { toast } from "sonner";
-import type { z } from "zod";
-import { Form } from "@/components/base/forms/form";
-import { Field } from "@/components/base/forms/form-field";
-import { Button } from "@/components/ui/button";
+import { X } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useRef } from 'react';
+import { toast } from 'sonner';
+import type { z } from 'zod';
+import { Form } from '@/components/base/forms/form';
+import { Field } from '@/components/base/forms/form-field';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -16,33 +16,33 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   FieldDescription,
   FieldLabel,
   Field as UIField,
-} from "@/components/ui/field";
-import { ScrollArea } from "@/components/ui/scroll-area";
+} from '@/components/ui/field';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { validateField, validateOptionalField } from "@/lib/helper/validators";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/select';
+import { validateField, validateOptionalField } from '@/lib/helper/validators';
+import { cn } from '@/lib/utils';
 
 export interface EntityFormField {
   name: string;
   label?: string;
-  type?: "text" | "textarea" | "url" | "file" | "select" | "custom";
+  type?: 'text' | 'textarea' | 'url' | 'file' | 'select' | 'custom';
   required?: boolean;
   multiple?: boolean;
   placeholder?: string;
   description?: string;
   defaultValue?: unknown;
-  autoGenerateSlug?: boolean | "createOnly";
+  autoGenerateSlug?: boolean | 'createOnly';
   selectOptions?: {
     label: string;
     value: string;
@@ -83,7 +83,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
   description,
   fields,
   validationSchema,
-  submitButtonText = { create: "Create", update: "Update" },
+  submitButtonText = { create: 'Create', update: 'Update' },
   contentClassName,
   scrollable = true,
 }: EntityFormDialogProps<T>) {
@@ -91,10 +91,10 @@ export function EntityFormDialog<T extends Record<string, any>>({
   const defaultValues = {
     ...fields.reduce(
       (acc, field) => {
-        acc[field.name] = field.defaultValue ?? "";
+        acc[field.name] = field.defaultValue ?? '';
         return acc;
       },
-      {} as Record<string, any>,
+      {} as Record<string, any>
     ),
     ...(initialValues || {}),
   };
@@ -103,8 +103,8 @@ export function EntityFormDialog<T extends Record<string, any>>({
     defaultValues,
     onSubmit: async ({ value, formApi }) => {
       if (validationSchema) {
-        await formApi.validateAllFields("blur");
-        await formApi.validateAllFields("change");
+        await formApi.validateAllFields('blur');
+        await formApi.validateAllFields('change');
 
         const errors = Object.entries(formApi.state.fieldMeta)
           .filter(([_key, meta]) => meta?.errors && meta.errors.length > 0)
@@ -114,8 +114,8 @@ export function EntityFormDialog<T extends Record<string, any>>({
           }));
 
         if (errors.length > 0) {
-          console.error("Form validation failed:", errors);
-          toast.error("Please fix the errors in the form before submitting.");
+          console.error('Form validation failed:', errors);
+          toast.error('Please fix the errors in the form before submitting.');
           return;
         }
       }
@@ -137,14 +137,14 @@ export function EntityFormDialog<T extends Record<string, any>>({
         // Also set defaults for fields not in initialValues
         fields.forEach((field) => {
           if (!(field.name in initialValues)) {
-            form.setFieldValue(field.name as any, field.defaultValue ?? "");
+            form.setFieldValue(field.name as any, field.defaultValue ?? '');
           }
         });
       } else {
         form.reset();
         fields.forEach((field) => {
-          const value = field.defaultValue ?? "";
-          if (value !== "") {
+          const value = field.defaultValue ?? '';
+          if (value !== '') {
             form.setFieldValue(field.name, value);
           }
         });
@@ -159,7 +159,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
   }, [open, initialValues, fields, form]);
 
   const renderField = (field: EntityFormField) => {
-    if (field.type === "custom" && field.render) {
+    if (field.type === 'custom' && field.render) {
       return (
         <div key={field.name}>
           {field.render({
@@ -181,20 +181,20 @@ export function EntityFormDialog<T extends Record<string, any>>({
     }
 
     if (field.autoGenerateSlug) {
-      const mode = field.autoGenerateSlug === "createOnly" ? !isEditing : true;
+      const mode = field.autoGenerateSlug === 'createOnly' ? !isEditing : true;
       if (mode) {
         validators.onChange = ({ value }: { value: string }) => {
-          if (typeof value === "string") {
+          if (typeof value === 'string') {
             form.setFieldValue(
-              "slug",
-              value.toLowerCase().replace(/\s+/g, "-"),
+              'slug',
+              value.toLowerCase().replace(/\s+/g, '-')
             );
           }
         };
       }
     }
 
-    if (field.type === "file") {
+    if (field.type === 'file') {
       return (
         <form.Field
           name={field.name}
@@ -203,17 +203,20 @@ export function EntityFormDialog<T extends Record<string, any>>({
         >
           {(fieldState) => (
             <UIField>
-              <FieldLabel htmlFor={fieldState.name} required={field.required}>
+              <FieldLabel
+                htmlFor={fieldState.name}
+                required={field.required}
+              >
                 {field.label}
               </FieldLabel>
               <FileUploaderRegular
                 pubkey={import.meta.env.VITE_UPLOADCARE_PUB_KEY!}
-                classNameUploader="uc-auto uc-purple"
+                classNameUploader='uc-auto uc-purple'
                 gridShowFileNames
-                sourceList="local, gdrive"
+                sourceList='local, gdrive'
                 imgOnly
                 multiple={field.multiple}
-                filesViewMode="grid"
+                filesViewMode='grid'
                 onFileUploadSuccess={(e: { cdnUrl?: string } | null) => {
                   if (e?.cdnUrl) {
                     if (field.multiple) {
@@ -226,47 +229,50 @@ export function EntityFormDialog<T extends Record<string, any>>({
                 }}
               />
               {!field.multiple && fieldState.state.value && (
-                <div className="mt-2 relative group w-fit">
+                <div className='mt-2 relative group w-fit'>
                   <img
                     src={fieldState.state.value}
-                    alt="Preview"
-                    className="size-16 rounded-md object-cover border"
+                    alt='Preview'
+                    className='size-16 rounded-md object-cover border'
                   />
                   <button
-                    type="button"
-                    onClick={() => fieldState.handleChange("")}
-                    className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    type='button'
+                    onClick={() => fieldState.handleChange('')}
+                    className='absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity'
                   >
-                    <X className="size-3" />
+                    <X className='size-3' />
                   </button>
                 </div>
               )}
               {field.multiple &&
                 Array.isArray(fieldState.state.value) &&
                 fieldState.state.value.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-2">
+                  <div className='mt-2 flex flex-wrap gap-2'>
                     {fieldState.state.value.map(
                       (url: string, index: number) => (
-                        <div key={index} className="relative group">
+                        <div
+                          key={index}
+                          className='relative group'
+                        >
                           <img
                             src={url}
                             alt={`Preview ${index}`}
-                            className="size-16 rounded-md object-cover border"
+                            className='size-16 rounded-md object-cover border'
                           />
                           <button
-                            type="button"
+                            type='button'
                             onClick={() => {
                               const next = fieldState.state.value.filter(
-                                (_: any, i: number) => i !== index,
+                                (_: any, i: number) => i !== index
                               );
                               fieldState.handleChange(next);
                             }}
-                            className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className='absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity'
                           >
-                            <X className="size-3" />
+                            <X className='size-3' />
                           </button>
                         </div>
-                      ),
+                      )
                     )}
                   </div>
                 )}
@@ -279,7 +285,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
       );
     }
 
-    if (field.type === "select" && field.selectOptions) {
+    if (field.type === 'select' && field.selectOptions) {
       const options = field.selectOptions;
       return (
         <form.Field
@@ -289,22 +295,28 @@ export function EntityFormDialog<T extends Record<string, any>>({
         >
           {(fieldState) => (
             <UIField>
-              <FieldLabel htmlFor={fieldState.name} required={field.required}>
+              <FieldLabel
+                htmlFor={fieldState.name}
+                required={field.required}
+              >
                 {field.label}
               </FieldLabel>
               <Select
                 value={fieldState.state.value}
                 onValueChange={fieldState.handleChange}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className='w-full'>
                   <SelectValue placeholder={field.placeholder} />
                 </SelectTrigger>
                 <SelectContent>
                   {options.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                    >
                       {option.icon ? (
-                        <div className="flex items-center gap-2">
-                          <option.icon className="size-4" />
+                        <div className='flex items-center gap-2'>
+                          <option.icon className='size-4' />
                           <span>{option.label}</span>
                         </div>
                       ) : (
@@ -332,7 +344,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
         placeholder={field.placeholder}
         description={field.description}
         required={field.required}
-        as={field.type === "textarea" ? "textarea" : undefined}
+        as={field.type === 'textarea' ? 'textarea' : undefined}
         onBlur={
           fieldSchema
             ? field.required
@@ -344,12 +356,12 @@ export function EntityFormDialog<T extends Record<string, any>>({
           field.autoGenerateSlug
             ? ({ value }: { value: string }) => {
                 const shouldAuto =
-                  field.autoGenerateSlug === "createOnly" ? !isEditing : true;
+                  field.autoGenerateSlug === 'createOnly' ? !isEditing : true;
 
-                if (shouldAuto && typeof value === "string") {
+                if (shouldAuto && typeof value === 'string') {
                   form.setFieldValue(
-                    "slug",
-                    value.toLowerCase().replace(/\s+/g, "-"),
+                    'slug',
+                    value.toLowerCase().replace(/\s+/g, '-')
                   );
                 }
               }
@@ -360,11 +372,14 @@ export function EntityFormDialog<T extends Record<string, any>>({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <DialogContent
         className={cn(
-          contentClassName ?? "sm:max-w-125",
-          scrollable && "h-[85vh] flex flex-col overflow-hidden min-h-0",
+          contentClassName ?? 'sm:max-w-125',
+          scrollable && 'h-[85vh] flex flex-col overflow-hidden min-h-0'
         )}
       >
         <DialogHeader>
@@ -377,33 +392,33 @@ export function EntityFormDialog<T extends Record<string, any>>({
         <Form
           form={form}
           className={cn(
-            "space-y-4",
-            scrollable && "flex flex-col flex-1 overflow-hidden min-h-0",
+            'space-y-4',
+            scrollable && 'flex flex-col flex-1 overflow-hidden min-h-0'
           )}
         >
           <div
             className={cn(
-              "flex flex-col flex-1 overflow-hidden",
-              scrollable && "min-h-0",
+              'flex flex-col flex-1 overflow-hidden',
+              scrollable && 'min-h-0'
             )}
           >
             {scrollable ? (
-              <ScrollArea className="flex-1 min-h-0 h-full">
-                <div className="grid gap-4 p-1 pr-4 pb-10">
+              <ScrollArea className='flex-1 min-h-0 h-full'>
+                <div className='grid gap-4 p-1 pr-4 pb-10'>
                   {fields.map(renderField)}
                 </div>
               </ScrollArea>
             ) : (
-              <div className="grid gap-4">{fields.map(renderField)}</div>
+              <div className='grid gap-4'>{fields.map(renderField)}</div>
             )}
           </div>
 
-          <DialogFooter className="shrink-0">
+          <DialogFooter className='shrink-0'>
             <Button
-              type="button"
-              variant="outline"
+              type='button'
+              variant='outline'
               onClick={() => onOpenChange(false)}
-              size="lg"
+              size='lg'
             >
               Cancel
             </Button>
@@ -412,9 +427,9 @@ export function EntityFormDialog<T extends Record<string, any>>({
             >
               {([canSubmit, isSubmitting]) => (
                 <Button
-                  type="submit"
+                  type='submit'
                   disabled={!canSubmit || isSubmitting || externalIsSubmitting}
-                  size="lg"
+                  size='lg'
                 >
                   {isSubmitting || externalIsSubmitting
                     ? initialValues

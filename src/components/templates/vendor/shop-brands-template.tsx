@@ -1,33 +1,47 @@
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
 import BrandHeader from '@/components/containers/shared/brands/brand-header';
-import BrandTable from '@/components/containers/shared/brands/brand-table';
+import { VendorBrandTable } from '@/components/containers/shared/brands/brand-table';
+import type { BrandMutationState } from '@/components/containers/shared/brands/brand-table-columns';
 import { VENDOR_BRAND_PERMISSIONS } from '@/lib/config/brand-permissions';
-import type { Brand } from '@/types/brands-types';
+import type { BrandItem } from '@/types/brands-types';
 
 interface ShopBrandsTemplateProps {
-  brands: Brand[];
-  onAddBrand?: (data: {
-    name: string;
-    slug: string;
-    website?: string;
-    description?: string;
-    logo?: string;
-  }) => void;
-  showAddButton?: boolean;
+  fetcher: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<BrandItem>>;
+  onAddBrand: () => void;
+  onEditBrand?: (brand: BrandItem) => void;
+  onDeleteBrand?: (brand: BrandItem) => void;
+  onToggleActive?: (brand: BrandItem) => void;
+  mutationState?: BrandMutationState;
+  isBrandMutating?: (id: string) => boolean;
 }
 
 export function ShopBrandsTemplate({
-  brands,
+  fetcher,
   onAddBrand,
-  showAddButton = true,
+  onEditBrand,
+  onDeleteBrand,
+  onToggleActive,
+  mutationState,
+  isBrandMutating,
 }: ShopBrandsTemplateProps) {
   return (
-    <div className="space-y-6">
-      <BrandHeader
-        onAddBrand={onAddBrand}
-        role="vendor"
-        showAddButton={showAddButton}
-      />
-      <BrandTable brands={brands} permissions={VENDOR_BRAND_PERMISSIONS} />
+    <div className='space-y-6'>
+      <div className='space-y-6'>
+        <BrandHeader onAdd={onAddBrand} />
+        <VendorBrandTable
+          fetcher={fetcher}
+          onEdit={onEditBrand}
+          onDelete={onDeleteBrand}
+          onToggleActive={onToggleActive}
+          mutationState={mutationState}
+          isBrandMutating={isBrandMutating}
+        />
+      </div>
     </div>
   );
 }
