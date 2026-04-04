@@ -4,12 +4,14 @@ import type {
 } from '@/components/base/data-table/types';
 import { getBrands } from '@/lib/functions/vendor/brands';
 import { getCategories } from '@/lib/functions/vendor/categories';
+import { getTaxRates } from '@/lib/functions/vendor/tax';
 import {
   booleanFilterTransform,
   createServerFetcher,
 } from '@/lib/helper/create-server-fetcher';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
+import type { TaxRateItem } from '@/types/taxes-types';
 
 export const VENDOR_STATUS_OPTIONS = [
   { label: 'Active', value: 'true' },
@@ -44,6 +46,31 @@ export function createVendorBrandsFetcher(
     sortFieldMap: { name: 'name', createdAt: 'createdAt' },
     filterFieldMap: { isActive: 'isActive' },
     defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+/**
+ * Tax Rate fetcher  
+ */
+export function createVendorTaxRatesFetcher(
+  shopId: string,
+): (
+  params: DataTableFetchParams,
+) => Promise<DataTableFetchResult<TaxRateItem>> {
+  return createServerFetcher<TaxRateItem, any>({
+    fetchFn: async (query) => {
+      const response = await getTaxRates({ data: { ...query, shopId } });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      name: "name",
+      rate: "rate",
+      priority: "priority",
+      createdAt: "createdAt",
+    },
+    filterFieldMap: { isActive: "isActive", country: "country" },
+    defaultQuery: { sortBy: "priority", sortDirection: "asc" },
     transformFilters: booleanFilterTransform,
   });
 }

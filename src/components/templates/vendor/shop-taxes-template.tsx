@@ -1,33 +1,55 @@
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
 import TaxHeader from '@/components/containers/shared/taxes/tax-header';
-import TaxesTable from '@/components/containers/shared/taxes/tax-table';
-import { VENDOR_TAX_PERMISSIONS } from '@/lib/config/tax-permissions';
-import type { Taxes as Tax } from '@/types/taxes-types';
+import { TaxTable } from '@/components/containers/shared/taxes/tax-table';
+import type { TaxMutationState } from '@/components/containers/shared/taxes/tax-table-columns';
+import type { TaxRateItem } from '@/types/taxes-types';
 
 interface ShopTaxesTemplateProps {
-  taxes: Tax[];
-  onAddTax?: (data: any) => void;
-  onEditTax?: (taxId: string) => void;
-  onDeleteTax?: (taxId: string) => void;
+  fetcher: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<TaxRateItem>>;
+  onAddTax?: () => void;
+  onEdit?: (taxRate: TaxRateItem) => void;
+  onDelete?: (taxRate: TaxRateItem) => void;
+  onToggleActive?: (id: string) => void;
+  mutationState?: TaxMutationState;
+  isTaxMutating?: (id: string) => boolean;
+  showAddButton?: boolean;
+  serverQueryScope?: readonly unknown[];
 }
 
-export default function ShopTaxesTemplate({
-  taxes,
+export function ShopTaxesTemplate({
+  fetcher,
   onAddTax,
-  onEditTax,
-  onDeleteTax,
+  onEdit,
+  onDelete,
+  onToggleActive,
+  mutationState,
+  isTaxMutating,
+  showAddButton = true,
+  serverQueryScope,
 }: ShopTaxesTemplateProps) {
   return (
     <div className='space-y-6'>
       <TaxHeader
+        onAdd={onAddTax}
         role='vendor'
-        onAddTax={onAddTax}
-        showAddButton={!!onAddTax}
+        showAddButton={showAddButton}
       />
-      <TaxesTable
-        taxes={taxes}
-        permissions={VENDOR_TAX_PERMISSIONS}
-        onEditTax={onEditTax}
-        onDeleteTax={onDeleteTax}
+      <TaxTable
+        fetcher={fetcher}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onToggleActive={
+          onToggleActive ? (taxRate) => onToggleActive(taxRate.id) : undefined
+        }
+        mutationState={mutationState}
+        isMutating={isTaxMutating}
+        mode='vendor'
+        serverQueryScope={serverQueryScope}
       />
     </div>
   );

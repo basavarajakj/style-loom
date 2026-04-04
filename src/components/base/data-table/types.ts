@@ -47,6 +47,7 @@ export interface DataTableProps<TData, TValue> {
   data?: TData[];
   initialPageSize?: number;
   context?: DataTableContext;
+  serverQueryScope?: readonly unknown[];
   /** Enable row selection with a checkbox column */
   enableRowSelection?: boolean;
   onRowSelectionChange?: (selectedRows: TData[]) => void;

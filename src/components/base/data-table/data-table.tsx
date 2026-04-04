@@ -15,6 +15,7 @@ export default function DataTable<TData, TValue>({
   toolbarTitle,
   globalFilterPlaceholder,
   className,
+  serverQueryScope,
 }: DataTableProps<TData, TValue>) {
   const isServer = !!server;
 
@@ -43,6 +44,7 @@ export default function DataTable<TData, TValue>({
       })),
     initialPageSize,
     context,
+    queryScope: isServer ? serverQueryScope : undefined,
   });
 
   const data = isServer ? rows : (clientData ?? []);
