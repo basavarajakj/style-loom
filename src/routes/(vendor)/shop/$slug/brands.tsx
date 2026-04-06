@@ -4,7 +4,7 @@ import { ShopBrandsTemplate } from '@/components/templates/vendor/shop-brands-te
 import { shopBySlugQueryOptions } from '@/hooks/vendors/use-shops';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { createVendorBrandsFetcher } from '@/hooks/vendors/use-vendor-entity-fetcher';
+import { createVendorBrandsFetcher } from '@/hooks/vendors/use-vendor-entity-fetchers';
 import { useBrands } from '@/hooks/vendors/use-brands';
 import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
 import type { BrandFormValues, BrandItem } from '@/types/brands-types';

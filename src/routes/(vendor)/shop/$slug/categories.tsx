@@ -9,7 +9,7 @@ import type {
 import { PageSkeleton } from '@/components/base/common/page-skeleton';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { shopBySlugQueryOptions } from '@/hooks/vendors/use-shops';
-import { createVendorCategoriesFetcher } from '@/hooks/vendors/use-vendor-entity-fetcher';
+import { createVendorCategoriesFetcher } from '@/hooks/vendors/use-vendor-entity-fetchers';
 import { useCategories } from '@/hooks/vendors/use-categories';
 import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
 import { ConfirmDeleteDialog } from '@/components/base/common/confirm-delete-dialog';

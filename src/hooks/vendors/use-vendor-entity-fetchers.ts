@@ -2,6 +2,7 @@ import type {
   DataTableFetchParams,
   DataTableFetchResult,
 } from '@/components/base/data-table/types';
+import { getAttributes } from '@/lib/functions/vendor/attributes';
 import { getBrands } from '@/lib/functions/vendor/brands';
 import { getCategories } from '@/lib/functions/vendor/categories';
 import { getTaxRates } from '@/lib/functions/vendor/tax';
@@ -9,6 +10,7 @@ import {
   booleanFilterTransform,
   createServerFetcher,
 } from '@/lib/helper/create-server-fetcher';
+import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
 import type { TaxRateItem } from '@/types/taxes-types';
@@ -51,12 +53,33 @@ export function createVendorBrandsFetcher(
 }
 
 /**
- * Tax Rate fetcher  
+ * Attribute fetcher
+ */
+
+export function createVendorAttributesFetcher(
+  shopId: string
+): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<AttributeItem>> {
+  return createServerFetcher<AttributeItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAttributes({ data: { ...query, shopId } });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: { name: 'name', createdAt: 'createdAt' },
+    filterFieldMap: { isActive: 'isActive', type: 'type' },
+    defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+/**
+ * Tax Rate fetcher
  */
 export function createVendorTaxRatesFetcher(
-  shopId: string,
+  shopId: string
 ): (
-  params: DataTableFetchParams,
+  params: DataTableFetchParams
 ) => Promise<DataTableFetchResult<TaxRateItem>> {
   return createServerFetcher<TaxRateItem, any>({
     fetchFn: async (query) => {
@@ -64,13 +87,13 @@ export function createVendorTaxRatesFetcher(
       return { data: response.data ?? [], total: response.total ?? 0 };
     },
     sortFieldMap: {
-      name: "name",
-      rate: "rate",
-      priority: "priority",
-      createdAt: "createdAt",
+      name: 'name',
+      rate: 'rate',
+      priority: 'priority',
+      createdAt: 'createdAt',
     },
-    filterFieldMap: { isActive: "isActive", country: "country" },
-    defaultQuery: { sortBy: "priority", sortDirection: "asc" },
+    filterFieldMap: { isActive: 'isActive', country: 'country' },
+    defaultQuery: { sortBy: 'priority', sortDirection: 'asc' },
     transformFilters: booleanFilterTransform,
   });
 }

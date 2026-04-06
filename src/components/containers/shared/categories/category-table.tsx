@@ -4,7 +4,7 @@ import type {
   DataTableFetchParams,
   DataTableFetchResult,
 } from '@/components/base/data-table/types';
-import { VENDOR_STATUS_OPTIONS } from '@/hooks/vendors/use-vendor-entity-fetcher';
+import { VENDOR_STATUS_OPTIONS } from '@/hooks/vendors/use-vendor-entity-fetchers';
 import type { NormalizedCategory } from '@/types/category-types';
 import {
   type CategoryMutationState,

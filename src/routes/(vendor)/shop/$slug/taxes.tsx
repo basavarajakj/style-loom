@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { AddTaxDialog } from '@/components/containers/shared/taxes/add-tax-dialog';
 import { shopBySlugQueryOptions } from '@/hooks/vendors/use-shops';
-import { createVendorTaxRatesFetcher } from '@/hooks/vendors/use-vendor-entity-fetcher';
+import { createVendorTaxRatesFetcher } from '@/hooks/vendors/use-vendor-entity-fetchers';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {

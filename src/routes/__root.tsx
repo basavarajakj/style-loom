@@ -45,7 +45,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           storageKey='vite-ui-theme'
         >
           {children}
-          <Toaster />
+          <Toaster
+            theme='dark'
+            position='bottom-right'
+            richColors
+            closeButton
+          />
         </ThemeProvider>
         {/* <TanStackDevtools
           config={{
