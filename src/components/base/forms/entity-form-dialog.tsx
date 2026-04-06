@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/select';
 import { validateField, validateOptionalField } from '@/lib/helper/validators';
 import { cn } from '@/lib/utils';
+import { generateSimpleSlug } from '@/lib/utils/slug';
 
 export interface EntityFormField {
   name: string;
@@ -101,29 +102,6 @@ export function EntityFormDialog<T extends Record<string, any>>({
 
   const form = useForm({
     defaultValues,
-    onSubmit: async ({ value, formApi }) => {
-      if (validationSchema) {
-        await formApi.validateAllFields('blur');
-        await formApi.validateAllFields('change');
-
-        const errors = Object.entries(formApi.state.fieldMeta)
-          .filter(([_key, meta]) => meta?.errors && meta.errors.length > 0)
-          .map(([key, meta]) => ({
-            field: key,
-            errors: meta?.errors,
-          }));
-
-        if (errors.length > 0) {
-          console.error('Form validation failed:', errors);
-          toast.error('Please fix the errors in the form before submitting.');
-          return;
-        }
-      }
-
-      await onSubmit(value as T);
-      onOpenChange(false);
-      form.reset();
-    },
   });
 
   const prevOpenRef = useRef(open);
@@ -185,10 +163,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
       if (mode) {
         validators.onChange = ({ value }: { value: string }) => {
           if (typeof value === 'string') {
-            form.setFieldValue(
-              'slug',
-              value.toLowerCase().replace(/\s+/g, '-')
-            );
+            form.setFieldValue('slug', generateSimpleSlug(value));
           }
         };
       }
@@ -359,10 +334,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
                   field.autoGenerateSlug === 'createOnly' ? !isEditing : true;
 
                 if (shouldAuto && typeof value === 'string') {
-                  form.setFieldValue(
-                    'slug',
-                    value.toLowerCase().replace(/\s+/g, '-')
-                  );
+                  form.setFieldValue('slug', generateSimpleSlug(value));
                 }
               }
             : undefined
@@ -423,13 +395,57 @@ export function EntityFormDialog<T extends Record<string, any>>({
               Cancel
             </Button>
             <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
+              selector={(state) => ({
+                isSubmitting: state.isSubmitting,
+                values: state.values,
+              })}
             >
-              {([canSubmit, isSubmitting]) => (
+              {({ isSubmitting, values }) => (
                 <Button
                   type='submit'
-                  disabled={!canSubmit || isSubmitting || externalIsSubmitting}
+                  disabled={isSubmitting || externalIsSubmitting}
                   size='lg'
+                  onClick={async (event) => {
+                    event.preventDefault();
+                    console.log('EntityFormDialog: submit button clicked');
+
+                    const value = values as T;
+
+                    if (validationSchema) {
+                      const result = validationSchema.safeParse(value);
+
+                      if (!result.success) {
+                        const issues = result.error.issues;
+                        console.group?.('EntityFormDialog validation failed');
+                        console.error(
+                          'Form validation failed. Issues:',
+                          issues,
+                        );
+                        console.groupEnd?.();
+
+                        const firstIssue = issues[0];
+                        const field = String(
+                          (firstIssue.path && firstIssue.path[0]) || 'form',
+                        );
+                        const message =
+                          firstIssue.message ||
+                          'Please fix the errors in the form before submitting.';
+
+                        toast.error(
+                          `Validation error in "${field}": ${message}`,
+                        );
+                        return;
+                      }
+                    }
+
+                    console.log(
+                      'EntityFormDialog: calling onSubmit with',
+                      value,
+                    );
+                    await onSubmit(value);
+                    onOpenChange(false);
+                    form.reset();
+                  }}
                 >
                   {isSubmitting || externalIsSubmitting
                     ? initialValues

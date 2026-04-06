@@ -11,6 +11,7 @@ import { ThemeProvider } from '@/components/base/provider/theme-provider';
 import { Toaster } from 'sonner';
 
 import '../styles.css';
+import "@uploadcare/react-uploader/core.css";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
