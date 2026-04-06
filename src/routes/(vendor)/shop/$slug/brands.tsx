@@ -6,7 +6,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { createVendorBrandsFetcher } from '@/hooks/vendors/use-vendor-entity-fetchers';
 import { useBrands } from '@/hooks/vendors/use-brands';
-import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import { useEntityCRUD } from '@/hooks/common/use-entity-crud';
 import type { BrandFormValues, BrandItem } from '@/types/brands-types';
 import { ConfirmDeleteDialog } from '@/components/base/common/confirm-delete-dialog';
 

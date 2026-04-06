@@ -1,7 +1,7 @@
 import { MyShopsPageSkeleton } from '@/components/base/vendors/skeleton/shop-card-skeleton';
 import { AddShopDialog } from '@/components/containers/shared/shops/add-shop-dialog';
 import MyShopsTemplate from '@/components/templates/vendor/my-shops-template';
-import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import { useEntityCRUD } from '@/hooks/common/use-entity-crud';
 import {
   useShops,
   useTransformedShops,

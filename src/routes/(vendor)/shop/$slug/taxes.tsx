@@ -8,7 +8,7 @@ import {
   useTaxRates,
   vendorTaxRatesDataTableQueryScope,
 } from '@/hooks/vendors/use-tax-rates';
-import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import { useEntityCRUD } from '@/hooks/common/use-entity-crud';
 import type { TaxRateFormValues, TaxRateItem } from '@/types/taxes-types';
 import { ShopTaxesTemplate } from '@/components/templates/vendor/shop-taxes-template';
 import { ConfirmDeleteDialog } from '@/components/base/common/confirm-delete-dialog';

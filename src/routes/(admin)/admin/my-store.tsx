@@ -7,7 +7,7 @@ import {
   useTransformedShops,
   vendorShopsQueryOptions,
 } from '@/hooks/vendors/use-shops';
-import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import { useEntityCRUD } from '@/hooks/common/use-entity-crud';
 import MyShopsTemplate from '@/components/templates/vendor/my-shops-template';
 
 export const Route = createFileRoute('/(admin)/admin/my-store')({

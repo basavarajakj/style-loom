@@ -5,6 +5,7 @@ import type {
 import { getAttributes } from '@/lib/functions/vendor/attributes';
 import { getBrands } from '@/lib/functions/vendor/brands';
 import { getCategories } from '@/lib/functions/vendor/categories';
+import { getTags } from '@/lib/functions/vendor/tags';
 import { getTaxRates } from '@/lib/functions/vendor/tax';
 import {
   booleanFilterTransform,
@@ -13,6 +14,7 @@ import {
 import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
+import type { TagItem } from '@/types/tags-types';
 import type { TaxRateItem } from '@/types/taxes-types';
 
 export const VENDOR_STATUS_OPTIONS = [
@@ -94,6 +96,29 @@ export function createVendorTaxRatesFetcher(
     },
     filterFieldMap: { isActive: 'isActive', country: 'country' },
     defaultQuery: { sortBy: 'priority', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+/**
+ * Tags fetcher
+ */
+
+export function createVendorTagsFetcher(
+  shopId: string
+): (params: DataTableFetchParams) => Promise<DataTableFetchResult<TagItem>> {
+  return createServerFetcher<TagItem, any>({
+    fetchFn: async (query) => {
+      const response = await getTags({ data: { ...query, shopId } });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      name: 'name',
+      createdAt: 'createdAt',
+      productCount: 'productCount',
+    },
+    filterFieldMap: { isActive: 'isActive' },
+    defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
     transformFilters: booleanFilterTransform,
   });
 }

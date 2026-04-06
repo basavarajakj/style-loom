@@ -1,7 +1,7 @@
 import { ConfirmDeleteDialog } from '@/components/base/common/confirm-delete-dialog';
 import { AddAttributeDialog } from '@/components/containers/shared/attributes/add-attribute-dialog';
 import { ShopAttributesTemplate } from '@/components/templates/vendor/shop-attributes-template';
-import { useEntityCRUD } from '@/hooks/common/use-entity-curd';
+import { useEntityCRUD } from '@/hooks/common/use-entity-crud';
 import { useAttributes } from '@/hooks/vendors/use-attributes';
 import { shopBySlugQueryOptions } from '@/hooks/vendors/use-shops';
 import { createVendorAttributesFetcher } from '@/hooks/vendors/use-vendor-entity-fetchers';
