@@ -61,11 +61,11 @@ export const createProductTableColumns = ({
     },
     {
       accessorKey: 'name',
-      header: 'Product',
+      header: 'Product Title',
       cell: ({ row }) => {
         const isBusy = isMutating?.(row.original.id) ?? false;
         return (
-          <div className={cn('font-medium', isBusy && 'opacity-60')}>
+          <div className={cn('font-medium max-w-80', isBusy && 'opacity-60')} title={row.original.name}>
             {isBusy && <Loader2 className='inline h-3 w-3 animate-spin mr-1' />}
             {row.original.name}
           </div>
@@ -134,7 +134,7 @@ export const createProductTableColumns = ({
       header: 'Price',
       cell: ({ row }) => {
         const price = parseFloat(row.original.sellingPrice);
-        return <div>${Number.isNaN(price) ? '0.00' : price.toFixed(2)}</div>;
+        return <div>₹{Number.isNaN(price) ? '0.00' : price.toFixed(2)}</div>;
       },
     },
     {
@@ -142,7 +142,7 @@ export const createProductTableColumns = ({
       header: 'Regular Price',
       cell: ({ row }) => {
         const price = parseFloat(row.original.regularPrice || '0.00');
-        return <div>${Number.isNaN(price) ? '0.00' : price.toFixed(2)}</div>;
+        return <div>₹{Number.isNaN(price) ? '0.00' : price.toFixed(2)}</div>;
       },
     },
     {
@@ -150,7 +150,7 @@ export const createProductTableColumns = ({
       header: 'Cost Price',
       cell: ({ row }) => {
         const price = parseFloat(row.original.costPrice || '0.00');
-        return <div>${Number.isNaN(price) ? '0.00' : price.toFixed(2)}</div>;
+        return <div>₹{Number.isNaN(price) ? '0.00' : price.toFixed(2)}</div>;
       },
     },
     {
