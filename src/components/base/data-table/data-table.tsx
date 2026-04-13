@@ -1,7 +1,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import DataTableContainer from "./data-table-container";
 import type { DataTableProps } from "./types";
-import { useServerPagination } from "@/hooks/user-server-pagination";
+import { useServerPagination } from "@/hooks/common/user-server-pagination";
 
 export default function DataTable<TData, TValue>({
   columns,
@@ -15,6 +15,7 @@ export default function DataTable<TData, TValue>({
   toolbarTitle,
   globalFilterPlaceholder,
   className,
+  serverQueryScope,
 }: DataTableProps<TData, TValue>) {
   const isServer = !!server;
 
@@ -43,6 +44,7 @@ export default function DataTable<TData, TValue>({
       })),
     initialPageSize,
     context,
+    queryScope: isServer ? serverQueryScope : undefined,
   });
 
   const data = isServer ? rows : (clientData ?? []);

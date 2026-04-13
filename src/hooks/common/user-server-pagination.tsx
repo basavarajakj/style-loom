@@ -18,12 +18,14 @@ export type UseServerPaginationOptions<TData> = {
   ) => Promise<DataTableFetchResult<TData>>;
   initialPageSize?: number;
   context?: DataTableContext;
+  queryScope?: readonly unknown[];
 };
 
 export function useServerPagination<TData>({
   fetcher,
   initialPageSize = 10,
   context,
+  queryScope,
 }: UseServerPaginationOptions<TData>) {
   const [pageIndex, setPageIndex] = useState(0);
   const [pageSize, setPageSize] = useState(initialPageSize);
@@ -44,7 +46,7 @@ export function useServerPagination<TData>({
   );
 
   const query = useQuery<DataTableFetchResult<TData>>({
-    queryKey: ["datatable", context, params],
+    queryKey: ["datatable", context, ...(queryScope ?? []), params],
     queryFn: () => fetcher(params),
     // Preserve previous page data while fetching the next
     placeholderData: (prev) => prev,

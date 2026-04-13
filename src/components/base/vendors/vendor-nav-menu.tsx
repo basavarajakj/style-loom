@@ -26,8 +26,10 @@ export default function VendorNavMenu({
   return (
     <SidebarMenu className={className}>
       {items.map((item) => {
-        const isActive =
-          pathname === item.href || pathname.startsWith(`${item.href}`);
+        const isRootRoute = item.href === '/admin' || '/shop';
+        const isActive = isRootRoute
+          ? pathname === item.href
+          : pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;
 
         return (

@@ -13,14 +13,16 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { signOut } from '@/lib/auth/auth-client';
+import { Link } from '@tanstack/react-router';
 import { useRouter } from '@tanstack/react-router';
 import { ChevronDownIcon, LogOutIcon, UserIcon } from 'lucide-react';
 
 interface VendorUser {
-  name: string;
-  email: string;
-  avatar?: string;
-  role?: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role?: string | null;
 }
 
 interface VendorUserMenuProps {
@@ -33,14 +35,14 @@ export default function VendorUserMenu({ user }: VendorUserMenuProps) {
 
   const handleSignout = async () => {
     const currentPath = window.location.pathname + window.location.search;
-    // await signout(); TODO: Implement when working on authentication
+    await signOut();
     router.navigate({
       to: '/auth/sign-in',
-      search: { redirect: currentPath },
+      search: { redirectTo: currentPath },
     });
   };
 
-  const initials = user.name
+  const initials = (user.name || '')
     .split(' ')
     .map((n) => n[0])
     .join('')
@@ -48,7 +50,9 @@ export default function VendorUserMenu({ user }: VendorUserMenuProps) {
     .slice(0, 2);
 
   const result =
-    initials.length === 1 ? user.name.slice(0, 2).toUpperCase() : initials;
+    initials.length === 1
+      ? (user.name || '').slice(0, 2).toUpperCase()
+      : initials;
 
   return (
     <SidebarMenu>
@@ -61,8 +65,8 @@ export default function VendorUserMenu({ user }: VendorUserMenuProps) {
             >
               <Avatar className='size-8 rounded-lg'>
                 <AvatarImage
-                  src={user.avatar}
-                  alt={user.name}
+                  src={user.image ?? undefined}
+                  alt={user.name ?? 'User'}
                 />
                 <AvatarFallback className='rounded-lg'>{result}</AvatarFallback>
               </Avatar>
@@ -87,8 +91,8 @@ export default function VendorUserMenu({ user }: VendorUserMenuProps) {
               <div className='flex items-center gap-2 px-1 py-1.5 text-left texts-sm'>
                 <Avatar className='size-8 rounded-lg'>
                   <AvatarImage
-                    src={user.avatar}
-                    alt={user.name}
+                    src={user.image ?? undefined}
+                    alt={user.name ?? 'User'}
                   />
                   <AvatarFallback className='rounded-lg'>
                     {result}
@@ -106,10 +110,12 @@ export default function VendorUserMenu({ user }: VendorUserMenuProps) {
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem>
-              <UserIcon className='mr-2 size-4' />
-              Profile
-            </DropdownMenuItem>
+            <Link to='/profile'>
+              <DropdownMenuItem>
+                <UserIcon className='mr-2 size-4' />
+                Profile
+              </DropdownMenuItem>
+            </Link>
 
             <DropdownMenuSeparator />
 

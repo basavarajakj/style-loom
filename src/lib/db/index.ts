@@ -2,6 +2,27 @@ import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { drizzle, type NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import { account, session, user, verification } from './schema/auth-schema';
 import { shops, vendors } from './schema/shop-schema';
+import { categories } from './schema/category-schema';
+import { brands } from './schema/brand-schema';
+import { taxRates, taxRatesRelations } from './schema/tax-schema';
+import { tags, tagsRelations } from './schema/tags-schema';
+import {
+  productAttributes,
+  productAttributesRelations,
+  productImages,
+  productImagesRelations,
+  products,
+  productsRelations,
+  productTags,
+  productTagsRelations,
+} from './schema/products-schema';
+import {
+  attributes,
+  attributesRelations,
+  attributeValues,
+  attributeValuesRelations,
+} from './schema/attribute-schema';
+import { shippingMethods, shippingMethodsRelations } from './schema/shipping-schema';
 
 const schema = {
   user,
@@ -9,7 +30,27 @@ const schema = {
   session,
   verification,
   vendors,
-  shops
+  shops,
+  categories,
+  brands,
+  taxRates,
+  taxRatesRelations,
+  attributes,
+  attributeValues,
+  attributesRelations,
+  attributeValuesRelations,
+  tags,
+  tagsRelations,
+  productAttributes,
+  productAttributesRelations,
+  productImages,
+  productImagesRelations,
+  products,
+  productsRelations,
+  productTags,
+  productTagsRelations,
+  shippingMethods,
+  shippingMethodsRelations,
 };
 
 // Lazy initialization - only connect to DB when first accessed

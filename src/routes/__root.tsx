@@ -3,34 +3,36 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router';
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import { TanStackDevtools } from '@tanstack/react-devtools';
+// import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
+// import { TanStackDevtools } from '@tanstack/react-devtools';
 
 import type { QueryClient } from '@tanstack/react-query';
 import { ThemeProvider } from '@/components/base/provider/theme-provider';
 import { Toaster } from 'sonner';
 
 import '../styles.css';
+import "@uploadcare/react-uploader/core.css";
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
-  {
-    head: () => ({
-      meta: [
-        {
-          charSet: 'utf-8',
-        },
-        {
-          name: 'viewport',
-          content: 'width=device-width, initial-scale=1',
-        },
-        {
-          title: 'Style.loom - Your one stop shop for style',
-        },
-      ],
-    }),
-    shellComponent: RootDocument,
-  }
-);
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient;
+  isAdmin?: boolean;
+}>()({
+  head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'Style.loom - Your one stop shop for style',
+      },
+    ],
+  }),
+  shellComponent: RootDocument,
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -44,9 +46,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           storageKey='vite-ui-theme'
         >
           {children}
-          <Toaster />
+          <Toaster
+            theme='dark'
+            position='bottom-right'
+            richColors
+            closeButton
+          />
         </ThemeProvider>
-        <TanStackDevtools
+        {/* <TanStackDevtools
           config={{
             position: 'bottom-right',
           }}
@@ -56,7 +63,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               render: <TanStackRouterDevtoolsPanel />,
             },
           ]}
-        />
+        /> */}
         <Scripts />
       </body>
     </html>

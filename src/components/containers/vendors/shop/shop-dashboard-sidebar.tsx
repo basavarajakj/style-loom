@@ -1,3 +1,4 @@
+import { useSession } from '@/lib/auth/auth-client';
 import VendorNavMenu from '@/components/base/vendors/vendor-nav-menu';
 import VendorUserMenu from '@/components/base/vendors/vendor-user-menu';
 import { Button } from '@/components/ui/button';
@@ -21,18 +22,13 @@ interface ShopDashboardSidebarProps {
   shopName: string;
 }
 
-// Mock data
-const mockUser = {
-  name: 'Bassu',
-  email: 'bassu@gmail.com',
-  avatar: '',
-  role: 'vendor',
-};
-
 export default function ShopDashboardSidebar({
   shopName,
   shopSlug,
 }: ShopDashboardSidebarProps) {
+  const {data: session } = useSession();
+  const user = session?.user;
+
   return (
     <Sidebar
       collapsible='icon'
@@ -80,7 +76,20 @@ export default function ShopDashboardSidebar({
       </SidebarContent>
 
       <SidebarFooter>
-        <VendorUserMenu user={mockUser} />
+        {user ? (
+          <VendorUserMenu user={user} />
+        ) : (
+          <Link to='/auth/sign-in'>
+            <Button
+              variant='default'
+              className='w-full'
+              type='button'
+              size='lg'
+            >
+              Sign In
+            </Button>
+          </Link>
+        )}
       </SidebarFooter>
 
       <SidebarRail />

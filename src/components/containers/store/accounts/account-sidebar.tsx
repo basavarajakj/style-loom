@@ -1,4 +1,5 @@
 import { Button, buttonVariants } from '@/components/ui/button';
+import { signOut } from '@/lib/auth/auth-client';
 import { cn } from '@/lib/utils';
 import { Link, useLocation } from '@tanstack/react-router';
 import { HeartIcon, LogOutIcon, Package2Icon, UserIcon } from 'lucide-react';
@@ -25,7 +26,7 @@ export default function AccountSidebar() {
   const pathname = location.pathname;
   return (
     <aside className='@2xl:flex @2xl:w-64 w-full flex-col gap-2'>
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-2  sticky top-30'>
         <div className='px-4 py-2'>
           <h2 className='mb-2 font-semibold text-lg tracking-tight'>
             My Account
@@ -55,7 +56,7 @@ export default function AccountSidebar() {
             variant='ghost'
             size='lg'
             className='w-full justify-start'
-            onClick={() => {}}
+            onClick={() => signOut()}
           >
             <LogOutIcon className='size-5' />
             Logout
