@@ -1,4 +1,4 @@
-import { BreadcrumbNav } from '@/components/base/common/bread-crumb-nav';
+import { BreadcrumbNav } from '@/components/base/common/breadcrumb-nav';
 import CheckoutOrderSummary from '@/components/base/store/checkout/checkout-order-summary';
 import ShippingAddressForm from '@/components/base/store/checkout/shipping-address-form';
 import ShippingMethodSelector from '@/components/base/store/checkout/shipping-method';

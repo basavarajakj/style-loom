@@ -1,6 +1,5 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import type { Product } from '@/data/products';
 import { useCartStore } from '@/lib/store/cart-store';
 import { cn } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
@@ -9,9 +8,10 @@ import type React from 'react';
 import { toast } from 'sonner';
 import { ColorSwatch } from './color-radio-item';
 import PriceTag from './price-tag';
+import type { DisplayProduct } from '@/types/store-types';
 
 interface ProductCardProps {
-  product: Product;
+  product: DisplayProduct;
   className?: string;
 }
 

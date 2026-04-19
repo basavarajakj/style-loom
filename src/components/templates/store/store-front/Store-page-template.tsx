@@ -1,43 +1,66 @@
-import { BreadcrumbNav } from '@/components/base/common/bread-crumb-nav';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
+import { Store as StoreIcon } from 'lucide-react';
+import { useMemo } from 'react';
+import { BreadcrumbNav } from '@/components/base/common/breadcrumb-nav';
 import NotFound from '@/components/base/empty/not-found';
-import StoreHeaderSkeleton from '@/components/base/store/store-front/store-header-skeleton';
+import { StoreHeaderSkeleton } from '@/components/base/store/store-front/store-header-skeleton';
 import { StoreProductsSkeleton } from '@/components/base/store/store-front/store-product-skeleton';
-import StoreAbout from '@/components/containers/store/storefront/store-about';
-import StoreHeader from '@/components/containers/store/storefront/store-header';
-import StoreProducts from '@/components/containers/store/storefront/store-products';
-import { StoreReviews } from '@/components/containers/store/storefront/store-reviews';
+import { StoreAbout } from '@/components/containers/store/store-front/store-about';
+import StoreHeader from '@/components/containers/store/store-front/store-header';
+import StoreProducts from '@/components/containers/store/store-front/store-products';
+import { StoreReviews } from '@/components/containers/store/store-front/store-reviews';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useStoreFront } from '@/lib/store/store';
-import { Link, StoreIcon } from 'lucide-react';
-import { useEffect } from 'react';
+import { storeShopBySlugQueryOptions } from '@/hooks/store/use-store-shops';
+import type { Store } from '@/types/store-types';
 
 interface StorePageTemplateProps {
   slug: string;
 }
 
-const storeSteps = [
-  { label: 'Home', href: '/' },
-  { label: 'Stores', href: '/store' },
-  { label: 'currentStore', isActive: true },
-];
-
 export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
-  const { currentStore, getStoreBySlug, isLoading } = useStoreFront();
-  useEffect(() => {
-    getStoreBySlug(slug);
-  }, [slug, getStoreBySlug]);
+  const {
+    data: shopData,
+    isPending,
+    error,
+  } = useQuery(storeShopBySlugQueryOptions(slug));
 
-  if (isLoading) {
+  const currentStore = useMemo((): Store | null => {
+    if (!shopData?.shop) return null;
+
+    const shop = shopData.shop;
+    return {
+      id: shop.id,
+      slug: shop.slug,
+      name: shop.name,
+      description: shop.description ?? 'No description available',
+      logo: shop.logo ?? '',
+      banner: shop.banner ?? '',
+      category: shop.category ?? 'General',
+      rating: shop.rating,
+      reviewCount: 0, // TODO: Implement reviews count
+      isVerified: shop.status === 'active',
+      memberSince: shop.createdAt,
+      totalProducts: shop.totalProducts,
+      followers: 0, // TODO: Implement followers
+      contactEmail: shop.email ?? undefined,
+      contactPhone: shop.phone ?? undefined,
+      address: shop.address ?? undefined,
+      businessHours: undefined, // TODO: Add business hours to schema
+    };
+  }, [shopData?.shop]);
+
+  if (isPending) {
     return (
       <div className='@container container mx-auto px-4 py-8'>
-        {/* Breadcrumbs skeleton */}
+        {/* Breadcrumbs Skeleton */}
         <div className='mb-6'>
           <Skeleton className='h-5 w-64' />
         </div>
 
-        {/* Store header skeleton*/}
+        {/* Store Header Skeleton */}
         <StoreHeaderSkeleton />
 
         {/* Tabs Skeleton */}
@@ -49,7 +72,7 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
     );
   }
 
-  if (!currentStore) {
+  if (error || !currentStore) {
     return (
       <div className='@container flex min-h-[70vh] w-full items-center justify-center p-4'>
         <NotFound
@@ -69,14 +92,24 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
       </div>
     );
   }
+
+  const storeSteps = [
+    { label: 'Home', href: '/' },
+    { label: 'Stores', href: '/store' },
+    { label: currentStore.name, isActive: true },
+  ] as const;
+
   return (
     <div className='@container container mx-auto px-4 py-8'>
-      <BreadcrumbNav items={storeSteps} />
+      <BreadcrumbNav
+        items={storeSteps}
+        className='mb-4'
+      />
 
       {/* Store Header */}
       <StoreHeader store={currentStore} />
 
-      {/* Store Content */}
+      {/* Tabbed Content */}
       <div className='mt-8'>
         <Tabs
           defaultValue='products'
@@ -92,7 +125,10 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
             value='products'
             className='space-y-4'
           >
-            <StoreProducts storeName={currentStore.name} />
+            <StoreProducts
+              storeName={currentStore.name}
+              storeSlug={slug}
+            />
           </TabsContent>
 
           <TabsContent value='about'>
@@ -103,7 +139,8 @@ export default function StorePageTemplate({ slug }: StorePageTemplateProps) {
             value='reviews'
             className='space-y-4'
           >
-            <StoreReviews 
+            <StoreReviews
+              shopId={currentStore.id}
               rating={currentStore.rating}
               reviewCount={currentStore.reviewCount}
             />

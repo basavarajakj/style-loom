@@ -6,7 +6,7 @@ import { categories } from '@/lib/db/schema/category-schema';
 import {
   executeCategoryQuery,
   fetchCategoryWithRelations,
-} from '@/lib/helper/category-query-helper';
+} from '@/lib/helper/category-query-helpers';
 import { requireShopAccess } from '@/lib/helper/vendor';
 import { authMiddleware } from '@/lib/middleware/auth';
 import { generateSlug } from '@/lib/utils/slug';

@@ -1,3 +1,6 @@
+import { Link, useParams } from '@tanstack/react-router';
+import { ChevronDown, ChevronRight, Circle } from 'lucide-react';
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -7,9 +10,6 @@ import {
 } from '@/components/ui/collapsible';
 import { cn } from '@/lib/utils';
 import type { CategoryWithChildren } from '@/types/category-types';
-import { Link, useParams } from '@tanstack/react-router';
-import { ChevronDownIcon, ChevronUpIcon, CircleIcon } from 'lucide-react';
-import { useState } from 'react';
 
 interface CategoryTreeProps {
   categories: CategoryWithChildren[];
@@ -52,6 +52,7 @@ export default function CategoryTree({
         key={category.id}
         open={isExpanded}
         onOpenChange={() => toggleExpanded(category.id)}
+        className='w-full'
       >
         <div
           className={cn(
@@ -66,22 +67,22 @@ export default function CategoryTree({
                 variant='ghost'
                 size='icon'
                 className={cn(
-                  'h-6 w-6 shrink-0 text-muted-foreground hover:text-foreground',
+                  'h-6 w-6 shrink-0 p-0 text-muted-foreground hover:text-foreground',
                   isActive && 'text-accent-foreground'
                 )}
               >
                 {isExpanded ? (
-                  <ChevronDownIcon className='size-3.5' />
+                  <ChevronDown className='h-3.5 w-3.5' />
                 ) : (
-                  <ChevronUpIcon className='size-3.5' />
+                  <ChevronRight className='h-3.5 w-3.5' />
                 )}
               </Button>
             </CollapsibleTrigger>
           ) : (
             <div className='flex h-6 w-6 shrink-0 items-center justify-center'>
-              <CircleIcon
+              <Circle
                 className={cn(
-                  'w-1.5 h-1.5 fill-muted-foreground text-muted-foreground',
+                  'h-1.5 w-1.5 fill-muted-foreground text-muted-foreground',
                   isActive && 'fill-primary text-primary'
                 )}
               />
@@ -122,6 +123,7 @@ export default function CategoryTree({
       </Collapsible>
     );
   };
+
   return (
     <div className={cn('space-y-1', className)}>
       {categories.map((category) => renderCategory(category))}

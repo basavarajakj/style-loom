@@ -13,7 +13,7 @@ export default function CategoryCard({
   category,
   variant = 'default',
   className,
-  showProductCount,
+  showProductCount = true,
 }: CategoryCardProps) {
   const isList = variant === 'list';
 

@@ -4,6 +4,7 @@ import { categoryTree } from '@/lib/helper/categories';
 
 export default function SidebarCategoryTree() {
   const allCategories = categoryTree;
+  console.log('categories', allCategories);
   return (
     <Card>
       <CardHeader>

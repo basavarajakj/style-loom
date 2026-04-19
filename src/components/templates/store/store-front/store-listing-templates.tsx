@@ -1,4 +1,4 @@
-import { BreadcrumbNav } from '@/components/base/common/bread-crumb-nav';
+import { BreadcrumbNav } from '@/components/base/common/breadcrumb-nav';
 import StoreFilterSidebar from '@/components/containers/store/storefront/store-filter-sidebar';
 import StoreList from '@/components/containers/store/storefront/store-list';
 

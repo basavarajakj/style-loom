@@ -1,10 +1,10 @@
 import ProductCard from '@/components/base/products/product-card';
 import ProductGridSkeleton from '@/components/base/products/product-grid-skeleton';
 import ProductNotfound from '@/components/base/products/product-notfound';
-import type { Product } from '@/data/products';
+import type { DisplayProduct } from '@/types/store-types';
 
 interface ProductGridProps {
-  products: Product[];
+  products: DisplayProduct[];
   isLoading?: boolean;
   viewMode?: 'grid' | 'list';
 }
@@ -22,7 +22,7 @@ export default function ProductGrid({
     return <ProductNotfound />;
   }
   return (
-    <div className='grid grid-cols-2 @4xl:grid-cols-3 @7xl:grid-cols-7 gap-3'>
+    <div className='grid grid-cols-2 @4xl:grid-cols-4 @7xl:grid-cols-7 gap-3'>
       {products.map((product) => (
         <ProductCard
           key={product.id}

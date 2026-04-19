@@ -1,9 +1,9 @@
+import { Link } from '@tanstack/react-router';
+import { ArrowRight, Package } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import type { Category } from '@/types/category-types';
-import { Link } from '@tanstack/react-router';
-import { ArrowRightIcon, PackageIcon } from 'lucide-react';
 
 interface CategoryCardGridProps {
   category: Category;
@@ -38,6 +38,7 @@ export default function CategoryCardGrid({
       >
         <CardContent className='flex h-full flex-col p-0'>
           <div className='relative'>
+            {/* Category Image */}
             <div
               className={cn(
                 'relative w-full overflow-hidden bg-muted',
@@ -71,48 +72,48 @@ export default function CategoryCardGrid({
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Category Content */}
-            <div className='flex flex-1 flex-col p-5'>
-              <div className='mb-2 flex items-start justify-between gap-2'>
-                <div className='flex items-center gap-2'>
-                  {category.icon && !category.image && (
-                    <span className='text-xl'>{category.icon}</span>
+          {/* Category Content */}
+          <div className='flex flex-1 flex-col p-5'>
+            <div className='mb-2 flex items-start justify-between gap-2'>
+              <div className='flex items-center gap-2'>
+                {category.icon && !category.image && (
+                  <span className='text-xl'>{category.icon}</span>
+                )}
+                <h3
+                  className={cn(
+                    'font-bold transition-colors group-hover:text-primary',
+                    isCompact ? 'text-lg' : 'text-xl'
                   )}
-                  <h3
-                    className={cn(
-                      'font-bold transition-colors group-hover:text-primary',
-                      isCompact ? 'text-lg' : 'text-xl'
-                    )}
-                  >
-                    {category.name}
-                  </h3>
-                </div>
+                >
+                  {category.name}
+                </h3>
               </div>
+            </div>
 
-              {!isCompact && category.description && (
-                <p className='mb-4 line-clamp-2 flex-1 text-muted-foreground text-sm'>
-                  {category.description}
-                </p>
+            {!isCompact && category.description && (
+              <p className='mb-4 line-clamp-2 flex-1 text-muted-foreground text-sm'>
+                {category.description}
+              </p>
+            )}
+
+            {/* Footer info */}
+            <div
+              className={cn(
+                'mt-auto flex items-center justify-between border-border/50 border-t pt-3',
+                isCompact && 'pt-2'
+              )}
+            >
+              {showProductCount && (
+                <div className='flex items-center justify-center gap-1.5 font-medium text-muted-foreground text-sm'>
+                  <Package className='h-3.5 w-3.5' />
+                  {category.productCount} products
+                </div>
               )}
 
-              {/* Footer info */}
-              <div
-                className={cn(
-                  'mt-auto flex items-center justify-between border-border/50 border-t pt-3',
-                  isCompact && 'pt-2'
-                )}
-              >
-                {showProductCount && (
-                  <div className='flex items-center gap-1.5 font-medium text-muted-foreground text-sm'>
-                    <PackageIcon className='h-3.5 w-3.5' />
-                    <span>{category.productCount} products</span>
-                  </div>
-                )}
-
-                <div className='-translate-x-2 flex items-center font-medium text-primary text-sm opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100'>
-                  Browse <ArrowRightIcon className='ml-1 h-3.5 w-3.5' />
-                </div>
+              <div className='-translate-x-2 flex items-center font-medium text-primary text-sm opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100'>
+                Browse <ArrowRight className='ml-1 h-3.5 w-3.5' />
               </div>
             </div>
           </div>

@@ -7,7 +7,7 @@ interface StoreAboutProps {
   className?: string;
 }
 
-export default function StoreAbout({ store, className }: StoreAboutProps) {
+export function StoreAbout({ store, className }: StoreAboutProps) {
   return (
     <div className={className}>
       <Card>

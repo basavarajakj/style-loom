@@ -1,4 +1,4 @@
-import { BreadcrumbNav } from '@/components/base/common/bread-crumb-nav';
+import { BreadcrumbNav } from '@/components/base/common/breadcrumb-nav';
 import EmptyState from '@/components/base/empty/empty-state';
 import CartItemsList from '@/components/containers/store/cart/cart-items-list';
 import CartSummary from '@/components/containers/store/cart/cart-summary';
