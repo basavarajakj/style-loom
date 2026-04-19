@@ -416,7 +416,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
 
                       if (!result.success) {
                         const issues = result.error.issues;
-                        console.group?.('EntityFormDialog validation failed');
+                        console.group?.('EntityFormDialog validation failed', value);
                         console.error(
                           'Form validation failed. Issues:',
                           issues,

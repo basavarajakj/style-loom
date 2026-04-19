@@ -23,6 +23,10 @@ import {
   attributeValuesRelations,
 } from './schema/attribute-schema';
 import { shippingMethods, shippingMethodsRelations } from './schema/shipping-schema';
+import { orderItems, orderItemsRelations, orders, ordersRelations } from './schema/order-schema';
+import { productReviews, productReviewsRelations, reviewHelpfulVotes, reviewHelpfulVotesRelations } from './schema/review-schema';
+import { cartItems, cartItemsRelations, cartSessions, cartSessionsRelations } from './schema/cart-schema';
+import { wishlistItems, wishlistItemsRelations } from './schema/wishlist-schema';
 
 const schema = {
   user,
@@ -51,6 +55,20 @@ const schema = {
   productTagsRelations,
   shippingMethods,
   shippingMethodsRelations,
+  orderItems,
+  orderItemsRelations,
+  orders,
+  ordersRelations,
+  productReviews,
+  productReviewsRelations,
+  reviewHelpfulVotes,
+  reviewHelpfulVotesRelations,
+  cartSessions,
+  cartItems,
+  cartItemsRelations,
+  cartSessionsRelations,
+  wishlistItems,
+  wishlistItemsRelations,
 };
 
 // Lazy initialization - only connect to DB when first accessed

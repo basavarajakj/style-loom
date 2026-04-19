@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Link } from '@tanstack/react-router';
 import { IndianRupeeIcon, ShoppingCartIcon } from 'lucide-react';
 
 interface Props {
+  id: string;
   image: string;
   title: string;
   category: string;
@@ -13,6 +15,7 @@ interface Props {
 }
 export default function CollectionItem({
   image,
+  id,
   title,
   category,
   fit,
@@ -46,7 +49,17 @@ export default function CollectionItem({
       </div>
 
       <div className='mt-3 space-y-3.5'>
-        <h4 className='font-medium font-mono text-lg truncate' title={title}>{title}</h4>
+        <Link
+          to={`/product/$productId`}
+          params={{ productId: id }}
+        >
+          <h4
+            className='font-medium font-mono text-lg truncate'
+            title={title}
+          >
+            {title}
+          </h4>
+        </Link>
         <p className='font-mono text-muted-foreground text-sm'>
           Fit: <span className='font-medium text-body-80'>{fit}</span> Price:{' '}
           <span className='font-medium text-body-80'>

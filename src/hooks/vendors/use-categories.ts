@@ -9,20 +9,20 @@ import {
   queryOptions,
   useMutation,
   useQueryClient,
-} from "@tanstack/react-query";
-import { toast } from "sonner";
+} from '@tanstack/react-query';
+import { toast } from 'sonner';
 import {
   createCategory,
   deleteCategory,
   getCategories,
   getCategoryById,
   updateCategory,
-} from "@/lib/functions/vendor/categories";
+} from '@/lib/functions/vendor/categories';
 import type {
   CreateCategoryInput,
   UpdateCategoryInput,
-} from "@/lib/validators/category";
-import type { VendorCategoriesQuery } from "@/lib/validators/shared/category-query";
+} from '@/lib/validators/category';
+import type { VendorCategoriesQuery } from '@/lib/validators/shared/category-query';
 
 // ============================================================================
 // Query Options
@@ -33,7 +33,7 @@ import type { VendorCategoriesQuery } from "@/lib/validators/shared/category-que
  */
 export const categoriesQueryOptions = (params: VendorCategoriesQuery) =>
   queryOptions({
-    queryKey: ["vendor", "categories", params.shopId, params],
+    queryKey: ['vendor', 'categories', params.shopId, params],
     queryFn: () => getCategories({ data: params }),
     enabled: !!params.shopId,
   });
@@ -43,7 +43,7 @@ export const categoriesQueryOptions = (params: VendorCategoriesQuery) =>
  */
 export const categoryByIdQueryOptions = (id: string, shopId: string) =>
   queryOptions({
-    queryKey: ["vendor", "categories", shopId, id],
+    queryKey: ['vendor', 'categories', shopId, id],
     queryFn: () => getCategoryById({ data: { id, shopId } }),
     enabled: !!id && !!shopId,
   });
@@ -71,13 +71,13 @@ export const useCategoryMutations = (shopId: string) => {
 
   const invalidateCategories = () => {
     queryClient.invalidateQueries({
-      queryKey: ["vendor", "categories", shopId],
+      queryKey: ['vendor', 'categories', shopId],
     });
   };
 
   // Create category mutation
   const createCategoryMutation = useMutation({
-    mutationFn: async (data: Omit<CreateCategoryInput, "shopId">) => {
+    mutationFn: async (data: Omit<CreateCategoryInput, 'shopId'>) => {
       const result = await createCategory({ data: { ...data, shopId } });
       return result;
     },
@@ -88,13 +88,13 @@ export const useCategoryMutations = (shopId: string) => {
       invalidateCategories();
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to create category");
+      toast.error(error.message || 'Failed to create category');
     },
   });
 
   // Update category mutation
   const updateCategoryMutation = useMutation({
-    mutationFn: async (data: Omit<UpdateCategoryInput, "shopId">) => {
+    mutationFn: async (data: Omit<UpdateCategoryInput, 'shopId'>) => {
       const result = await updateCategory({ data: { ...data, shopId } });
       return result;
     },
@@ -106,12 +106,12 @@ export const useCategoryMutations = (shopId: string) => {
       // Also invalidate specific category query
       if (result.category?.id) {
         queryClient.invalidateQueries({
-          queryKey: ["vendor", "categories", shopId, result.category.id],
+          queryKey: ['vendor', 'categories', shopId, result.category.id],
         });
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update category");
+      toast.error(error.message || 'Failed to update category');
     },
   });
 
@@ -122,16 +122,16 @@ export const useCategoryMutations = (shopId: string) => {
       return result;
     },
     onSuccess: () => {
-      toast.success("Category deleted successfully");
+      toast.success('Category deleted successfully');
       invalidateCategories();
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to delete category");
+      toast.error(error.message || 'Failed to delete category');
     },
   });
 
   const mutationState: VendorCategoryMutationState = {
-    creatingId: createCategoryMutation.isPending ? "new" : null,
+    creatingId: createCategoryMutation.isPending ? 'new' : null,
     deletingId: deleteCategoryMutation.isPending
       ? (deleteCategoryMutation.variables as string)
       : null,
@@ -165,10 +165,11 @@ export const useCategoryMutations = (shopId: string) => {
  * Combined hook for category management
  */
 export const useCategories = (shopId: string) => {
+  console.log('shopId from hook', shopId)
   const mutations = useCategoryMutations(shopId);
 
   return {
-    categoriesQueryOptions: (params: Omit<VendorCategoriesQuery, "shopId">) =>
+    categoriesQueryOptions: (params: Omit<VendorCategoriesQuery, 'shopId'>) =>
       categoriesQueryOptions({ ...params, shopId }),
     categoryByIdQueryOptions: (id: string) =>
       categoryByIdQueryOptions(id, shopId),

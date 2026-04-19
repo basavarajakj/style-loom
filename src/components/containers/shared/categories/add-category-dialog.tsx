@@ -3,7 +3,10 @@ import {
   type EntityFormField,
 } from "@/components/base/forms/entity-form-dialog";
 import { CATEGORY_ICON_OPTIONS } from "@/lib/constants/category-icons";
-import { createCategorySchema } from "@/lib/validators/category";
+import {
+  createCategorySchema,
+  updateCategorySchema,
+} from "@/lib/validators/category";
 import type {
   CategoryFormValues,
   CategoryOption,
@@ -17,6 +20,13 @@ interface AddCategoryDialogProps {
   isSubmitting?: boolean;
   initialValues?: CategoryFormValues | null;
 }
+
+/** Form-only validation: shopId (and id when editing) are supplied outside the dialog. */
+const createCategoryFormSchema = createCategorySchema.omit({ shopId: true });
+const updateCategoryFormSchema = updateCategorySchema.omit({
+  id: true,
+  shopId: true,
+});
 
 export function AddCategoryDialog({
   open,
@@ -82,7 +92,9 @@ export function AddCategoryDialog({
       initialValues={initialValues}
       title="Category"
       description="Create a new product category for your shop."
-      validationSchema={createCategorySchema}
+      validationSchema={
+        initialValues ? updateCategoryFormSchema : createCategoryFormSchema
+      }
       submitButtonText={{
         create: "Create Category",
         update: "Update Category",
