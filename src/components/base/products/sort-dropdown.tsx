@@ -6,14 +6,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
+import type { SortOption } from '@/types/products-types';
 
-export type SortOption =
-  | 'relevance'
-  | 'price-asc'
-  | 'price-desc'
-  | 'newest'
-  | 'rating'
-  | 'bast-selling';
 
 interface SortDropdownProps {
   value: SortOption;
@@ -31,7 +25,7 @@ export default function SortDropdown({
       value={value}
       onValueChange={(val) => onChange(val as SortOption)}
     >
-      <SelectTrigger className={cn('w-[180px]', className)}>
+      <SelectTrigger className={cn('w-45', className)}>
         <SelectValue placeholder='Sort by' />
       </SelectTrigger>
       <SelectContent>

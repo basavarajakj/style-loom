@@ -1,6 +1,6 @@
-import type { SortOption } from '@/components/base/products/sort-dropdown';
-import { mockProducts } from '@/data/products';
 import { useMemo, useState } from 'react';
+import { mockProducts } from '@/data/products';
+import type { SortOption } from '@/types/products-types';
 
 export interface FilterState {
   search: string;
@@ -28,7 +28,7 @@ const initialState: FilterState = {
   conditions: [],
 };
 
-export const useProductFilter = () => {
+export const useProductFilters = () => {
   const [filters, setFilters] = useState<FilterState>(initialState);
   const [isPending, setIsPending] = useState(false);
 
@@ -83,7 +83,7 @@ export const useProductFilter = () => {
     // Sizes
     if (filters.sizes.length > 0) {
       result = result.filter((p) =>
-        p.sizes.some((c) => filters.sizes.includes(c))
+        p.sizes.some((s) => filters.sizes.includes(s))
       );
     }
 
@@ -97,7 +97,7 @@ export const useProductFilter = () => {
       result = result.filter((p) => {
         if (filters.availability.includes('In Stock') && p.stock.inStock)
           return true;
-        // TODO: we can add other availability checks also
+        // Add other availability checks here if data becomes available
         return false;
       });
     }
@@ -106,7 +106,7 @@ export const useProductFilter = () => {
     if (filters.conditions.length > 0) {
       result = result.filter((p) => {
         if (filters.conditions.includes('New') && p.isNew) return true;
-        if (filters.conditions.includes('Used') && !p.isNew) return false;
+        if (filters.conditions.includes('Used') && !p.isNew) return true;
         return false;
       });
     }
@@ -125,7 +125,10 @@ export const useProductFilter = () => {
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
         break;
-      case 'bast-selling':
+      case 'rating':
+        result.sort((a, b) => b.rating.average - a.rating.average);
+        break;
+      case 'best-selling':
         result.sort((a, b) => b.sales - a.sales);
         break;
       default:
@@ -139,32 +142,30 @@ export const useProductFilter = () => {
   // Derived state for active filters chips
   const activeFilters = useMemo(() => {
     const active = [];
-
     if (filters.search)
       active.push({
         id: 'search',
         label: `Search: ${filters.search}`,
         type: 'search',
       });
-
     filters.categories.forEach((c) => {
       active.push({ id: c, label: c, type: 'category' });
     });
     filters.brands.forEach((b) => {
-      active.push({ id: b, label: b, type: 'category' });
+      active.push({ id: b, label: b, type: 'brand' });
     });
     if (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000) {
       active.push({
         id: 'price',
         label: `$${filters.priceRange[0]} - $${filters.priceRange[1]}`,
-        type: 'search',
+        type: 'price',
       });
     }
     filters.colors.forEach((c) => {
       active.push({ id: c, label: c, type: 'color' });
     });
     filters.sizes.forEach((s) => {
-      active.push({ id: s, label: s, type: 'size' });
+      active.push({ id: s, label: `Size: ${s}`, type: 'size' });
     });
     if (filters.rating)
       active.push({
@@ -196,7 +197,7 @@ export const useProductFilter = () => {
       case 'brand':
         updateFilter(
           'brands',
-          filters.categories.filter((b) => b !== id)
+          filters.brands.filter((b) => b !== id)
         );
         break;
       case 'price':
