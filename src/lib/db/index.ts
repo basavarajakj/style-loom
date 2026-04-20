@@ -22,11 +22,42 @@ import {
   attributeValues,
   attributeValuesRelations,
 } from './schema/attribute-schema';
-import { shippingMethods, shippingMethodsRelations } from './schema/shipping-schema';
-import { orderItems, orderItemsRelations, orders, ordersRelations } from './schema/order-schema';
-import { productReviews, productReviewsRelations, reviewHelpfulVotes, reviewHelpfulVotesRelations } from './schema/review-schema';
-import { cartItems, cartItemsRelations, cartSessions, cartSessionsRelations } from './schema/cart-schema';
-import { wishlistItems, wishlistItemsRelations } from './schema/wishlist-schema';
+import {
+  shippingMethods,
+  shippingMethodsRelations,
+} from './schema/shipping-schema';
+import {
+  orderItems,
+  orderItemsRelations,
+  orders,
+  ordersRelations,
+} from './schema/order-schema';
+import {
+  productReviews,
+  productReviewsRelations,
+  reviewHelpfulVotes,
+  reviewHelpfulVotesRelations,
+} from './schema/review-schema';
+import {
+  cartItems,
+  cartItemsRelations,
+  cartSessions,
+  cartSessionsRelations,
+} from './schema/cart-schema';
+import {
+  wishlistItems,
+  wishlistItemsRelations,
+} from './schema/wishlist-schema';
+import {
+  couponCategories,
+  couponCategoriesRelations,
+  couponProducts,
+  couponProductsRelations,
+  coupons,
+  couponsRelations,
+  couponUsage,
+  couponUsageRelations,
+} from './schema/coupon-schema';
 
 const schema = {
   user,
@@ -63,6 +94,14 @@ const schema = {
   productReviewsRelations,
   reviewHelpfulVotes,
   reviewHelpfulVotesRelations,
+  coupons,
+  couponProducts,
+  couponCategories,
+  couponUsage,
+  couponsRelations,
+  couponProductsRelations,
+  couponCategoriesRelations,
+  couponUsageRelations,
   cartSessions,
   cartItems,
   cartItemsRelations,

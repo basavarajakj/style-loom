@@ -18,7 +18,7 @@ export default function ProductDetailsTemplate({
     { label: 'Store', href: '/store' },
     {
       label: product.categoryName || 'Product',
-      href: product.categoryId ? `/store?category=${product.categoryId}` : '#',
+      href: product.categoryId ? `/category/${product.categoryName?.toLowerCase()}` : '#',
     },
     { label: product.name, href: `/store/product/${product.slug}` },
   ];

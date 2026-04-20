@@ -165,7 +165,6 @@ export const useCategoryMutations = (shopId: string) => {
  * Combined hook for category management
  */
 export const useCategories = (shopId: string) => {
-  console.log('shopId from hook', shopId)
   const mutations = useCategoryMutations(shopId);
 
   return {

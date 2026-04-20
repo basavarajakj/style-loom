@@ -53,10 +53,10 @@ export default function Collection() {
       title='Elevate Your STyle with Our Latest collections'
       description='Each piece is crafted to enhance your fashion statement'
       rightAsset={
-        <StarSolidIcon className='@5xl:h-[316px] @6xl:h-[386px] h-20 @5xl:w-[310px] @6xl:w-[246px]' />
+        <StarSolidIcon className='@5xl:h-79 @6xl:h-96.5 h-20 @5xl:w-77.5 @6xl:w-61.5' />
       }
     >
-      <div className='@4xl:px-12 @6xl:px-[60px] @7xl:px-20 px-5 pb-8'>
+      <div className='@4xl:px-12 @6xl:px-15 @7xl:px-20 px-5 pb-8'>
         <div className='flex flex-wrap gap-3'>
           {categoryTabs.map((tab) => (
             <Button

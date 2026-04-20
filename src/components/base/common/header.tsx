@@ -8,6 +8,7 @@ import { useCartStore } from '@/lib/store/cart-store';
 import { MobileMenu } from './mobile-menu';
 import { useSession } from '@/lib/auth/auth-client';
 import UserMenu from './user-menu';
+import { useCart } from '@/hooks/store/use-cart';
 
 const navigationItems = [
   { to: '/', label: 'Home' },
@@ -18,7 +19,8 @@ const navigationItems = [
 export default function Header() {
   const { data } = useSession();
   const user = data?.user;
-  const { totalItems, setIsOpen } = useCartStore();
+  const { totalItems } = useCart();
+  const { setIsOpen } = useCartStore();
 
   return (
     <header className='@container sticky top-0 z-40 w-full border-dashed border-b-2 bg-background backdrop-blur supports-filter:bg-background/80'>

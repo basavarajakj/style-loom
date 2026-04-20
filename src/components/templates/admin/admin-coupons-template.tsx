@@ -1,7 +1,7 @@
 import CouponHeader from '@/components/containers/shared/coupons/coupon-header';
 import CouponTable from '@/components/containers/shared/coupons/coupon-tables';
 import { ADMIN_COUPON_PERMISSIONS } from '@/lib/config/coupon-permissions';
-import type { Coupon, CouponFormValues } from '@/types/coupon-types';
+import type { Coupon, CouponFormValues } from '@/types/coupons-types';
 
 interface AdminCouponsTemplateProps {
   coupons: Coupon[];

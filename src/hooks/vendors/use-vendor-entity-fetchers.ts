@@ -5,6 +5,7 @@ import type {
 import { getAttributes } from '@/lib/functions/vendor/attributes';
 import { getBrands } from '@/lib/functions/vendor/brands';
 import { getCategories } from '@/lib/functions/vendor/categories';
+import { getCoupons } from '@/lib/functions/vendor/coupons';
 import { getProducts } from '@/lib/functions/vendor/products';
 import { getTags } from '@/lib/functions/vendor/tags';
 import { getTaxRates } from '@/lib/functions/vendor/tax';
@@ -15,6 +16,7 @@ import {
 import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
+import type { CouponItem } from '@/types/coupons-types';
 import type { ProductItem } from '@/types/products-types';
 import type { TagItem } from '@/types/tags-types';
 import type { TaxRateItem } from '@/types/taxes-types';
@@ -151,6 +153,37 @@ export function createVendorProductsFetcher(
       brandId: 'brandId',
     },
     defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+/**
+ * Coupons Fetcher
+ */
+
+export function createVendorCouponsFetcher(
+  shopId: string,
+): (params: DataTableFetchParams) => Promise<DataTableFetchResult<CouponItem>> {
+  return createServerFetcher<CouponItem, any>({
+    fetchFn: async (query) => {
+      const response = await getCoupons({ data: { ...query, shopId } });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      code: "code",
+      discountAmount: "discountAmount",
+      usageCount: "usageCount",
+      activeFrom: "activeFrom",
+      activeTo: "activeTo",
+      createdAt: "createdAt",
+    },
+    filterFieldMap: {
+      isActive: "isActive",
+      type: "type",
+      status: "status",
+      applicableTo: "applicableTo",
+    },
+    defaultQuery: { sortBy: "createdAt", sortDirection: "desc" },
     transformFilters: booleanFilterTransform,
   });
 }
