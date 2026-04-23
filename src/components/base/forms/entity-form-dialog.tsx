@@ -407,7 +407,6 @@ export function EntityFormDialog<T extends Record<string, any>>({
                   size='lg'
                   onClick={async (event) => {
                     event.preventDefault();
-                    console.log('EntityFormDialog: submit button clicked');
 
                     const value = values as T;
 

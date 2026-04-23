@@ -12,6 +12,8 @@ import {
   productImages,
   productImagesRelations,
   products,
+  productShippingMethods,
+  productShippingMethodsRelations,
   productsRelations,
   productTags,
   productTagsRelations,
@@ -58,6 +60,7 @@ import {
   couponUsage,
   couponUsageRelations,
 } from './schema/coupon-schema';
+import { customerAddresses, customerAddressesRelations } from './schema/address-schema';
 
 const schema = {
   user,
@@ -84,8 +87,6 @@ const schema = {
   productsRelations,
   productTags,
   productTagsRelations,
-  shippingMethods,
-  shippingMethodsRelations,
   orderItems,
   orderItemsRelations,
   orders,
@@ -106,8 +107,14 @@ const schema = {
   cartItems,
   cartItemsRelations,
   cartSessionsRelations,
+  customerAddresses,
+  customerAddressesRelations,
   wishlistItems,
   wishlistItemsRelations,
+  shippingMethods,
+  shippingMethodsRelations,
+  productShippingMethods,
+  productShippingMethodsRelations,
 };
 
 // Lazy initialization - only connect to DB when first accessed

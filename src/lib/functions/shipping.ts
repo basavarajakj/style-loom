@@ -4,26 +4,26 @@
  * Server functions for shipping management in the vendor dashboard.
  */
 
-import { createServerFn } from "@tanstack/react-start";
-import { and, asc, count, desc, eq, ilike } from "drizzle-orm";
-import { v4 as uuidv4 } from "uuid";
-import { db } from "../db";
-import { shippingMethods } from "../db/schema/shipping-schema";
-import { requireShopAccess } from "../helper/vendor";
-import { authMiddleware } from "../middleware/auth";
+import { createServerFn } from '@tanstack/react-start';
+import { and, asc, count, desc, eq, ilike } from 'drizzle-orm';
+import { v4 as uuidv4 } from 'uuid';
+import { db } from '../db';
+import { shippingMethods } from '../db/schema/shipping-schema';
+import { requireShopAccess } from '../helper/vendor';
+import { authMiddleware } from '../middleware/auth';
 import {
   createShippingMethodSchema,
   deleteShippingMethodSchema,
   getShippingMethodByIdSchema,
   getShippingMethodsQuerySchema,
   updateShippingMethodSchema,
-} from "../validators/shipping";
+} from '../validators/shipping';
 
 // ============================================================================
 // Get Shipping Methods (List with Pagination)
 // ============================================================================
 
-export const getShippingMethods = createServerFn({ method: "GET" })
+export const getShippingMethods = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
   .inputValidator(getShippingMethodsQuerySchema)
   .handler(async ({ context, data }) => {
@@ -48,12 +48,12 @@ export const getShippingMethods = createServerFn({ method: "GET" })
     const whereClause = and(...conditions);
 
     // Build order by clause
-    const orderFn = sortDirection === "desc" ? desc : asc;
+    const orderFn = sortDirection === 'desc' ? desc : asc;
     const orderByClause = (() => {
       switch (sortBy) {
-        case "name":
+        case 'name':
           return orderFn(shippingMethods.name);
-        case "price":
+        case 'price':
           return orderFn(shippingMethods.price);
         default:
           return orderFn(shippingMethods.createdAt);
@@ -91,7 +91,7 @@ export const getShippingMethods = createServerFn({ method: "GET" })
 // Get Shipping Method by ID
 // ============================================================================
 
-export const getShippingMethodById = createServerFn({ method: "GET" })
+export const getShippingMethodById = createServerFn({ method: 'GET' })
   .middleware([authMiddleware])
   .inputValidator(getShippingMethodByIdSchema)
   .handler(async ({ context, data }) => {
@@ -104,12 +104,12 @@ export const getShippingMethodById = createServerFn({ method: "GET" })
       .select()
       .from(shippingMethods)
       .where(
-        and(eq(shippingMethods.id, id), eq(shippingMethods.shopId, shopId)),
+        and(eq(shippingMethods.id, id), eq(shippingMethods.shopId, shopId))
       )
       .limit(1);
 
     if (!shippingMethod) {
-      throw new Error("Shipping method not found.");
+      throw new Error('Shipping method not found.');
     }
 
     return {
@@ -125,13 +125,13 @@ export const getShippingMethodById = createServerFn({ method: "GET" })
 // Create Shipping Method
 // ============================================================================
 
-export const createShippingMethod = createServerFn({ method: "POST" })
+export const createShippingMethod = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
   .inputValidator(createShippingMethodSchema)
   .handler(async ({ context, data }) => {
     const userId = context.session.user.id;
     const { shopId, ...methodData } = data;
-
+    console.log(data)
     await requireShopAccess(userId, shopId);
 
     const id = uuidv4();
@@ -163,7 +163,7 @@ export const createShippingMethod = createServerFn({ method: "POST" })
 // Update Shipping Method
 // ============================================================================
 
-export const updateShippingMethod = createServerFn({ method: "POST" })
+export const updateShippingMethod = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
   .inputValidator(updateShippingMethodSchema)
   .handler(async ({ context, data }) => {
@@ -182,12 +182,12 @@ export const updateShippingMethod = createServerFn({ method: "POST" })
       .update(shippingMethods)
       .set(updateData)
       .where(
-        and(eq(shippingMethods.id, id), eq(shippingMethods.shopId, shopId)),
+        and(eq(shippingMethods.id, id), eq(shippingMethods.shopId, shopId))
       )
       .returning();
 
     if (!updatedMethod) {
-      throw new Error("Shipping method not found or update failed.");
+      throw new Error('Shipping method not found or update failed.');
     }
 
     return {
@@ -204,7 +204,7 @@ export const updateShippingMethod = createServerFn({ method: "POST" })
 // Delete Shipping Method
 // ============================================================================
 
-export const deleteShippingMethod = createServerFn({ method: "POST" })
+export const deleteShippingMethod = createServerFn({ method: 'POST' })
   .middleware([authMiddleware])
   .inputValidator(deleteShippingMethodSchema)
   .handler(async ({ context, data }) => {
@@ -216,12 +216,12 @@ export const deleteShippingMethod = createServerFn({ method: "POST" })
     const [deletedMethod] = await db
       .delete(shippingMethods)
       .where(
-        and(eq(shippingMethods.id, id), eq(shippingMethods.shopId, shopId)),
+        and(eq(shippingMethods.id, id), eq(shippingMethods.shopId, shopId))
       )
       .returning();
 
     if (!deletedMethod) {
-      throw new Error("Shipping method not found or delete failed.");
+      throw new Error('Shipping method not found or delete failed.');
     }
 
     return {

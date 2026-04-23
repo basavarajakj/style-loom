@@ -1,17 +1,10 @@
-export interface CouponPermissions {
-  canDelete: boolean;
-  canEdit: boolean;
-  canView: boolean;
-  canToggleStatus: boolean;
-}
-
 /**
  * Coupon Types
  *
  * Type definitions for coupons in the marketplace.
  */
 
-import type { SQL } from 'drizzle-orm';
+import type { SQL } from "drizzle-orm";
 import type {
   Coupon,
   CouponApplicability as ZodCouponApplicability,
@@ -20,8 +13,8 @@ import type {
   CouponProductRelation as ZodCouponProductRelation,
   CouponStatus as ZodCouponStatus,
   CouponType as ZodCouponType,
-} from '@/lib/validators/shared/coupon-query';
-import type { PaginatedResponse } from './api-response';
+} from "@/lib/validators/shared/coupon-query";
+import type { PaginatedResponse } from "./api-response";
 
 // ============================================================================
 // Enums
@@ -97,13 +90,13 @@ export interface CouponQueryOptions {
   limit?: number;
   offset?: number;
   sortBy?:
-    | 'code'
-    | 'discountAmount'
-    | 'usageCount'
-    | 'activeFrom'
-    | 'activeTo'
-    | 'createdAt';
-  sortDirection?: 'asc' | 'desc';
+    | "code"
+    | "discountAmount"
+    | "usageCount"
+    | "activeFrom"
+    | "activeTo"
+    | "createdAt";
+  sortDirection?: "asc" | "desc";
   includeShopInfo?: boolean;
   includeVendorInfo?: boolean;
   includeLinkedItems?: boolean;
@@ -123,13 +116,13 @@ export interface ListCouponsQuery {
   status?: CouponStatus;
   applicableTo?: CouponApplicability;
   sortBy?:
-    | 'code'
-    | 'discountAmount'
-    | 'usageCount'
-    | 'activeFrom'
-    | 'activeTo'
-    | 'createdAt';
-  sortDirection?: 'asc' | 'desc';
+    | "code"
+    | "discountAmount"
+    | "usageCount"
+    | "activeFrom"
+    | "activeTo"
+    | "createdAt";
+  sortDirection?: "asc" | "desc";
 }
 
 // ============================================================================
@@ -179,14 +172,14 @@ export interface ValidateCouponResponse {
   discountAmount?: number;
   applicableAmount?: number;
   invalidReason?:
-    | 'not_found'
-    | 'inactive'
-    | 'not_started'
-    | 'expired'
-    | 'usage_limit_reached'
-    | 'user_limit_reached'
-    | 'minimum_not_met'
-    | 'no_applicable_products';
+    | "not_found"
+    | "inactive"
+    | "not_started"
+    | "expired"
+    | "usage_limit_reached"
+    | "user_limit_reached"
+    | "minimum_not_met"
+    | "no_applicable_products";
 }
 
 export interface AvailableCouponsResponse {
@@ -246,3 +239,4 @@ export interface CouponUsageInfo {
   discountApplied: string;
   usedAt: string;
 }
+

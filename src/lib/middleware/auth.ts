@@ -1,6 +1,6 @@
-import { redirect } from "@tanstack/react-router";
-import { createMiddleware } from "@tanstack/react-start";
-import { auth } from "../auth";
+import { redirect } from '@tanstack/react-router';
+import { createMiddleware } from '@tanstack/react-start';
+import { auth } from '../auth';
 
 export const authMiddleware = createMiddleware().server(
   async ({ next, request }) => {
@@ -12,7 +12,7 @@ export const authMiddleware = createMiddleware().server(
       const url = new URL(request.url);
       const redirectTo = url.pathname + url.search;
       throw redirect({
-        to: "/auth/sign-in",
+        to: '/auth/sign-in',
         search: { redirectTo },
       });
     }
@@ -20,5 +20,5 @@ export const authMiddleware = createMiddleware().server(
     return next({
       context: { session, headers: request.headers },
     });
-  },
+  }
 );
