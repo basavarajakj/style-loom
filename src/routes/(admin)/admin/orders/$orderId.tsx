@@ -1,18 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Loader2 } from 'lucide-react';
 import ShopOrderDetailsTemplate from '@/components/templates/vendor/shop-order-details-template';
-import { useVendorOrderDetails } from '@/hooks/vendors/use-vendor-orders';
+import { useAdminOrderDetails } from '@/hooks/admin/use-admin-orders';
 
-export const Route = createFileRoute('/(vendor)/shop/$slug/orders/$orderId')({
-  component: OrderDetailsPage,
+export const Route = createFileRoute('/(admin)/admin/orders/$orderId')({
+  component: RouteComponent,
 });
 
-function OrderDetailsPage() {
-  const { slug, orderId } = Route.useParams();
-
-  console.log("OrderID", slug);
-  const { data: order, isLoading, error } = useVendorOrderDetails(orderId);
-  console.log("OrderData", order);
+function RouteComponent() {
+  const { orderId } = Route.useParams();
+  const { data: order, isLoading, error } = useAdminOrderDetails(orderId);
 
   if (isLoading) {
     return (
@@ -41,10 +38,21 @@ function OrderDetailsPage() {
     );
   }
 
+  const orderWithShopMeta = order as typeof order & {
+    shopId?: string;
+    shopName?: string;
+  };
+  const normalizedOrder = {
+    ...order,
+    shopId: order.shop?.id ?? orderWithShopMeta.shopId ?? '',
+    shopName: order.shop?.name ?? orderWithShopMeta.shopName ?? 'Unknown Store',
+  };
+
   return (
     <ShopOrderDetailsTemplate
-      shopSlug={slug}
-      order={order}
+      order={normalizedOrder}
+      mode='admin'
+      backLink={{ to: '/admin/orders', label: 'Back to Orders' }}
     />
   );
 }

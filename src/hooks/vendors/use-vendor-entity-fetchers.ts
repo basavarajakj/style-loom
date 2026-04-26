@@ -6,6 +6,7 @@ import { getAttributes } from '@/lib/functions/vendor/attributes';
 import { getBrands } from '@/lib/functions/vendor/brands';
 import { getCategories } from '@/lib/functions/vendor/categories';
 import { getCoupons } from '@/lib/functions/vendor/coupons';
+import { getVendorOrders } from '@/lib/functions/vendor/order';
 import { getProducts } from '@/lib/functions/vendor/products';
 import { getTags } from '@/lib/functions/vendor/tags';
 import { getTaxRates } from '@/lib/functions/vendor/tax';
@@ -17,6 +18,7 @@ import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
 import type { CouponItem } from '@/types/coupons-types';
+import type { VendorOrderResponse } from '@/types/order-types';
 import type { ProductItem } from '@/types/products-types';
 import type { TagItem } from '@/types/tags-types';
 import type { TaxRateItem } from '@/types/taxes-types';
@@ -162,7 +164,7 @@ export function createVendorProductsFetcher(
  */
 
 export function createVendorCouponsFetcher(
-  shopId: string,
+  shopId: string
 ): (params: DataTableFetchParams) => Promise<DataTableFetchResult<CouponItem>> {
   return createServerFetcher<CouponItem, any>({
     fetchFn: async (query) => {
@@ -170,20 +172,48 @@ export function createVendorCouponsFetcher(
       return { data: response.data ?? [], total: response.total ?? 0 };
     },
     sortFieldMap: {
-      code: "code",
-      discountAmount: "discountAmount",
-      usageCount: "usageCount",
-      activeFrom: "activeFrom",
-      activeTo: "activeTo",
-      createdAt: "createdAt",
+      code: 'code',
+      discountAmount: 'discountAmount',
+      usageCount: 'usageCount',
+      activeFrom: 'activeFrom',
+      activeTo: 'activeTo',
+      createdAt: 'createdAt',
     },
     filterFieldMap: {
-      isActive: "isActive",
-      type: "type",
-      status: "status",
-      applicableTo: "applicableTo",
+      isActive: 'isActive',
+      type: 'type',
+      status: 'status',
+      applicableTo: 'applicableTo',
     },
-    defaultQuery: { sortBy: "createdAt", sortDirection: "desc" },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
     transformFilters: booleanFilterTransform,
+  });
+}
+
+// ============================================================================
+// Orders Fetcher
+// ============================================================================
+
+export function createVendorOrdersFetcher(
+  shopSlug: string
+): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<VendorOrderResponse>> {
+  return createServerFetcher<VendorOrderResponse, any>({
+    fetchFn: async (query) => {
+      const response = await getVendorOrders({
+        data: { ...query, shopSlug },
+      });
+      return {
+        data: (response.orders ?? []) as unknown as VendorOrderResponse[],
+        total: response.total ?? 0,
+      };
+    },
+    sortFieldMap: {
+      createdAt: 'createdAt',
+      orderNumber: 'orderNumber',
+    },
+    filterFieldMap: { status: 'status' },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
   });
 }
