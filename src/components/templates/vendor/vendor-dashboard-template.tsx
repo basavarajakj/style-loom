@@ -31,7 +31,7 @@ export default function VendorDashboardTemplate({
             title={stat.title}
             value={stat.value}
             change={stat.change}
-            Icon={stat.icon}
+            icon={stat.icon}
           />
         ))}
       </div>

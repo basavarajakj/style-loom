@@ -18,7 +18,7 @@ const mockSettings: Setting[] = [
     value: 'ShopStack',
     description: 'The name of the platform',
     category: 'General',
-    updatedAt: new Date('2024-01-01'),
+    updatedAt: new Date('2026-03-01'),
   },
   {
     id: '2',
@@ -26,7 +26,7 @@ const mockSettings: Setting[] = [
     value: 'Multi-vendor e-commerce platform',
     description: 'Platform description shown in meta tags',
     category: 'General',
-    updatedAt: new Date('2024-01-01'),
+    updatedAt: new Date('2026-01-01'),
   },
   {
     id: '3',
@@ -34,7 +34,7 @@ const mockSettings: Setting[] = [
     value: 'support@shopstack.com',
     description: 'Primary contact email address',
     category: 'Contact',
-    updatedAt: new Date('2024-01-15'),
+    updatedAt: new Date('2026-01-15'),
   },
   {
     id: '4',
@@ -42,7 +42,7 @@ const mockSettings: Setting[] = [
     value: '+1 (555) 123-4567',
     description: 'Primary contact phone number',
     category: 'Contact',
-    updatedAt: new Date('2024-01-15'),
+    updatedAt: new Date('2026-01-15'),
   },
   {
     id: '5',
@@ -50,7 +50,7 @@ const mockSettings: Setting[] = [
     value: 'USD',
     description: 'Default currency for transactions',
     category: 'Payment',
-    updatedAt: new Date('2024-02-01'),
+    updatedAt: new Date('2026-02-01'),
   },
   {
     id: '6',
@@ -58,7 +58,7 @@ const mockSettings: Setting[] = [
     value: 'true',
     description: 'Enable Stripe payment gateway',
     category: 'Payment',
-    updatedAt: new Date('2024-02-01'),
+    updatedAt: new Date('2026-02-01'),
   },
   {
     id: '7',
@@ -66,7 +66,7 @@ const mockSettings: Setting[] = [
     value: 'standard',
     description: 'Default shipping method',
     category: 'Shipping',
-    updatedAt: new Date('2024-02-15'),
+    updatedAt: new Date('2026-02-15'),
   },
   {
     id: '8',
@@ -74,7 +74,7 @@ const mockSettings: Setting[] = [
     value: '50.00',
     description: 'Minimum order value for free shipping',
     category: 'Shipping',
-    updatedAt: new Date('2024-02-15'),
+    updatedAt: new Date('2026-02-15'),
   },
   {
     id: '9',
@@ -82,7 +82,7 @@ const mockSettings: Setting[] = [
     value: 'smtp.gmail.com',
     description: 'SMTP server hostname',
     category: 'Email',
-    updatedAt: new Date('2024-03-01'),
+    updatedAt: new Date('2026-03-01'),
   },
   {
     id: '10',
@@ -90,7 +90,7 @@ const mockSettings: Setting[] = [
     value: '587',
     description: 'SMTP server port',
     category: 'Email',
-    updatedAt: new Date('2024-03-01'),
+    updatedAt: new Date('2026-03-01'),
   },
   {
     id: '11',
@@ -98,7 +98,7 @@ const mockSettings: Setting[] = [
     value: '3600',
     description: 'Session timeout in seconds',
     category: 'Security',
-    updatedAt: new Date('2024-03-15'),
+    updatedAt: new Date('2026-03-15'),
   },
   {
     id: '12',
@@ -106,7 +106,7 @@ const mockSettings: Setting[] = [
     value: '8',
     description: 'Minimum password length',
     category: 'Security',
-    updatedAt: new Date('2024-03-15'),
+    updatedAt: new Date('2026-03-15'),
   },
 ];
 

@@ -242,7 +242,13 @@ export const createTransactionColumns = ({
     // 9. Actions Column
     {
       id: 'actions',
-      header: () => <div className='text-right'>Actions</div>,
+      header: () => (
+        <div
+          className={`text-right ${actions.onViewTransaction || actions.onRefundTransaction ? 'visible' : 'hidden'}`}
+        >
+          Actions
+        </div>
+      ),
       cell: ({ row }) => {
         const transaction = row.original;
         const isMutating = isTransactionMutating?.(transaction.id) ?? false;
@@ -250,58 +256,60 @@ export const createTransactionColumns = ({
 
         return (
           <div className='flex justify-end'>
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                asChild
-                disabled={isMutating}
-              >
-                <Button
-                  variant='ghost'
-                  className='h-8 w-8 p-0'
+            {(actions.onViewTransaction || actions.onRefundTransaction) && (
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  asChild
                   disabled={isMutating}
                 >
-                  <span className='sr-only'>Open menu</span>
-                  <MoreHorizontal className='size-4' />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align='end'>
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-                {/* View Transaction Action */}
-                {actions.onViewTransaction && (
-                  <DropdownMenuItem
-                    onClick={() => actions.onViewTransaction!(transaction)}
+                  <Button
+                    variant='ghost'
+                    className='h-8 w-8 p-0'
+                    disabled={isMutating}
                   >
-                    <Eye className='mr-2 h-4 w-4' />
-                    View Details
-                  </DropdownMenuItem>
-                )}
+                    <span className='sr-only'>Open menu</span>
+                    <MoreHorizontal className='size-4' />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align='end'>
+                  <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-                {/* Refund Action - Only for succeeded transactions */}
-                {actions.onRefundTransaction &&
-                  transaction.status === 'succeeded' && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        className='text-destructive'
-                        onClick={() =>
-                          actions.onRefundTransaction!(transaction)
-                        }
-                        disabled={isRefunding}
-                      >
-                        {isRefunding ? (
-                          <span className='flex items-center gap-2'>
-                            <span className='animate-spin'>⟳</span>
-                            Refunding...
-                          </span>
-                        ) : (
-                          'Refund'
-                        )}
-                      </DropdownMenuItem>
-                    </>
+                  {/* View Transaction Action */}
+                  {actions.onViewTransaction && (
+                    <DropdownMenuItem
+                      onClick={() => actions.onViewTransaction!(transaction)}
+                    >
+                      <Eye className='mr-2 h-4 w-4' />
+                      View Details
+                    </DropdownMenuItem>
                   )}
-              </DropdownMenuContent>
-            </DropdownMenu>
+
+                  {/* Refund Action - Only for succeeded transactions */}
+                  {actions.onRefundTransaction &&
+                    transaction.status === 'succeeded' && (
+                      <>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className='text-destructive'
+                          onClick={() =>
+                            actions.onRefundTransaction!(transaction)
+                          }
+                          disabled={isRefunding}
+                        >
+                          {isRefunding ? (
+                            <span className='flex items-center gap-2'>
+                              <span className='animate-spin'>⟳</span>
+                              Refunding...
+                            </span>
+                          ) : (
+                            'Refund'
+                          )}
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         );
       },

@@ -1,52 +1,29 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
+import { ShopDashboardSkeleton } from '@/components/base/vendors/skeleton/shop-dashboard-skeleton';
+import ShopDashboardTemplate from '@/components/templates/vendor/shop-dashboard-template';
+import { useShopDashboard } from '@/hooks/vendors/use-shop-dashboard';
+import { shopBySlugQueryOptions } from '@/hooks/vendors/use-shops';
 
-import { ShopDashboardSkeleton } from "@/components/base/vendors/skeleton/shop-dashboard-skeleton";
-import ShopDashboardTemplate from "@/components/templates/vendor/shop-dashboard-template";
-import { createFileRoute } from "@tanstack/react-router";
-import { IndianRupeeIcon, Package, ShoppingBag, TrendingUp } from "lucide-react";
-
-export const Route = createFileRoute("/(vendor)/shop/$slug/")({
+export const Route = createFileRoute('/(vendor)/shop/$slug/')({
   component: ShopDashboardPage,
-  loader: async () => {
-    // Simulate loading delay for skeleton demonstration
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    return {};
-  },
   pendingComponent: ShopDashboardSkeleton,
 });
 
 function ShopDashboardPage() {
   const { slug } = Route.useParams();
 
-  const shopStats = [
-    {
-      title: "Monthly Revenue",
-      value: "$12,450",
-      change: "+12.5% from last month",
-      icon: IndianRupeeIcon,
-      trend: "up" as const,
-    },
-    {
-      title: "Total Products",
-      value: "156",
-      change: "+8 new products",
-      icon: Package,
-      trend: "up" as const,
-    },
-    {
-      title: "Total Orders",
-      value: "342",
-      change: "+23% from last month",
-      icon: ShoppingBag,
-      trend: "up" as const,
-    },
-    {
-      title: "Conversion Rate",
-      value: "3.2%",
-      change: "+0.5% from last month",
-      icon: TrendingUp,
-      trend: "up" as const,
-    },
-  ];
+  // Get shop data to retrieve shopId
+  const { data: shopData } = useSuspenseQuery(shopBySlugQueryOptions(slug));
+  const shopId = shopData?.shop?.id ?? '';
 
-  return <ShopDashboardTemplate shopName={slug} stats={shopStats} />;
+  // Fetch aggregated dashboard data
+  const { data: dashboardData } = useShopDashboard(shopId, slug);
+
+  return (
+    <ShopDashboardTemplate
+      shopName={slug}
+      dashboardData={dashboardData}
+    />
+  );
 }
