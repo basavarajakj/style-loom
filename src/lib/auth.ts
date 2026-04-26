@@ -11,7 +11,7 @@ import {
   twoFactor as twoFactorTable,
 } from './db/schema/auth-schema';
 import { sendEmail } from './email';
-import OtpEmail from './email/otp-email';
+import OtpEmail from './emails/otp-email';
 
 export const auth = betterAuth({
   basePath: '/api/auth', // Base path where auth routes are mounted

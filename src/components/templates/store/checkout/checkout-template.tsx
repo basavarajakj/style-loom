@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { BreadcrumbNav } from '@/components/base/common/breadcrumb-nav';
 import NotFound from '@/components/base/empty/not-found';
-// import { StripePaymentDialog } from '@/components/base/store/checkout/stripe-payment-dialog';
+import { StripePaymentDialog } from '@/components/base/store/checkout/stripe-payment-dialog';
 import { CheckoutAddressSection } from '@/components/containers/store/checkout/checkout-address-section';
 import CheckoutOrderSummary from '@/components/containers/store/checkout/checkout-order-summary';
 import ShippingMethodSelector from '@/components/containers/store/checkout/shipping-method-selector';
@@ -368,11 +368,11 @@ export default function CheckoutTemplate() {
         </div>
       </div>
 
-      {/* <StripePaymentDialog
+      <StripePaymentDialog
         open={showPaymentDialog}
         onOpenChange={setShowPaymentDialog}
         checkoutSession={checkoutSession}
-      /> */}
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { drizzle, type NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import { account, session, user, verification } from './schema/auth-schema';
-import { shops, vendors } from './schema/shop-schema';
+import { shops, shopsRelations, vendors, vendorsRelations } from './schema/shop-schema';
 import { categories } from './schema/category-schema';
 import { brands } from './schema/brand-schema';
 import { taxRates, taxRatesRelations } from './schema/tax-schema';
@@ -33,6 +33,8 @@ import {
   orderItemsRelations,
   orders,
   ordersRelations,
+  payments,
+  paymentsRelations,
 } from './schema/order-schema';
 import {
   productReviews,
@@ -60,7 +62,18 @@ import {
   couponUsage,
   couponUsageRelations,
 } from './schema/coupon-schema';
-import { customerAddresses, customerAddressesRelations } from './schema/address-schema';
+import {
+  customerAddresses,
+  customerAddressesRelations,
+} from './schema/address-schema';
+import {
+  notifications,
+  notificationsRelations,
+} from './schema/notification-schema';
+import {
+  emailDeliveries,
+  emailDeliveriesRelations,
+} from './schema/email-schema';
 
 const schema = {
   user,
@@ -68,7 +81,9 @@ const schema = {
   session,
   verification,
   vendors,
+  vendorsRelations,
   shops,
+  shopsRelations,
   categories,
   brands,
   taxRates,
@@ -91,6 +106,8 @@ const schema = {
   orderItemsRelations,
   orders,
   ordersRelations,
+  payments,
+  paymentsRelations,
   productReviews,
   productReviewsRelations,
   reviewHelpfulVotes,
@@ -115,6 +132,10 @@ const schema = {
   shippingMethodsRelations,
   productShippingMethods,
   productShippingMethodsRelations,
+  notifications,
+  notificationsRelations,
+  emailDeliveries,
+  emailDeliveriesRelations,
 };
 
 // Lazy initialization - only connect to DB when first accessed
