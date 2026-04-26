@@ -5,9 +5,12 @@ import type {
 import { getAttributes } from '@/lib/functions/vendor/attributes';
 import { getBrands } from '@/lib/functions/vendor/brands';
 import { getCategories } from '@/lib/functions/vendor/categories';
+import { getCoupons } from '@/lib/functions/vendor/coupons';
+import { getVendorOrders } from '@/lib/functions/vendor/order';
 import { getProducts } from '@/lib/functions/vendor/products';
 import { getTags } from '@/lib/functions/vendor/tags';
 import { getTaxRates } from '@/lib/functions/vendor/tax';
+import { getVendorTransactions } from '@/lib/functions/vendor/transactions';
 import {
   booleanFilterTransform,
   createServerFetcher,
@@ -15,9 +18,12 @@ import {
 import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
+import type { CouponItem } from '@/types/coupons-types';
+import type { VendorOrderResponse } from '@/types/order-types';
 import type { ProductItem } from '@/types/products-types';
 import type { TagItem } from '@/types/tags-types';
 import type { TaxRateItem } from '@/types/taxes-types';
+import type { VendorTransactionResponse } from '@/types/transaction-types';
 
 export const VENDOR_STATUS_OPTIONS = [
   { label: 'Active', value: 'true' },
@@ -152,5 +158,92 @@ export function createVendorProductsFetcher(
     },
     defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
     transformFilters: booleanFilterTransform,
+  });
+}
+
+/**
+ * Coupons Fetcher
+ */
+
+export function createVendorCouponsFetcher(
+  shopId: string
+): (params: DataTableFetchParams) => Promise<DataTableFetchResult<CouponItem>> {
+  return createServerFetcher<CouponItem, any>({
+    fetchFn: async (query) => {
+      const response = await getCoupons({ data: { ...query, shopId } });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      code: 'code',
+      discountAmount: 'discountAmount',
+      usageCount: 'usageCount',
+      activeFrom: 'activeFrom',
+      activeTo: 'activeTo',
+      createdAt: 'createdAt',
+    },
+    filterFieldMap: {
+      isActive: 'isActive',
+      type: 'type',
+      status: 'status',
+      applicableTo: 'applicableTo',
+    },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+// ============================================================================
+// Transactions Fetcher
+// ============================================================================
+
+export function createVendorTransactionsFetcher(
+  shopSlug: string
+): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<VendorTransactionResponse>> {
+  return createServerFetcher<VendorTransactionResponse, any>({
+    fetchFn: async (query) => {
+      const response = await getVendorTransactions({
+        data: { ...query, shopSlug },
+      });
+      return {
+        data: response.transactions ?? [],
+        total: response.total ?? 0,
+      };
+    },
+    sortFieldMap: {
+      createdAt: 'createdAt',
+      totalAmount: 'totalAmount',
+    },
+    filterFieldMap: { status: 'status' },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+  });
+}
+
+// ============================================================================
+// Orders Fetcher
+// ============================================================================
+
+export function createVendorOrdersFetcher(
+  shopSlug: string
+): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<VendorOrderResponse>> {
+  return createServerFetcher<VendorOrderResponse, any>({
+    fetchFn: async (query) => {
+      const response = await getVendorOrders({
+        data: { ...query, shopSlug },
+      });
+      return {
+        data: (response.orders ?? []) as unknown as VendorOrderResponse[],
+        total: response.total ?? 0,
+      };
+    },
+    sortFieldMap: {
+      createdAt: 'createdAt',
+      orderNumber: 'orderNumber',
+    },
+    filterFieldMap: { status: 'status' },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
   });
 }

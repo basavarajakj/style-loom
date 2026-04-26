@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,10 +8,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { twoFactor } from "@/lib/auth/auth-client";
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { twoFactor } from '@/lib/auth/auth-client';
 
 type Enable2FADialogProps = {
   open: boolean;
@@ -24,12 +24,12 @@ export function Enable2FADialog({
   onOpenChange,
   onSuccess,
 }: Enable2FADialogProps) {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleEnable = async () => {
     if (!password) {
-      toast.error("Please enter your password");
+      toast.error('Please enter your password');
       return;
     }
 
@@ -40,26 +40,29 @@ export function Enable2FADialog({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to enable 2FA");
+        toast.error(error.message || 'Failed to enable 2FA');
         return;
       }
 
       if (data?.backupCodes) {
-        toast.success("Two-factor authentication enabled!");
+        toast.success('Two-factor authentication enabled!');
         onSuccess?.(data.backupCodes);
         onOpenChange(false);
-        setPassword("");
+        setPassword('');
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to enable 2FA");
+      toast.error(err instanceof Error ? err.message : 'Failed to enable 2FA');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>Enable Two-Factor Authentication</DialogTitle>
           <DialogDescription>
@@ -68,17 +71,17 @@ export function Enable2FADialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="password">Current Password</Label>
+        <div className='space-y-4 py-4'>
+          <div className='space-y-2'>
+            <Label htmlFor='password'>Current Password</Label>
             <Input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
+              id='password'
+              type='password'
+              placeholder='Enter your password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                   handleEnable();
                 }
               }}
@@ -88,16 +91,19 @@ export function Enable2FADialog({
 
         <DialogFooter>
           <Button
-            variant="outline"
+            variant='outline'
             onClick={() => {
               onOpenChange(false);
-              setPassword("");
+              setPassword('');
             }}
           >
             Cancel
           </Button>
-          <Button onClick={handleEnable} disabled={loading || !password}>
-            {loading ? "Enabling…" : "Enable 2FA"}
+          <Button
+            onClick={handleEnable}
+            disabled={loading || !password}
+          >
+            {loading ? 'Enabling…' : 'Enable 2FA'}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -115,12 +121,12 @@ export function Disable2FADialog({
   onOpenChange,
   onSuccess,
 }: Disable2FADialogProps) {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleDisable = async () => {
     if (!password) {
-      toast.error("Please enter your password");
+      toast.error('Please enter your password');
       return;
     }
 
@@ -131,24 +137,27 @@ export function Disable2FADialog({
       });
 
       if (error) {
-        toast.error(error.message || "Failed to disable 2FA");
+        toast.error(error.message || 'Failed to disable 2FA');
         return;
       }
 
-      toast.success("Two-factor authentication disabled");
+      toast.success('Two-factor authentication disabled');
       onSuccess?.();
       onOpenChange(false);
-      setPassword("");
+      setPassword('');
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to disable 2FA");
+      toast.error(err instanceof Error ? err.message : 'Failed to disable 2FA');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>Disable Two-Factor Authentication</DialogTitle>
           <DialogDescription>
@@ -156,17 +165,17 @@ export function Disable2FADialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="space-y-2">
-            <Label htmlFor="disable-password">Current Password</Label>
+        <div className='space-y-4 py-4'>
+          <div className='space-y-2'>
+            <Label htmlFor='disable-password'>Current Password</Label>
             <Input
-              id="disable-password"
-              type="password"
-              placeholder="Enter your password"
+              id='disable-password'
+              type='password'
+              placeholder='Enter your password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                   handleDisable();
                 }
               }}
@@ -176,20 +185,20 @@ export function Disable2FADialog({
 
         <DialogFooter>
           <Button
-            variant="outline"
+            variant='outline'
             onClick={() => {
               onOpenChange(false);
-              setPassword("");
+              setPassword('');
             }}
           >
             Cancel
           </Button>
           <Button
-            variant="destructive"
+            variant='destructive'
             onClick={handleDisable}
             disabled={loading || !password}
           >
-            {loading ? "Disabling…" : "Disable 2FA"}
+            {loading ? 'Disabling…' : 'Disable 2FA'}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -209,13 +218,16 @@ export function BackupCodesDialog({
   backupCodes,
 }: BackupCodesDialogProps) {
   const handleCopy = () => {
-    navigator.clipboard.writeText(backupCodes.join("\n"));
-    toast.success("Backup codes copied to clipboard");
+    navigator.clipboard.writeText(backupCodes.join('\n'));
+    toast.success('Backup codes copied to clipboard');
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
+      <DialogContent className='sm:max-w-md'>
         <DialogHeader>
           <DialogTitle>Save Your Backup Codes</DialogTitle>
           <DialogDescription>
@@ -224,21 +236,27 @@ export function BackupCodesDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
-          <div className="grid grid-cols-2 gap-2 rounded-lg bg-muted p-4 font-mono text-sm">
+        <div className='space-y-4 py-4'>
+          <div className='grid grid-cols-2 gap-2 rounded-lg bg-muted p-4 font-mono text-sm'>
             {backupCodes.map((code, index) => (
-              <div key={index} className="text-center">
+              <div
+                key={index}
+                className='text-center'
+              >
                 {code}
               </div>
             ))}
           </div>
-          <p className="font-medium text-destructive text-sm">
+          <p className='font-medium text-destructive text-sm'>
             ⚠️ These codes will only be shown once!
           </p>
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleCopy}>
+          <Button
+            variant='outline'
+            onClick={handleCopy}
+          >
             Copy Codes
           </Button>
           <Button onClick={() => onOpenChange(false)}>Done</Button>

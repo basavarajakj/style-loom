@@ -1,8 +1,8 @@
+import { Search } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SearchIcon } from 'lucide-react';
-import { useState } from 'react';
 
 interface OrderSearchFormProps {
   onSearch: (orderId: string) => void;
@@ -11,17 +11,17 @@ interface OrderSearchFormProps {
 
 export default function OrderSearchForm({
   onSearch,
-  isLoading,
+  isLoading = false,
 }: OrderSearchFormProps) {
   const [orderId, setOrderId] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (orderId.trim()) {
       onSearch(orderId.trim());
     }
   };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -30,7 +30,7 @@ export default function OrderSearchForm({
       <div className='space-y-4'>
         <div className='space-y-2'>
           <Label htmlFor='orderId'>Order ID or Tracking Number</Label>
-          <div className='flex flex-col @3xl:flex-row gap-2'>
+          <div className='flex gap-2'>
             <Input
               id='orderId'
               type='text'
@@ -38,14 +38,14 @@ export default function OrderSearchForm({
               value={orderId}
               onChange={(e) => setOrderId(e.target.value)}
               disabled={isLoading}
-              className='flex-1 rounded-lg py-3'
+              className='flex-1 rounded-xl'
             />
             <Button
               type='submit'
               size='lg'
               disabled={!orderId.trim() || isLoading}
             >
-              <SearchIcon className='mr-2 h-4 w-4' />
+              <Search className='mr-2 h-4 w-4' />
               {isLoading ? 'Searching...' : 'Track Order'}
             </Button>
           </div>

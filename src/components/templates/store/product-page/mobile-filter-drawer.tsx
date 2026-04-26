@@ -1,3 +1,5 @@
+import { Filter } from 'lucide-react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
@@ -6,16 +8,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { type FilterState } from '@/lib/store/product-filter-store';
-import { FilterIcon } from 'lucide-react';
-import { useState } from 'react';
-import FilterSidebar from './filter-sidebar';
 import { cn } from '@/lib/utils';
+import FilterSidebar from './filter-sidebar';
+import type { FilterState } from '@/lib/store/product-filters-store';
 
 interface MobileFilterDrawerProps {
   filters: FilterState;
   updateFilter: (key: keyof FilterState, value: any) => void;
   totalResults: number;
+  availableCategories: string[];
+  availableBrands: string[];
   className?: string;
 }
 
@@ -23,9 +25,11 @@ export default function MobileFilterDrawer({
   filters,
   updateFilter,
   totalResults,
+  availableCategories,
+  availableBrands,
   className,
 }: MobileFilterDrawerProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   return (
     <Sheet
       open={open}
@@ -35,24 +39,27 @@ export default function MobileFilterDrawer({
         <Button
           variant='outline'
           size='lg'
-          className={cn('flex @5xl:hidden gap-2', className)}
+          className={cn('flex @4xl:hidden gap-2', className)}
         >
-          <FilterIcon className='size-4' />
+          <Filter className='h-4 w-4' />
           Filters
         </Button>
       </SheetTrigger>
-
       <SheetContent
         side='left'
-        className='@2xl:w-[400px] w-[300px] overflow-y-auto'
+        className='@2xl:w-100 w-75 overflow-y-auto'
       >
-        <SheetHeader className='mb-2'>
+        <SheetHeader className='mb-4'>
           <SheetTitle>Filters ({totalResults})</SheetTitle>
         </SheetHeader>
+
         <FilterSidebar
           filters={filters}
           updateFilter={updateFilter}
+          availableCategories={availableCategories}
+          availableBrands={availableBrands}
         />
+
         <div className='sticky bottom-0 mt-6 border-t bg-background p-4'>
           <Button
             className='w-full'

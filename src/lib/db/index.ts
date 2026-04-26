@@ -1,7 +1,7 @@
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { drizzle, type NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import { account, session, user, verification } from './schema/auth-schema';
-import { shops, vendors } from './schema/shop-schema';
+import { shops, shopsRelations, vendors, vendorsRelations } from './schema/shop-schema';
 import { categories } from './schema/category-schema';
 import { brands } from './schema/brand-schema';
 import { taxRates, taxRatesRelations } from './schema/tax-schema';
@@ -12,6 +12,8 @@ import {
   productImages,
   productImagesRelations,
   products,
+  productShippingMethods,
+  productShippingMethodsRelations,
   productsRelations,
   productTags,
   productTagsRelations,
@@ -22,7 +24,56 @@ import {
   attributeValues,
   attributeValuesRelations,
 } from './schema/attribute-schema';
-import { shippingMethods, shippingMethodsRelations } from './schema/shipping-schema';
+import {
+  shippingMethods,
+  shippingMethodsRelations,
+} from './schema/shipping-schema';
+import {
+  orderItems,
+  orderItemsRelations,
+  orders,
+  ordersRelations,
+  payments,
+  paymentsRelations,
+} from './schema/order-schema';
+import {
+  productReviews,
+  productReviewsRelations,
+  reviewHelpfulVotes,
+  reviewHelpfulVotesRelations,
+} from './schema/review-schema';
+import {
+  cartItems,
+  cartItemsRelations,
+  cartSessions,
+  cartSessionsRelations,
+} from './schema/cart-schema';
+import {
+  wishlistItems,
+  wishlistItemsRelations,
+} from './schema/wishlist-schema';
+import {
+  couponCategories,
+  couponCategoriesRelations,
+  couponProducts,
+  couponProductsRelations,
+  coupons,
+  couponsRelations,
+  couponUsage,
+  couponUsageRelations,
+} from './schema/coupon-schema';
+import {
+  customerAddresses,
+  customerAddressesRelations,
+} from './schema/address-schema';
+import {
+  notifications,
+  notificationsRelations,
+} from './schema/notification-schema';
+import {
+  emailDeliveries,
+  emailDeliveriesRelations,
+} from './schema/email-schema';
 
 const schema = {
   user,
@@ -30,7 +81,9 @@ const schema = {
   session,
   verification,
   vendors,
+  vendorsRelations,
   shops,
+  shopsRelations,
   categories,
   brands,
   taxRates,
@@ -49,8 +102,40 @@ const schema = {
   productsRelations,
   productTags,
   productTagsRelations,
+  orderItems,
+  orderItemsRelations,
+  orders,
+  ordersRelations,
+  payments,
+  paymentsRelations,
+  productReviews,
+  productReviewsRelations,
+  reviewHelpfulVotes,
+  reviewHelpfulVotesRelations,
+  coupons,
+  couponProducts,
+  couponCategories,
+  couponUsage,
+  couponsRelations,
+  couponProductsRelations,
+  couponCategoriesRelations,
+  couponUsageRelations,
+  cartSessions,
+  cartItems,
+  cartItemsRelations,
+  cartSessionsRelations,
+  customerAddresses,
+  customerAddressesRelations,
+  wishlistItems,
+  wishlistItemsRelations,
   shippingMethods,
   shippingMethodsRelations,
+  productShippingMethods,
+  productShippingMethodsRelations,
+  notifications,
+  notificationsRelations,
+  emailDeliveries,
+  emailDeliveriesRelations,
 };
 
 // Lazy initialization - only connect to DB when first accessed

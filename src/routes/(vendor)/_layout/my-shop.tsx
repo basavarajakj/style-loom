@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { MyShopsPageSkeleton } from '@/components/base/vendors/skeleton/shop-card-skeleton';
 import { AddShopDialog } from '@/components/containers/shared/shops/add-shop-dialog';
 import MyShopsTemplate from '@/components/templates/vendor/my-shops-template';
@@ -7,8 +8,7 @@ import {
   useTransformedShops,
   vendorShopsQueryOptions,
 } from '@/hooks/vendors/use-shops';
-import type { ShopFormValues } from '@/types/shop-types';
-import { createFileRoute } from '@tanstack/react-router';
+import type { ShopFormValues } from '@/types/shop-types'  ;
 
 export const Route = createFileRoute('/(vendor)/_layout/my-shop')({
   component: MyShopPage,
@@ -47,11 +47,12 @@ function MyShopPage() {
         email: data.email,
         enableNotifications: data.enableNotification,
       });
+      handleDialogClose();
     } catch (error) {
+      // Error is handled by the mutation's onError callback
       console.error('Failed to create shop:', error);
     }
   };
-
   return (
     <>
       <MyShopsTemplate
@@ -59,6 +60,7 @@ function MyShopPage() {
         onCreateShop={handleAddShop}
         currentVendorId={currentVendorId}
       />
+
       <AddShopDialog
         open={isDialogOpen}
         onOpenChange={(open) => {

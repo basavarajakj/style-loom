@@ -23,7 +23,6 @@ function CategoriesPage() {
   const { slug } = Route.useParams();
   const { data: shopData } = useSuspenseQuery(shopBySlugQueryOptions(slug));
   const shopId = shopData?.shop.id ?? '';
-
   const fetcher = useMemo(
     () => createVendorCategoriesFetcher(shopId),
     [shopId]

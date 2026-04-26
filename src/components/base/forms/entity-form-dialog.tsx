@@ -407,7 +407,6 @@ export function EntityFormDialog<T extends Record<string, any>>({
                   size='lg'
                   onClick={async (event) => {
                     event.preventDefault();
-                    console.log('EntityFormDialog: submit button clicked');
 
                     const value = values as T;
 
@@ -416,7 +415,7 @@ export function EntityFormDialog<T extends Record<string, any>>({
 
                       if (!result.success) {
                         const issues = result.error.issues;
-                        console.group?.('EntityFormDialog validation failed');
+                        console.group?.('EntityFormDialog validation failed', value);
                         console.error(
                           'Form validation failed. Issues:',
                           issues,

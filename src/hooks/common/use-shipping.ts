@@ -114,6 +114,7 @@ export const useShippingMutations = (shopId: string) => {
   const createShippingMutation = useMutation({
     mutationFn: async (data: Omit<CreateShippingMethodInput, 'shopId'>) => {
       const result = await createShippingMethod({ data: { ...data, shopId } });
+      console.log('create mutation', shopId);
       return result;
     },
     onSuccess: (result) => {

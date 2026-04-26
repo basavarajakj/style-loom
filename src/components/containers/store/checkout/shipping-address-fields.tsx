@@ -83,6 +83,19 @@ export function ShippingAddressFields({ form }: ShippingAddressFieldsProps) {
         </form.Field>
       </div>
 
+      <form.Field
+        name="street"
+        children={(field) => (
+          <FormTextField
+            label="Street Address"
+            required
+            placeholder="123 Main St"
+            autoComplete="street-address"
+            field={field}
+          />
+        )}
+      />
+
       <div className="grid @4xl:grid-cols-3 grid-cols-1 gap-6">
         <form.Field
           name="city"
@@ -90,7 +103,7 @@ export function ShippingAddressFields({ form }: ShippingAddressFieldsProps) {
             <FormTextField
               label="City"
               required
-              placeholder="Bengaluru"
+              placeholder="Dhaka"
               autoComplete="address-level2"
               field={field}
             />
@@ -102,7 +115,7 @@ export function ShippingAddressFields({ form }: ShippingAddressFieldsProps) {
             <FormTextField
               label="State"
               required
-              placeholder="Bengaluru Division"
+              placeholder="Dhaka Division"
               autoComplete="address-level1"
               field={field}
             />
@@ -114,7 +127,7 @@ export function ShippingAddressFields({ form }: ShippingAddressFieldsProps) {
             <FormTextField
               label="Zip Code"
               required
-              placeholder="560048"
+              placeholder="1200"
               autoComplete="postal-code"
               field={field}
             />

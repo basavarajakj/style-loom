@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import AdminCouponsTemplate from '@/components/templates/admin/admin-coupons-template';
 import { mockCoupons } from '@/data/coupons';
-import type { Coupon, CouponFormValues } from '@/types/coupon-types';
+import type { Coupon, CouponFormValues } from '@/types/coupons-types';
 
 export const Route = createFileRoute('/(admin)/admin/coupons/')({
   component: AdminCouponsPage,

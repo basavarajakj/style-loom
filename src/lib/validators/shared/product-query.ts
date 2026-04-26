@@ -5,7 +5,7 @@
  * Uses base-query for common schemas to ensure DRY compliance.
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 import {
   ADMIN_DEFAULT_LIMIT,
   createDeleteSchema,
@@ -21,26 +21,26 @@ import {
   shopSlugFields,
   sortDirectionEnum,
   VENDOR_DEFAULT_LIMIT,
-} from "./base-query";
+} from './base-query';
 
 // Re-export common types
-export type { SortDirection } from "./base-query";
+export type { SortDirection } from './base-query';
 
 // ============================================================================
 // Entity-Specific Enums
 // ============================================================================
 
-export const productStatusEnum = z.enum(["draft", "active", "archived"]);
+export const productStatusEnum = z.enum(['draft', 'active', 'archived']);
 
-export const productTypeEnum = z.enum(["simple", "variable"]);
+export const productTypeEnum = z.enum(['simple', 'variable']);
 
 export const productSortByEnum = z.enum([
-  "name",
-  "sellingPrice",
-  "stock",
-  "createdAt",
-  "averageRating",
-  "reviewCount",
+  'name',
+  'sellingPrice',
+  'stock',
+  'createdAt',
+  'averageRating',
+  'reviewCount',
 ]);
 
 // ============================================================================
@@ -100,25 +100,25 @@ export const attributeFilterFields = {
 // ============================================================================
 
 const sortFields = {
-  sortBy: productSortByEnum.optional().default("createdAt"),
-  sortDirection: sortDirectionEnum.optional().default("desc"),
+  sortBy: productSortByEnum.optional().default('createdAt'),
+  sortDirection: sortDirectionEnum.optional().default('desc'),
 };
 
 const storeSortFields = {
   sortBy: z
-    .enum(["name", "price", "createdAt", "updatedAt"])
+    .enum(['name', 'price', 'createdAt', 'updatedAt'])
     .optional()
-    .default("createdAt"), // No stock sort for public
-  sortDirection: sortDirectionEnum.optional().default("desc"),
+    .default('createdAt'), // No stock sort for public
+  sortDirection: sortDirectionEnum.optional().default('desc'),
 };
 
 // ============================================================================
 // Get by ID/Slug Schemas (using factory functions)
 // ============================================================================
 
-export const getProductByIdSchema = createGetByIdSchema("Product");
+export const getProductByIdSchema = createGetByIdSchema('Product');
 
-export const getProductBySlugSchema = createGetBySlugSchema("Product");
+export const getProductBySlugSchema = createGetBySlugSchema('Product');
 
 // ============================================================================
 // Composed Query Schemas
@@ -179,9 +179,9 @@ export const vendorProductsQuerySchema = z.object({
 // Action Schemas (using factory functions)
 // ============================================================================
 
-export const toggleProductActiveSchema = createToggleActiveSchema("Product");
+export const toggleProductActiveSchema = createToggleActiveSchema('Product');
 
-export const deleteProductSchema = createDeleteSchema("Product");
+export const deleteProductSchema = createDeleteSchema('Product');
 
 // ============================================================================
 // Entity Schemas
@@ -279,8 +279,8 @@ export const productSchema = z.object({
   taxId: z.string().optional().nullable(),
 
   // Status & Type
-  status: productStatusEnum.default("draft"),
-  productType: productTypeEnum.default("simple"),
+  status: productStatusEnum.default('draft'),
+  productType: productTypeEnum.default('simple'),
 
   // Flags
   isFeatured: z.boolean().default(false),
@@ -297,7 +297,7 @@ export const productSchema = z.object({
     .nullable(),
 
   // Denormalized rating data
-  averageRating: z.string().default("0"),
+  averageRating: z.string().default('0'),
   reviewCount: z.number().default(0),
 
   // Timestamps
@@ -313,15 +313,15 @@ export const productSchema = z.object({
  * Required product identification fields (for create)
  */
 const productRequiredIdFields = {
-  shopId: z.string().min(1, "Shop ID is required"),
+  shopId: z.string().min(1, 'Shop ID is required'),
 };
 
 /**
  * Optional product identification fields (for update)
  */
 const productOptionalIdFields = {
-  id: z.string().min(1, "Product ID is required"),
-  shopId: z.string().min(1, "Shop ID is required"),
+  id: z.string().min(1, 'Product ID is required'),
+  shopId: z.string().min(1, 'Shop ID is required'),
 };
 
 /**
@@ -329,24 +329,24 @@ const productOptionalIdFields = {
  */
 const productNameField = z
   .string()
-  .min(2, "Product name must be at least 2 characters")
-  .max(200, "Product name must be at most 200 characters");
+  .min(2, 'Product name must be at least 2 characters')
+  .max(200, 'Product name must be at most 200 characters');
 
 /**
  * Product slug field with validation
  */
 const productSlugField = z
   .string()
-  .min(2, "Slug must be at least 2 characters")
-  .max(200, "Slug must be at most 200 characters")
+  .min(2, 'Slug must be at least 2 characters')
+  .max(200, 'Slug must be at most 200 characters')
   .regex(
     /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-    "Slug must be lowercase with hyphens only",
+    'Slug must be lowercase with hyphens only'
   );
 
 /** Empty string = omit / let server generate; `.optional()` alone still rejects "" in Zod */
 const optionalProductSlugField = z
-  .union([z.literal(""), productSlugField])
+  .union([z.literal(''), productSlugField])
   .optional();
 
 /**
@@ -366,7 +366,7 @@ const productDescriptionFields = {
  * Product pricing fields (for create - required sellingPrice)
  */
 const productPricingFieldsCreate = {
-  sellingPrice: z.string().min(1, "Selling price is required"),
+  sellingPrice: z.string().min(1, 'Selling price is required'),
   regularPrice: z.string().optional(),
   costPrice: z.string().optional(),
 };
@@ -420,8 +420,8 @@ const productRelationFieldsUpdate = {
  * Product status and type fields (for create - with defaults)
  */
 const productStatusFieldsCreate = {
-  status: productStatusEnum.optional().default("draft"),
-  productType: productTypeEnum.optional().default("simple"),
+  status: productStatusEnum.optional().default('draft'),
+  productType: productTypeEnum.optional().default('simple'),
 };
 
 /**
@@ -557,7 +557,7 @@ export const productFormSchema = z.object({
         regularPrice: z.string().optional(),
         sellingPrice: z.string().optional(),
         image: z.string().optional(),
-      }),
+      })
     )
     .optional()
     .default({}),
@@ -591,7 +591,7 @@ export const getFeaturedProductsSchema = z.object({
 });
 
 export const getRelatedProductsSchema = z.object({
-  productId: z.string().min(1, "Product ID is required"),
+  productId: z.string().min(1, 'Product ID is required'),
   limit: z.coerce.number().min(1).max(10).optional().default(4),
 });
 

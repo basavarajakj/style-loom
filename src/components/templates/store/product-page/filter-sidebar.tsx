@@ -1,20 +1,13 @@
-import { ColorRadioItem } from '@/components/base/products/color-radio-item';
+import { Star } from 'lucide-react';
+import { ColorRadioItem } from '@/components/base/products/color-redio-item';
 import FilterGroup from '@/components/base/products/filter-group';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
-import {
-  AVAILABILITY,
-  BRANDS,
-  CATEGORIES,
-  COLORS,
-  SIZES,
-} from '@/data/products';
-import type { FilterState } from '@/lib/store/product-filter-store';
-import { cn } from '@/lib/utils';
-import { StarIcon } from 'lucide-react';
+import { COLORS, SIZES } from '@/data/products';
+import type { FilterState } from '@/lib/store/product-filters-store';
 
 interface FilterSidebarProps {
   filters: FilterState;
@@ -22,12 +15,16 @@ interface FilterSidebarProps {
     key: keyof FilterState,
     value: string | number | string[] | [number, number] | null
   ) => void;
+  availableCategories: string[];
+  availableBrands: string[];
   className?: string;
 }
 
 export default function FilterSidebar({
   filters,
   updateFilter,
+  availableCategories,
+  availableBrands,
   className,
 }: FilterSidebarProps) {
   const handleCheckboxChange = (
@@ -36,7 +33,6 @@ export default function FilterSidebar({
     key: keyof FilterState
   ) => {
     const current = filters[key] as string[];
-
     if (checked) {
       updateFilter(key, [...current, item]);
     } else {
@@ -52,48 +48,50 @@ export default function FilterSidebar({
   };
 
   return (
-    <div className={cn('space-y-1 px-4', className)}>
+    <div className={`space-y-1 px-4 ${className}`}>
       <div className='mb-4 font-semibold text-lg'>Filters</div>
 
-      {/* Category */}
-      <FilterGroup
-        id='categories'
-        title='Category'
-      >
-        <div className='space-y-2'>
-          {Object.keys(CATEGORIES).map((category) => (
-            <div
-              key={category}
-              className='flex items-center space-x-2'
-            >
-              <Checkbox
-                id={`cat-${category}`}
-                checked={filters.categories.includes(category)}
-                onCheckedChange={(checked) =>
-                  handleCheckboxChange(
-                    checked as boolean,
-                    category,
-                    'categories'
-                  )
-                }
-              />
-              <Label
-                htmlFor={`cat-${category}`}
-                className='cursor-pointer font-normal text-sm'
+      {/* Categories */}
+      {availableCategories.length > 0 && (
+        <FilterGroup
+          id='categories'
+          title='Categories'
+        >
+          <div className='max-h-48 space-y-2 overflow-y-auto pr-2'>
+            {availableCategories.map((category) => (
+              <div
+                key={category}
+                className='flex items-center space-x-2'
               >
-                {category}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </FilterGroup>
+                <Checkbox
+                  id={`cat-${category}`}
+                  checked={filters.categories.includes(category)}
+                  onCheckedChange={(checked) =>
+                    handleCheckboxChange(
+                      checked as boolean,
+                      category,
+                      'categories'
+                    )
+                  }
+                />
+                <Label
+                  htmlFor={`cat-${category}`}
+                  className='cursor-pointer font-normal text-sm'
+                >
+                  {category}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </FilterGroup>
+      )}
 
-      {/* Price range */}
+      {/* Price Range */}
       <FilterGroup
         id='price'
-        title='Price'
+        title='Price Range'
       >
-        <div className='p-2'>
+        <div className='px-2 pt-4 pb-2'>
           <Slider
             defaultValue={[0, 1000]}
             value={[filters.priceRange[0], filters.priceRange[1]]}
@@ -109,65 +107,65 @@ export default function FilterSidebar({
         </div>
       </FilterGroup>
 
-      {/* Brand */}
-      <FilterGroup
-        id='brands'
-        title='Brand'
-      >
-        <div className='space-y-2'>
-          {BRANDS.map((brand) => (
-            <div
-              key={brand}
-              className='flex items-center space-x-2'
-            >
-              <Checkbox
-                id={`brand-${brand}`}
-                checked={filters.categories.includes(brand)}
-                onCheckedChange={(checked) =>
-                  handleCheckboxChange(checked as boolean, brand, 'categories')
-                }
-              />
-              <Label
-                htmlFor={`brand-${brand}`}
-                className='cursor-pointer font-normal text-sm'
+      {/* Brands */}
+      {availableBrands.length > 0 && (
+        <FilterGroup
+          id='brands'
+          title='Brands'
+        >
+          <div className='max-h-48 space-y-2 overflow-y-auto pr-2'>
+            {availableBrands.map((brand) => (
+              <div
+                key={brand}
+                className='flex items-center space-x-2'
               >
-                {brand}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </FilterGroup>
+                <Checkbox
+                  id={`brand-${brand}`}
+                  checked={filters.brands.includes(brand)}
+                  onCheckedChange={(checked) =>
+                    handleCheckboxChange(checked as boolean, brand, 'brands')
+                  }
+                />
+                <Label
+                  htmlFor={`brand-${brand}`}
+                  className='cursor-pointer font-normal text-sm'
+                >
+                  {brand}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </FilterGroup>
+      )}
 
       {/* Colors */}
       <FilterGroup
         id='colors'
         title='Colors'
       >
-        <div className='space-y-2'>
-          <RadioGroup
-            value={filters.colors[0] || ''}
-            onValueChange={(value) =>
-              updateFilter('colors', value ? [value] : [])
-            }
-            className='flex flex-wrap gap-2'
-          >
-            {COLORS.map((color) => (
-              <ColorRadioItem
-                key={color}
-                color={color}
-                value={color}
-                id={`color-${color}`}
-                className='cursor-pointer'
-              />
-            ))}
-          </RadioGroup>
-        </div>
+        <RadioGroup
+          value={filters.colors[0] || ''}
+          onValueChange={(value) =>
+            updateFilter('colors', value ? [value] : [])
+          }
+          className='flex flex-wrap gap-2'
+        >
+          {COLORS.map((color) => (
+            <ColorRadioItem
+              key={color}
+              color={color}
+              value={color}
+              id={`color-${color}`}
+              className='cursor-pointer'
+            />
+          ))}
+        </RadioGroup>
       </FilterGroup>
 
-      {/* Size */}
+      {/* Sizes */}
       <FilterGroup
         id='sizes'
-        title='Size'
+        title='Sizes'
       >
         <div className='flex flex-wrap gap-2'>
           {SIZES.map((size) => (
@@ -179,7 +177,7 @@ export default function FilterSidebar({
                 const isSelected = filters.sizes.includes(size);
                 handleCheckboxChange(!isSelected, size, 'sizes');
               }}
-              className='h-10 w-10 p-0'
+              className='h-8 w-10 p-0'
             >
               {size}
             </Button>
@@ -210,7 +208,7 @@ export default function FilterSidebar({
               />
               <div className='flex items-center'>
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon
+                  <Star
                     key={i}
                     className={`h-4 w-4 ${i < rating ? 'fill-amber-400 text-amber-400' : 'text-gray-300'}`}
                   />
@@ -228,30 +226,32 @@ export default function FilterSidebar({
         title='Availability'
       >
         <div className='space-y-2'>
-          {AVAILABILITY.map((status) => (
-            <div
-              key={status}
-              className='flex items-center space-x-2'
-            >
-              <Checkbox
-                id={`avail-${status}`}
-                checked={filters.availability.includes(status)}
-                onCheckedChange={(checked) =>
-                  handleCheckboxChange(
-                    checked as boolean,
-                    status,
-                    'availability'
-                  )
-                }
-              />
-              <Label
-                htmlFor={`avail-${status}`}
-                className='cursor-pointer font-normal text-sm'
+          {['In Stock', 'Ships in 24 hours', 'Available for pickup'].map(
+            (status) => (
+              <div
+                key={status}
+                className='flex items-center space-x-2'
               >
-                {status}
-              </Label>
-            </div>
-          ))}
+                <Checkbox
+                  id={`avail-${status}`}
+                  checked={filters.availability.includes(status)}
+                  onCheckedChange={(checked) =>
+                    handleCheckboxChange(
+                      checked as boolean,
+                      status,
+                      'availability'
+                    )
+                  }
+                />
+                <Label
+                  htmlFor={`avail-${status}`}
+                  className='cursor-pointer font-normal text-sm'
+                >
+                  {status}
+                </Label>
+              </div>
+            )
+          )}
         </div>
       </FilterGroup>
     </div>
