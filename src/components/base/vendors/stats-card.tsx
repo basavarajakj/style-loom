@@ -24,7 +24,7 @@ export default function StatsCard({
       </CardHeader>
       <CardContent>
         <h2 className='font-bold text-2xl'>{value}</h2>
-        <p className='text-muted-foreground text-xs textgre'>{change}</p>
+        <p className='text-muted-foreground text-xs '>{change}</p>
       </CardContent>
     </Card>
   );
