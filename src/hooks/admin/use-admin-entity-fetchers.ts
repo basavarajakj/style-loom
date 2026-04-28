@@ -3,6 +3,7 @@ import type {
   DataTableFetchResult,
 } from '@/components/base/data-table/types';
 import { getAdminAttributes } from '@/lib/functions/admin/attribute';
+import { getAdminBrands } from '@/lib/functions/admin/brand';
 import { getAdminProducts } from '@/lib/functions/admin/product';
 import { getAdminShops } from '@/lib/functions/admin/shop';
 import {
@@ -10,6 +11,7 @@ import {
   createServerFetcher,
 } from '@/lib/helper/create-server-fetcher';
 import type { AttributeItem } from '@/types/attributes-types';
+import type { BrandItem } from '@/types/brands-types';
 import type { ProductItem } from '@/types/products-types';
 import type { AdminTenant } from '@/types/tenant-types';
 
@@ -70,6 +72,21 @@ export function createAdminProductsFetcher(): (
       inStock: 'inStock',
     },
     defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+export function createAdminBrandsFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<BrandItem>> {
+  return createServerFetcher<BrandItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminBrands({ data: query });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: { name: 'name', createdAt: 'createdAt' },
+    filterFieldMap: { isActive: 'isActive' },
+    defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
     transformFilters: booleanFilterTransform,
   });
 }
