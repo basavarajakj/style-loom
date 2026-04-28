@@ -1,26 +1,44 @@
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
 import AttributeHeader from '@/components/containers/shared/attributes/attribute-header';
 import AttributeTable from '@/components/containers/shared/attributes/attribute-table';
-import { ADMIN_ATTRIBUTE_PERMISSIONS } from '@/lib/config/attribute-permissions';
-import type { Attribute, AttributeFormValues } from '@/types/attributes-types';
+import type {
+  AdminAttributeMutationState,
+  AttributeItem,
+} from '@/types/attributes-types';
 
 interface AdminAttributesTemplateProps {
-  attributes: Attribute[];
-  onAddAttribute: (data: AttributeFormValues) => void;
-  onDeleteAttribute: (attributeId: string) => void;
+  fetcher: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<AttributeItem>>;
+  onEditAttribute?: (attribute: AttributeItem) => void;
+  onDeleteAttribute?: (attribute: AttributeItem) => void;
+  onToggleActive?: (attribute: AttributeItem) => void;
+  mutationState?: AdminAttributeMutationState;
+  isAttributeMutating?: (id: string) => boolean;
 }
 
 export default function AdminAttributesTemplate({
-  attributes,
-  onAddAttribute,
+  fetcher,
+  onEditAttribute,
   onDeleteAttribute,
+  onToggleActive,
+  mutationState,
+  isAttributeMutating,
 }: AdminAttributesTemplateProps) {
   return (
-    <div className="space-y-6">
-      <AttributeHeader onAddAttribute={onAddAttribute} role="admin" />
+    <div className='space-y-6'>
+      <AttributeHeader role='admin' />
       <AttributeTable
-        attributes={attributes}
-        permissions={ADMIN_ATTRIBUTE_PERMISSIONS}
-        onDeleteAttribute={onDeleteAttribute}
+        fetcher={fetcher}
+        onEdit={onEditAttribute}
+        onDelete={onDeleteAttribute}
+        onToggleActive={onToggleActive}
+        mutationState={mutationState}
+        isAttributeMutating={isAttributeMutating}
+        mode='admin'
       />
     </div>
   );

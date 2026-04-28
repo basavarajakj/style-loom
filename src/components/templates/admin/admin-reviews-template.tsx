@@ -7,21 +7,27 @@ interface AdminReviewsTemplateProps {
   reviews: Review[];
   onReviewStatusChange: (
     reviewId: string,
-    newStatus: 'published' | 'pending' | 'rejected'
+    newStatus: 'approved' | 'pending' | 'rejected'
   ) => void;
+  onDeleteReview: (reviewId: string) => void;
 }
 
 export default function AdminReviewsTemplate({
   reviews,
   onReviewStatusChange,
+  onDeleteReview,
 }: AdminReviewsTemplateProps) {
   return (
     <>
-      <ReviewHeader />
+      <ReviewHeader
+        role='admin'
+        showAddButton={false}
+      />
       <ReviewTable
         reviews={reviews}
         permissions={ADMIN_REVIEW_PERMISSIONS}
         onUpdateStatus={onReviewStatusChange}
+        onDeleteReview={onDeleteReview}
       />
     </>
   );

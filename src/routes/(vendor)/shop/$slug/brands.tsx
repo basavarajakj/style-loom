@@ -19,7 +19,8 @@ function BrandsPage() {
 
   // Get shop data to retrieve shopId
   const { data: shopData } = useSuspenseQuery(shopBySlugQueryOptions(slug));
-  const shopId = shopData?.shop?.id;
+  const shopId = shopData?.shop?.id ?? '';
+  console.log('ShopID', shopId);
 
   // Create fetcher for server-side pagination
   const fetcher = useMemo(() => createVendorBrandsFetcher(shopId), [shopId]);
@@ -53,6 +54,7 @@ function BrandsPage() {
   });
 
   const handleBrandSubmit = async (data: BrandFormValues) => {
+    console.log('FORM SUBMIT TRIGGERED');
     try {
       if (editingBrand) {
         await updateBrand({

@@ -5,7 +5,7 @@
  * Uses base-query for common schemas to ensure DRY compliance.
  */
 
-import { z } from "zod";
+import { z } from 'zod';
 import {
   ADMIN_DEFAULT_LIMIT,
   createDeleteSchema,
@@ -23,18 +23,18 @@ import {
   sortDirectionEnum,
   storeIsActiveField,
   VENDOR_DEFAULT_LIMIT,
-} from "./base-query";
+} from './base-query';
 
 // Re-export common types
-export type { SortDirection } from "./base-query";
+export type { SortDirection } from './base-query';
 
 // ============================================================================
 // Entity-Specific Enums
 // ============================================================================
 
-export const attributeTypeEnum = z.enum(["select", "color", "image", "label"]);
+export const attributeTypeEnum = z.enum(['select', 'color', 'image', 'label']);
 
-export const attributeSortByEnum = z.enum(["name", "createdAt", "sortOrder"]);
+export const attributeSortByEnum = z.enum(['name', 'createdAt', 'sortOrder']);
 
 // ============================================================================
 // Entity-Specific Filter Fields
@@ -50,17 +50,17 @@ export const attributeFilterFields = {
 // ============================================================================
 
 const sortFields = {
-  sortBy: attributeSortByEnum.optional().default("sortOrder"),
-  sortDirection: sortDirectionEnum.optional().default("asc"),
+  sortBy: attributeSortByEnum.optional().default('sortOrder'),
+  sortDirection: sortDirectionEnum.optional().default('asc'),
 };
 
 // ============================================================================
 // Get by ID/Slug Schemas (using factory functions)
 // ============================================================================
 
-export const getAttributeByIdSchema = createGetByIdSchema("Attribute");
+export const getAttributeByIdSchema = createGetByIdSchema('Attribute');
 
-export const getAttributeBySlugSchema = createGetBySlugSchema("Attribute");
+export const getAttributeBySlugSchema = createGetBySlugSchema('Attribute');
 
 // ============================================================================
 // Composed Query Schemas
@@ -117,31 +117,31 @@ export const vendorAttributesQuerySchema = z.object({
 // ============================================================================
 
 export const toggleAttributeActiveSchema =
-  createToggleActiveSchema("Attribute");
+  createToggleActiveSchema('Attribute');
 
-export const deleteAttributeSchema = createDeleteSchema("Attribute");
+export const deleteAttributeSchema = createDeleteSchema('Attribute');
 
 export const attributeValueInputSchema = z.object({
   id: z.string().optional(),
-  name: z.string().min(1, "Value name is required"),
-  slug: z.string().min(1, "Value slug is required"),
+  name: z.string().min(1, 'Value name is required'),
+  slug: z.string().min(1, 'Value slug is required'),
   value: z.string(),
 });
 
 export const updateAdminAttributeSchema = z.object({
-  id: z.string().min(1, "Attribute ID is required"),
+  id: z.string().min(1, 'Attribute ID is required'),
   name: z
     .string()
-    .min(2, "Attribute name must be at least 2 characters")
-    .max(100, "Attribute name must be at most 100 characters")
+    .min(2, 'Attribute name must be at least 2 characters')
+    .max(100, 'Attribute name must be at most 100 characters')
     .optional(),
   slug: z
     .string()
-    .min(2, "Slug must be at least 2 characters")
-    .max(100, "Slug must be at most 100 characters")
+    .min(2, 'Slug must be at least 2 characters')
+    .max(100, 'Slug must be at most 100 characters')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must be lowercase with hyphens only",
+      'Slug must be lowercase with hyphens only'
     )
     .optional(),
   type: attributeTypeEnum.optional(),
@@ -154,21 +154,21 @@ export const updateAdminAttributeSchema = z.object({
  * Schema for creating a new attribute (Vendor)
  */
 export const createAttributeSchema = z.object({
-  shopId: z.string().min(1, "Shop ID is required"),
+  shopId: z.string().min(1, 'Shop ID is required'),
   name: z
     .string()
-    .min(2, "Attribute name must be at least 2 characters")
-    .max(100, "Attribute name must be at most 100 characters"),
+    .min(2, 'Attribute name must be at least 2 characters')
+    .max(100, 'Attribute name must be at most 100 characters'),
   slug: z
     .string()
-    .min(2, "Slug must be at least 2 characters")
-    .max(100, "Slug must be at most 100 characters")
+    .min(2, 'Slug must be at least 2 characters')
+    .max(100, 'Slug must be at most 100 characters')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must be lowercase with hyphens only",
+      'Slug must be lowercase with hyphens only'
     )
     .optional(),
-  type: attributeTypeEnum.default("select"),
+  type: attributeTypeEnum.default('select'),
   values: z.array(attributeValueInputSchema).default([]),
   sortOrder: z.coerce.number().min(0).optional().default(0),
   isActive: z.boolean().optional().default(true),
@@ -178,20 +178,20 @@ export const createAttributeSchema = z.object({
  * Schema for updating an existing attribute (Vendor)
  */
 export const updateAttributeSchema = z.object({
-  id: z.string().min(1, "Attribute ID is required"),
-  shopId: z.string().min(1, "Shop ID is required"),
+  id: z.string().min(1, 'Attribute ID is required'),
+  shopId: z.string().min(1, 'Shop ID is required'),
   name: z
     .string()
-    .min(2, "Attribute name must be at least 2 characters")
-    .max(100, "Attribute name must be at most 100 characters")
+    .min(2, 'Attribute name must be at least 2 characters')
+    .max(100, 'Attribute name must be at most 100 characters')
     .optional(),
   slug: z
     .string()
-    .min(2, "Slug must be at least 2 characters")
-    .max(100, "Slug must be at most 100 characters")
+    .min(2, 'Slug must be at least 2 characters')
+    .max(100, 'Slug must be at most 100 characters')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must be lowercase with hyphens only",
+      'Slug must be lowercase with hyphens only'
     )
     .optional(),
   type: attributeTypeEnum.optional(),

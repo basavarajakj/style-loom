@@ -64,7 +64,7 @@ export function RevenueChart({ data, isLoading = false }: RevenueChartProps) {
   const totalOrders = data.reduce((sum, d) => sum + d.orders, 0);
 
   return (
-    <Card className='col-span-4'>
+    <Card className='lg:col-span-4'>
       <CardHeader className='flex flex-row items-center justify-between'>
         <div>
           <CardTitle>Revenue Overview</CardTitle>

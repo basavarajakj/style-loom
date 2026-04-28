@@ -174,7 +174,7 @@ export default function ReviewTable({
                   <>
                     <DropdownMenuItem
                       onClick={() =>
-                        onUpdateStatus?.(row.original.id, 'published')
+                        onUpdateStatus?.(row.original.id, 'approved')
                       }
                       className="text-green-600"
                     >

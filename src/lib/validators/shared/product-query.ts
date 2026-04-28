@@ -80,6 +80,13 @@ export const stockFilterFields = {
 };
 
 /**
+ * Rating filter fields
+ */
+export const ratingFilterFields = {
+  minRating: z.coerce.number().min(1).max(5).optional(),
+};
+
+/**
  * Status filter fields
  */
 export const statusFilterFields = {
@@ -106,9 +113,9 @@ const sortFields = {
 
 const storeSortFields = {
   sortBy: z
-    .enum(['name', 'price', 'createdAt', 'updatedAt'])
+    .enum(['name', 'price', 'createdAt', 'updatedAt', 'averageRating'])
     .optional()
-    .default('createdAt'), // No stock sort for public
+    .default('createdAt'),
   sortDirection: sortDirectionEnum.optional().default('desc'),
 };
 
@@ -138,6 +145,7 @@ export const storeProductsQuerySchema = z.object({
   ...productBaseFilterFields,
   isFeatured: statusFilterFields.isFeatured,
   inStock: stockFilterFields.inStock,
+  ...ratingFilterFields,
   ...shopSlugFields,
   ...optionalShopIdField,
 });
@@ -153,7 +161,10 @@ export const adminProductsQuerySchema = z.object({
   limit: paginationFields.limit.default(ADMIN_DEFAULT_LIMIT),
   ...sortFields,
   ...searchFields,
-  ...productFilterFields,
+  ...productBaseFilterFields,
+  ...stockFilterFields,
+  ...statusFilterFields,
+  ...attributeFilterFields,
   ...optionalShopIdField,
   ...optionalVendorIdField,
 });
@@ -344,11 +355,6 @@ const productSlugField = z
     'Slug must be lowercase with hyphens only'
   );
 
-/** Empty string = omit / let server generate; `.optional()` alone still rejects "" in Zod */
-const optionalProductSlugField = z
-  .union([z.literal(''), productSlugField])
-  .optional();
-
 /**
  * Product SKU field
  */
@@ -515,7 +521,7 @@ const productRelationArraysUpdate = {
 export const createProductSchema = z.object({
   ...productRequiredIdFields,
   name: productNameField,
-  slug: optionalProductSlugField,
+  slug: productSlugField.optional(),
   sku: productSkuField.optional(),
   description: z.string().optional(),
   shortDescription: z.string().max(500).optional(),
@@ -528,12 +534,22 @@ export const createProductSchema = z.object({
   ...productRelationArraysCreate,
 });
 
+export const updateProductStatusSchema = z.object({
+  id: z.string().min(1, 'Product ID is required'),
+  status: productStatusEnum,
+});
+
+export const toggleProductFeaturedSchema = z.object({
+  id: z.string().min(1, 'Product ID is required'),
+  isFeatured: z.boolean(),
+});
+
 /**
  * Schema for product form values (UI-specific)
  */
 export const productFormSchema = z.object({
   name: productNameField,
-  slug: optionalProductSlugField,
+  slug: productSlugField.optional(),
   sku: productSkuField.optional(),
   description: z.string().optional(),
   shortDescription: z.string().max(500).optional(),
@@ -571,7 +587,7 @@ export const productFormSchema = z.object({
 export const updateProductSchema = z.object({
   ...productOptionalIdFields,
   name: productNameField.optional(),
-  slug: optionalProductSlugField,
+  slug: productSlugField.optional(),
   sku: productSkuField.optional().nullable(),
   description: productDescriptionFields.description.optional().nullable(),
   shortDescription: productDescriptionFields.shortDescription

@@ -1,7 +1,17 @@
-import type { DataTableFetchParams, DataTableFetchResult } from "@/components/base/data-table/types";
-import { getAdminShops } from "@/lib/functions/admin/shop";
-import { createServerFetcher } from "@/lib/helper/create-server-fetcher";
-import type { AdminTenant } from "@/types/tenant-types";
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
+import { getAdminAttributes } from '@/lib/functions/admin/attribute';
+import { getAdminProducts } from '@/lib/functions/admin/product';
+import { getAdminShops } from '@/lib/functions/admin/shop';
+import {
+  booleanFilterTransform,
+  createServerFetcher,
+} from '@/lib/helper/create-server-fetcher';
+import type { AttributeItem } from '@/types/attributes-types';
+import type { ProductItem } from '@/types/products-types';
+import type { AdminTenant } from '@/types/tenant-types';
 
 export function createAdminTenantsFetcher(): (
   params: DataTableFetchParams
@@ -31,5 +41,50 @@ export function createAdminTenantsFetcher(): (
     },
     filterFieldMap: { status: 'status' },
     defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+  });
+}
+
+export function createAdminProductsFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<ProductItem>> {
+  return createServerFetcher<ProductItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminProducts({ data: query });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      name: 'name',
+      sellingPrice: 'sellingPrice',
+      stock: 'stock',
+      createdAt: 'createdAt',
+      averageRating: 'averageRating',
+      reviewCount: 'reviewCount',
+    },
+    filterFieldMap: {
+      isActive: 'isActive',
+      status: 'status',
+      productType: 'productType',
+      categoryId: 'categoryId',
+      brandId: 'brandId',
+      isFeatured: 'isFeatured',
+      inStock: 'inStock',
+    },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+export function createAdminAttributesFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<AttributeItem>> {
+  return createServerFetcher<AttributeItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminAttributes({ data: query });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: { name: 'name', createdAt: 'createdAt' },
+    filterFieldMap: { isActive: 'isActive', type: 'type' },
+    defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
   });
 }

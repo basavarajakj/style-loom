@@ -93,6 +93,7 @@ export const createBrand = createServerFn({ method: 'POST' })
   .handler(async ({ context, data }) => {
     const userId = context.session.user.id;
     const { shopId, ...brandData } = data;
+    console.log('shopId', shopId)
 
     // Verify shop access (vendor ownership or admin)
     await requireShopAccess(userId, shopId);

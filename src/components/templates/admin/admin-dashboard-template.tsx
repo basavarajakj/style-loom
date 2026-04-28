@@ -64,7 +64,7 @@ export function AdminDashboardTemplate() {
       </div>
 
       {/* Primary KPI Cards */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+      <div className='grid gap-4 grid-cols-2 lg:grid-cols-4'>
         <StatsCard
           title='Total Revenue'
           value={stats?.totalRevenue || 0}
@@ -99,7 +99,7 @@ export function AdminDashboardTemplate() {
       </div>
 
       {/* Secondary KPI Cards - Today's Metrics */}
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+      <div className='grid gap-4 grid-cols-2 lg:grid-cols-4'>
         <StatsCard
           title="Today's Revenue"
           value={stats?.todayRevenue || 0}
@@ -129,7 +129,7 @@ export function AdminDashboardTemplate() {
       </div>
 
       {/* Charts Row */}
-      <div className='grid gap-4 lg:grid-cols-7'>
+      <div className='grid gap-4 grid-cols-1 lg:grid-cols-7'>
         <RevenueChart
           data={revenueData || []}
           isLoading={revenueLoading}
@@ -141,7 +141,8 @@ export function AdminDashboardTemplate() {
       </div>
 
       {/* Top Performers Row */}
-      <div className='grid gap-4 md:grid-cols-2'>
+      
+      <div className='grid gap-4 grid-cols-1 md:grid-cols-2'>
         <TopShopsList
           shops={topShops || []}
           isLoading={topShopsLoading}

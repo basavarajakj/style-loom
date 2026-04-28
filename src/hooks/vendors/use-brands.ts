@@ -98,7 +98,6 @@ export interface VendorBrandMutationState {
  */
 export const useBrandMutations = (shopId: string) => {
   const queryClient = useQueryClient();
-
   const invalidateBrands = () => {
     queryClient.invalidateQueries({
       queryKey: vendorBrandsKeys.all(shopId),
@@ -107,7 +106,9 @@ export const useBrandMutations = (shopId: string) => {
 
   // Create brand mutation
   const createBrandMutation = useMutation({
-    mutationFn: async (data: Omit<CreateBrandInput, 'shopId'>) => {
+    mutationFn: async (
+      data: Omit<CreateBrandInput, 'shopId'> & { name: string }
+    ) => {
       const result = await createBrand({ data: { ...data, shopId } });
       return result;
     },

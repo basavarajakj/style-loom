@@ -1,12 +1,11 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { AddReviewDialog } from '@/components/containers/shared/reviews/add-review-dialog';
+import ReviewTable from '@/components/containers/shared/reviews/review-table';
+import { mockReviews } from '@/data/review';
+import type { Review, ReviewFormValues } from '@/types/review-types';
 
-import { AddReviewDialog } from "@/components/containers/shared/reviews/add-review-dialog";
-import ShopReviewsTemplate from "@/components/templates/vendor/shop-reviews-template";
-import { mockReviews } from "@/data/review";
-import type { Review, ReviewFormValues } from "@/types/review-types";
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-
-export const Route = createFileRoute("/(vendor)/shop/$slug/reviews")({
+export const Route = createFileRoute('/(vendor)/shop/$slug/reviews')({
   component: ReviewsPage,
 });
 
@@ -22,24 +21,27 @@ function ReviewsPage() {
     const newReview: Review = {
       id: String(reviews.length + 1),
       productName: data.productName,
-      productImage: "https://placehold.co/100?text=PR",
+      productImage: 'https://placehold.co/100?text=PR',
       customerName: data.customerName,
       customerAvatar: data.customerAvatar
         ? URL.createObjectURL(data.customerAvatar[0])
         : undefined,
       rating: data.rating,
       comment: data.comment,
-      date: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString().split('T')[0],
       status: data.status,
     };
 
     setReviews([...reviews, newReview]);
-    console.log("Created review:", newReview);
+    console.log('Created review:', newReview);
   };
 
   return (
     <>
-      <ShopReviewsTemplate reviews={reviews} onAddReview={handleAddReview} />
+      <ReviewTable
+        reviews={reviews}
+        onAddReview={handleAddReview}
+      />
 
       <AddReviewDialog
         open={isDialogOpen}

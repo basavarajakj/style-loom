@@ -61,7 +61,7 @@ export function OrderStatusChart({
   }));
 
   return (
-    <Card className='col-span-3'>
+    <Card className='lg:col-span-3'>
       <CardHeader>
         <CardTitle>Order Status Distribution</CardTitle>
         <p className='text-muted-foreground text-sm'>

@@ -5,7 +5,7 @@
  * Uses base-query for common schemas to ensure DRY compliance.
  */
 
-import { z as zod } from "zod";
+import { z as zod } from 'zod';
 import {
   ADMIN_DEFAULT_LIMIT,
   createDeleteSchema,
@@ -23,20 +23,20 @@ import {
   sortDirectionEnum,
   storeIsActiveField,
   VENDOR_DEFAULT_LIMIT,
-} from "./base-query";
+} from './base-query';
 
 // Re-export common types
-export type { SortDirection } from "./base-query";
+export type { SortDirection } from './base-query';
 
 // ============================================================================
 // Entity-Specific Enums
 // ============================================================================
 
 export const brandSortByEnum = zod.enum([
-  "name",
-  "createdAt",
-  "sortOrder",
-  "productCount",
+  'name',
+  'createdAt',
+  'sortOrder',
+  'productCount',
 ]);
 
 // ============================================================================
@@ -52,17 +52,17 @@ export const brandFilterFields = {
 // ============================================================================
 
 const sortFields = {
-  sortBy: brandSortByEnum.optional().default("sortOrder"),
-  sortDirection: sortDirectionEnum.optional().default("asc"),
+  sortBy: brandSortByEnum.optional().default('sortOrder'),
+  sortDirection: sortDirectionEnum.optional().default('asc'),
 };
 
 // ============================================================================
 // Get by ID/Slug Schemas (using factory functions)
 // ============================================================================
 
-export const getBrandByIdSchema = createGetByIdSchema("Brand");
+export const getBrandByIdSchema = createGetByIdSchema('Brand');
 
-export const getBrandBySlugSchema = createGetBySlugSchema("Brand");
+export const getBrandBySlugSchema = createGetBySlugSchema('Brand');
 
 // ============================================================================
 // Composed Query Schemas
@@ -119,9 +119,9 @@ export const vendorBrandsQuerySchema = zod.object({
 // Action Schemas (using factory functions)
 // ============================================================================
 
-export const toggleBrandActiveSchema = createToggleActiveSchema("Brand");
+export const toggleBrandActiveSchema = createToggleActiveSchema('Brand');
 
-export const deleteBrandSchema = createDeleteSchema("Brand");
+export const deleteBrandSchema = createDeleteSchema('Brand');
 
 // ============================================================================
 // Entity Schemas
@@ -149,23 +149,23 @@ export const brandSchema = zod.object({
  * Schema for creating a new brand
  */
 export const createBrandSchema = zod.object({
-  shopId: zod.string().min(1, "Shop ID is required"),
+  shopId: zod.string().min(1, 'Shop ID is required'),
   name: zod
     .string()
-    .min(2, "Brand name must be at least 2 characters")
-    .max(100, "Brand name must be at most 100 characters"),
+    .min(2, 'Brand name must be at least 2 characters')
+    .max(100, 'Brand name must be at most 100 characters'),
   slug: zod
     .string()
-    .min(2, "Slug must be at least 2 characters")
-    .max(100, "Slug must be at most 100 characters")
+    .min(2, 'Slug must be at least 2 characters')
+    .max(100, 'Slug must be at most 100 characters')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must be lowercase with hyphens only",
+      'Slug must be lowercase with hyphens only'
     )
     .optional(),
   description: zod
     .string()
-    .max(500, "Description must be at most 500 characters")
+    .max(500, 'Description must be at most 500 characters')
     .optional(),
   logo: zod.string().optional(),
   website: zod.string().optional(),
@@ -177,20 +177,20 @@ export const createBrandSchema = zod.object({
  * Schema for updating an existing brand
  */
 export const updateBrandSchema = zod.object({
-  id: zod.string().min(1, "Brand ID is required"),
-  shopId: zod.string().min(1, "Shop ID is required"),
+  id: zod.string().min(1, 'Brand ID is required'),
+  shopId: zod.string().min(1, 'Shop ID is required'),
   name: zod
     .string()
-    .min(2, "Brand name must be at least 2 characters")
-    .max(100, "Brand name must be at most 100 characters")
+    .min(2, 'Brand name must be at least 2 characters')
+    .max(100, 'Brand name must be at most 100 characters')
     .optional(),
   slug: zod
     .string()
-    .min(2, "Slug must be at least 2 characters")
-    .max(100, "Slug must be at most 100 characters")
+    .min(2, 'Slug must be at least 2 characters')
+    .max(100, 'Slug must be at most 100 characters')
     .regex(
       /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
-      "Slug must be lowercase with hyphens only",
+      'Slug must be lowercase with hyphens only'
     )
     .optional(),
   description: zod.string().max(500).optional().nullable(),
