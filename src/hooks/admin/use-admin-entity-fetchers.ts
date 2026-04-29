@@ -5,6 +5,7 @@ import type {
 import { getAdminAttributes } from '@/lib/functions/admin/attribute';
 import { getAdminBrands } from '@/lib/functions/admin/brand';
 import { getAdminCategories } from '@/lib/functions/admin/category';
+import { getAdminCoupons } from '@/lib/functions/admin/coupon';
 import { getAdminProducts } from '@/lib/functions/admin/product';
 import { getAdminShops } from '@/lib/functions/admin/shop';
 import {
@@ -14,6 +15,7 @@ import {
 import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
+import type { CouponItem } from '@/types/coupons-types';
 import type { ProductItem } from '@/types/products-types';
 import type { AdminTenant } from '@/types/tenant-types';
 
@@ -119,6 +121,33 @@ export function createAdminCategoriesFetcher(): (
     sortFieldMap: { name: 'name', createdAt: 'createdAt' },
     filterFieldMap: { isActive: 'isActive', featured: 'featured' },
     defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+export function createAdminCouponsFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<CouponItem>> {
+  return createServerFetcher<CouponItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminCoupons({ data: query });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      code: 'code',
+      discountAmount: 'discountAmount',
+      usageCount: 'usageCount',
+      activeFrom: 'activeFrom',
+      activeTo: 'activeTo',
+      createdAt: 'createdAt',
+    },
+    filterFieldMap: {
+      isActive: 'isActive',
+      type: 'type',
+      status: 'status',
+      applicableTo: 'applicableTo',
+    },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
     transformFilters: booleanFilterTransform,
   });
 }

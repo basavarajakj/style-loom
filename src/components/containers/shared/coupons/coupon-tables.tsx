@@ -1,30 +1,30 @@
-import { useMemo } from "react";
-import DataTable from "@/components/base/data-table/data-table";
+import { useMemo } from 'react';
+import DataTable from '@/components/base/data-table/data-table';
 import type {
   DataTableFetchParams,
   DataTableFetchResult,
-} from "@/components/base/data-table/types";
-import type { CouponItem, CouponPermissions } from "@/types/coupons-types";
+} from '@/components/base/data-table/types';
+import type { CouponItem, CouponPermissions } from '@/types/coupons-types';
 import {
   type CouponMutationState,
   type CouponTableActions,
   createCouponColumns,
   getSharedCouponFilters,
-} from "./coupon-table-columns";
+} from './coupon-table-columns';
 
 // ============================================================================
 // Constants
 // ============================================================================
 
 const STATUS_OPTIONS = [
-  { label: "Active", value: "true" },
-  { label: "Inactive", value: "false" },
+  { label: 'Active', value: 'true' },
+  { label: 'Inactive', value: 'false' },
 ];
 
 const TYPE_OPTIONS = [
-  { label: "Percentage", value: "percentage" },
-  { label: "Fixed Amount", value: "fixed" },
-  { label: "Free Shipping", value: "free_shipping" },
+  { label: 'Percentage', value: 'percentage' },
+  { label: 'Fixed Amount', value: 'fixed' },
+  { label: 'Free Shipping', value: 'free_shipping' },
 ];
 
 // ============================================================================
@@ -32,7 +32,10 @@ const TYPE_OPTIONS = [
 // ============================================================================
 
 interface AdminCouponTableProps extends CouponTableActions {
-  coupons: CouponItem[];
+  coupons?: CouponItem[];
+  fetcher?: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<CouponItem>>;
   className?: string;
   mutationState?: CouponMutationState;
   isCouponMutating?: (id: string) => boolean;
@@ -41,6 +44,7 @@ interface AdminCouponTableProps extends CouponTableActions {
 
 export function AdminCouponTable({
   coupons,
+  fetcher,
   className,
   onEdit,
   onDelete,
@@ -56,7 +60,7 @@ export function AdminCouponTable({
       onToggleStatus,
     };
     return createCouponColumns({
-      mode: "admin",
+      mode: 'admin',
       actions,
       isCouponMutating,
       mutationState,
@@ -77,17 +81,30 @@ export function AdminCouponTable({
         statusOptions: STATUS_OPTIONS,
         typeOptions: TYPE_OPTIONS,
       }),
-    [],
+    []
   );
+
+  if (fetcher) {
+    return (
+      <DataTable
+        columns={columns}
+        server={{ fetcher }}
+        context='admin'
+        initialPageSize={10}
+        filterableColumns={filterableColumns}
+        globalFilterPlaceholder='Search coupons...'
+        className={className}
+      />
+    );
+  }
 
   return (
     <DataTable
       columns={columns}
-      data={coupons}
-      context="shop"
+      data={coupons || []}
       initialPageSize={10}
       filterableColumns={filterableColumns}
-      globalFilterPlaceholder="Search coupons..."
+      globalFilterPlaceholder='Search coupons...'
       className={className}
     />
   );
@@ -99,7 +116,7 @@ export function AdminCouponTable({
 
 interface VendorCouponTableProps extends CouponTableActions {
   fetcher: (
-    params: DataTableFetchParams,
+    params: DataTableFetchParams
   ) => Promise<DataTableFetchResult<CouponItem>>;
   className?: string;
   mutationState?: CouponMutationState;
@@ -124,7 +141,7 @@ export default function VendorCouponTable({
       onToggleStatus,
     };
     return createCouponColumns({
-      mode: "vendor",
+      mode: 'vendor',
       actions,
       isCouponMutating,
       mutationState,
@@ -145,17 +162,17 @@ export default function VendorCouponTable({
         statusOptions: STATUS_OPTIONS,
         typeOptions: TYPE_OPTIONS,
       }),
-    [],
+    []
   );
 
   return (
     <DataTable
       columns={columns}
       server={{ fetcher }}
-      context="shop"
+      context='shop'
       initialPageSize={10}
       filterableColumns={filterableColumns}
-      globalFilterPlaceholder="Search coupons..."
+      globalFilterPlaceholder='Search coupons...'
       className={className}
     />
   );

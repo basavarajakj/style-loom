@@ -1,40 +1,44 @@
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
 import CouponHeader from '@/components/containers/shared/coupons/coupon-header';
-import CouponTable from '@/components/containers/shared/coupons/coupon-tables';
+import { AdminCouponTable } from '@/components/containers/shared/coupons/coupon-tables';
+import type { AdminCouponMutationState } from '@/hooks/admin/use-admin-coupons';
 import { ADMIN_COUPON_PERMISSIONS } from '@/lib/config/coupon-permissions';
-import type { Coupon, CouponFormValues } from '@/types/coupons-types';
+import type { CouponItem } from '@/types/coupons-types';
 
 interface AdminCouponsTemplateProps {
-  coupons: Coupon[];
-  onCouponStatusChange: (
-    couponId: string,
-    newStatus: 'active' | 'expired' | 'inactive'
-  ) => void;
-  onAddCoupon?: (data: CouponFormValues) => void;
+  fetcher: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<CouponItem>>;
+  onDeleteCoupon?: (coupon: CouponItem) => void;
+  onToggleStatus?: (coupon: CouponItem) => void;
+  mutationState?: AdminCouponMutationState;
+  isCouponMutating?: (id: string) => boolean;
 }
 
 export default function AdminCouponsTemplate({
-  coupons,
-  onCouponStatusChange,
-  onAddCoupon,
+  fetcher,
+  onDeleteCoupon,
+  onToggleStatus,
+  mutationState,
+  isCouponMutating,
 }: AdminCouponsTemplateProps) {
-  const handleToggleStatus = (couponId: string, currentStatus: string) => {
-    const newStatus: 'active' | 'expired' | 'inactive' =
-      currentStatus === 'active' ? 'inactive' : 'active';
-    onCouponStatusChange(couponId, newStatus);
-  };
-
   return (
-    <div className='space-y-6'>
+    <>
       <CouponHeader
         role='admin'
-        onAddCoupon={onAddCoupon}
-        showAddButton={!!onAddCoupon}
+        showAddButton={false}
       />
-      <CouponTable
-        coupons={coupons}
+      <AdminCouponTable
+        fetcher={fetcher}
         permissions={ADMIN_COUPON_PERMISSIONS}
-        onToggleStatus={handleToggleStatus}
+        onDelete={onDeleteCoupon}
+        onToggleStatus={onToggleStatus}
+        mutationState={mutationState}
+        isCouponMutating={isCouponMutating}
       />
-    </div>
+    </>
   );
 }
