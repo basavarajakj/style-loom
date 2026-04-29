@@ -6,8 +6,12 @@ import { getAdminAttributes } from '@/lib/functions/admin/attribute';
 import { getAdminBrands } from '@/lib/functions/admin/brand';
 import { getAdminCategories } from '@/lib/functions/admin/category';
 import { getAdminCoupons } from '@/lib/functions/admin/coupon';
+import { getAdminOrders } from '@/lib/functions/admin/order';
 import { getAdminProducts } from '@/lib/functions/admin/product';
 import { getAdminShops } from '@/lib/functions/admin/shop';
+import { getAdminTags } from '@/lib/functions/admin/tag';
+import { getAdminTaxRates } from '@/lib/functions/admin/tax';
+import { getAdminTransactions } from '@/lib/functions/admin/transaction';
 import {
   booleanFilterTransform,
   createServerFetcher,
@@ -16,8 +20,12 @@ import type { AttributeItem } from '@/types/attributes-types';
 import type { BrandItem } from '@/types/brands-types';
 import type { NormalizedCategory } from '@/types/category-types';
 import type { CouponItem } from '@/types/coupons-types';
+import type { VendorOrderResponse } from '@/types/order-types';
 import type { ProductItem } from '@/types/products-types';
+import type { TagItem } from '@/types/tags-types';
+import type { TaxRateItem } from '@/types/taxes-types';
 import type { AdminTenant } from '@/types/tenant-types';
+import type { AdminTransactionResponse } from '@/types/transaction-types';
 
 export function createAdminTenantsFetcher(): (
   params: DataTableFetchParams
@@ -149,5 +157,85 @@ export function createAdminCouponsFetcher(): (
     },
     defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
     transformFilters: booleanFilterTransform,
+  });
+}
+
+export function createAdminOrdersFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<VendorOrderResponse>> {
+  return createServerFetcher<VendorOrderResponse, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminOrders({ data: query });
+      return {
+        data: (response.orders ?? []) as unknown as VendorOrderResponse[],
+        total: response.total ?? 0,
+      };
+    },
+    sortFieldMap: {
+      createdAt: 'createdAt',
+      orderNumber: 'orderNumber',
+      totalAmount: 'totalAmount',
+    },
+    filterFieldMap: { status: 'status', paymentStatus: 'paymentStatus' },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
+  });
+}
+
+export function createAdminTagsFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<TagItem>> {
+  return createServerFetcher<TagItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminTags({ data: query });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      name: 'name',
+      createdAt: 'createdAt',
+      productCount: 'productCount',
+    },
+    filterFieldMap: { isActive: 'isActive' },
+    defaultQuery: { sortBy: 'sortOrder', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+export function createAdminTaxRatesFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<TaxRateItem>> {
+  return createServerFetcher<TaxRateItem, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminTaxRates({ data: query });
+      return { data: response.data ?? [], total: response.total ?? 0 };
+    },
+    sortFieldMap: {
+      name: 'name',
+      rate: 'rate',
+      priority: 'priority',
+      createdAt: 'createdAt',
+    },
+    filterFieldMap: { isActive: 'isActive', country: 'country' },
+    defaultQuery: { sortBy: 'priority', sortDirection: 'asc' },
+    transformFilters: booleanFilterTransform,
+  });
+}
+
+export function createAdminTransactionsFetcher(): (
+  params: DataTableFetchParams
+) => Promise<DataTableFetchResult<AdminTransactionResponse>> {
+  return createServerFetcher<AdminTransactionResponse, any>({
+    fetchFn: async (query) => {
+      const response = await getAdminTransactions({ data: query });
+      return {
+        data: response.transactions ?? [],
+        total: response.total ?? 0,
+      };
+    },
+    sortFieldMap: {
+      createdAt: 'createdAt',
+      amount: 'amount',
+    },
+    filterFieldMap: { status: 'status' },
+    defaultQuery: { sortBy: 'createdAt', sortDirection: 'desc' },
   });
 }

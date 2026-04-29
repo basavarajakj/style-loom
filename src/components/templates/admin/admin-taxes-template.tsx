@@ -1,43 +1,46 @@
-import { Plus } from 'lucide-react';
-import { useState } from 'react';
-import { AddTaxDialog } from '@/components/containers/shared/taxes/add-tax-dialog';
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
 import TaxHeader from '@/components/containers/shared/taxes/tax-header';
-import TaxesTable from '@/components/containers/shared/taxes/tax-table';
-import { Button } from '@/components/ui/button';
-import { ADMIN_TAX_PERMISSIONS } from '@/lib/config/tax-permissions';
-import type { Taxes as Tax } from '@/types/taxes-types';
+import { TaxTable } from '@/components/containers/shared/taxes/tax-table';
+import type { TaxMutationState } from '@/components/containers/shared/taxes/tax-table-columns';
+import type { TaxRateItem } from '@/types/taxes-types';
 
 interface AdminTaxesTemplateProps {
-  taxes: Tax[];
-  onAddTax: (data: Omit<Tax, 'id' | 'createdAt'>) => void;
-  onDeleteTax: (id: string) => void;
+  fetcher: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<TaxRateItem>>;
+  onDeleteTax?: (taxRate: TaxRateItem) => void;
+  onEditTax?: (taxRate: TaxRateItem) => void;
+  onToggleActive?: (taxRate: TaxRateItem) => void;
+  mutationState?: TaxMutationState;
+  isTaxMutating?: (id: string) => boolean;
 }
 
 export default function AdminTaxesTemplate({
-  taxes,
-  onAddTax,
+  fetcher,
   onDeleteTax,
+  onEditTax,
+  onToggleActive,
+  mutationState,
+  isTaxMutating,
 }: AdminTaxesTemplateProps) {
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-
   return (
-    <div className="flex flex-col gap-6">
-      <TaxHeader>
-        <AddTaxDialog
-          open={isAddDialogOpen}
-          onOpenChange={setIsAddDialogOpen}
-          onSubmit={onAddTax}
-        />
-        <Button onClick={() => setIsAddDialogOpen(true)} size="sm">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Tax
-        </Button>
-      </TaxHeader>
+    <div className='flex flex-col gap-6'>
+      <TaxHeader
+        role='admin'
+        showAddButton={false}
+      />
 
-      <TaxesTable
-        taxes={taxes}
-        permissions={ADMIN_TAX_PERMISSIONS}
-        onDeleteTax={onDeleteTax}
+      <TaxTable
+        fetcher={fetcher}
+        onDelete={onDeleteTax}
+        onEdit={onEditTax}
+        onToggleActive={onToggleActive}
+        mutationState={mutationState}
+        isMutating={isTaxMutating}
+        mode='admin'
       />
     </div>
   );

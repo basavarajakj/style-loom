@@ -15,7 +15,7 @@ const mockSettings: Setting[] = [
   {
     id: '1',
     key: 'site.name',
-    value: 'ShopStack',
+    value: 'Style.Loom',
     description: 'The name of the platform',
     category: 'General',
     updatedAt: new Date('2026-03-01'),
@@ -31,7 +31,7 @@ const mockSettings: Setting[] = [
   {
     id: '3',
     key: 'site.contact.email',
-    value: 'support@shopstack.com',
+    value: 'support@styleloom.com',
     description: 'Primary contact email address',
     category: 'Contact',
     updatedAt: new Date('2026-01-15'),

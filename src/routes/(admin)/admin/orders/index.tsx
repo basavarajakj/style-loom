@@ -1,43 +1,22 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { PageSkeleton } from '@/components/base/common/page-skeleton';
 import AdminOrdersTemplate from '@/components/templates/admin/admin-orders-template';
-import { mockOrders } from '@/data/orders';
-import type { Order } from '@/types/order-types';
+import { createAdminOrdersFetcher } from '@/hooks/admin/use-admin-entity-fetchers';
+import { useAdminOrderStats } from '@/hooks/admin/use-admin-orders';
 
 export const Route = createFileRoute('/(admin)/admin/orders/')({
   component: AdminOrdersPage,
+  pendingComponent: PageSkeleton,
 });
 
 function AdminOrdersPage() {
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
-
-  const handleAddOrder = (
-    data: Omit<Order, 'id' | 'date' | 'customer'> & {
-      customerName: string;
-      customerEmail: string;
-    }
-  ) => {
-    const newOrder: Order = {
-      ...data,
-      id: String(orders.length + 1),
-      date: new Date().toISOString().split('T')[0],
-      customer: {
-        name: data.customerName,
-        email: data.customerEmail,
-      },
-    };
-    setOrders([...orders, newOrder]);
-  };
-
-  const handleDeleteOrder = (id: string) => {
-    setOrders(orders.filter((order) => order.id !== id));
-  };
+  const fetcher = createAdminOrdersFetcher();
+  const { data: stats } = useAdminOrderStats();
 
   return (
     <AdminOrdersTemplate
-      orders={orders}
-      onAddOrder={handleAddOrder}
-      onDeleteOrder={handleDeleteOrder}
+      fetcher={fetcher}
+      stats={stats}
     />
   );
 }

@@ -1,34 +1,22 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { PageSkeleton } from '@/components/base/common/page-skeleton';
 import AdminTransactionsTemplate from '@/components/templates/admin/admin-transactions-template';
-import { mockTransactions } from '@/data/transactions';
-import type { Transaction } from '@/types/transaction-types';
+import { createAdminTransactionsFetcher } from '@/hooks/admin/use-admin-entity-fetchers';
+import { useAdminTransactionStats } from '@/hooks/admin/use-admin-transactions';
 
 export const Route = createFileRoute('/(admin)/admin/transactions/')({
   component: AdminTransactionsPage,
+  pendingComponent: PageSkeleton,
 });
 
 function AdminTransactionsPage() {
-  const [transactions] = useState<Transaction[]>(mockTransactions);
-
-  const handleViewTransaction = (transactionId: string) => {
-    console.log('View transaction:', transactionId);
-  };
-
-  const handleRefundTransaction = (transactionId: string) => {
-    console.log('Refund transaction:', transactionId);
-  };
-
-  const handleDeleteTransaction = (transactionId: string) => {
-    console.log('Delete transaction:', transactionId);
-  };
+  const fetcher = createAdminTransactionsFetcher();
+  const { data: stats } = useAdminTransactionStats();
 
   return (
     <AdminTransactionsTemplate
-      transactions={transactions}
-      onViewTransaction={handleViewTransaction}
-      onRefundTransaction={handleRefundTransaction}
-      onDeleteTransaction={handleDeleteTransaction}
+      fetcher={fetcher}
+      stats={stats}
     />
   );
 }

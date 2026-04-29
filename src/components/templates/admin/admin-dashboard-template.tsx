@@ -28,7 +28,7 @@ import {
   useRevenueChartData,
   useTopProducts,
   useTopShops,
-} from '@/hooks/admin/use-admins-dashboard';
+} from '@/hooks/admin/use-admin-dashboard';
 
 export function AdminDashboardTemplate() {
   // Fetch all dashboard data

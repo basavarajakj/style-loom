@@ -14,7 +14,7 @@ import { taxRates } from '@/lib/db/schema/tax-schema';
 import {
   executeTaxRateQuery,
   fetchTaxRateWithRelations,
-} from '@/lib/helper/tax-rate-query-helper';
+} from '@/lib/helper/tax-rate-query-helpers';
 import { requireShopAccess } from '@/lib/helper/vendor';
 import { authMiddleware } from '@/lib/middleware/auth';
 import {

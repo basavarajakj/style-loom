@@ -1,36 +1,43 @@
-import { useState } from 'react';
-import { AddTagDialog } from '@/components/containers/shared/tags/add-tag-dialog';
+import type {
+  DataTableFetchParams,
+  DataTableFetchResult,
+} from '@/components/base/data-table/types';
 import TagHeader from '@/components/containers/shared/tags/tag-header';
-import { ADMIN_TAG_PERMISSIONS } from '@/lib/config/tag-permissions';
-import type { Tag } from '@/types/tags-types';
-import TagsTable from '@/components/containers/shared/tags/tag-table';
+import TagTable from '@/components/containers/shared/tags/tag-table';
+import type {
+  TagMutationState,
+  TagTableActions,
+} from '@/components/containers/shared/tags/tag-table-columns';
+import type { TagItem } from '@/types/tags-types';
 
-interface AdminTagsTemplateProps {
-  tags: Tag[];
-  onAddTag: (data: { name: string; description: string }) => void;
-  onDeleteTag: (tagId: string) => void;
+interface AdminTagsTemplateProps extends TagTableActions {
+  fetcher: (
+    params: DataTableFetchParams
+  ) => Promise<DataTableFetchResult<TagItem>>;
+  mutationState?: TagMutationState;
+  isTagMutating?: (id: string) => boolean;
 }
 
 export default function AdminTagsTemplate({
-  tags,
-  onAddTag,
-  onDeleteTag,
+  fetcher,
+  onDelete,
+  onToggleActive,
+  mutationState,
+  isTagMutating,
 }: AdminTagsTemplateProps) {
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-
   return (
-    <div className="space-y-6">
-      <TagHeader>
-        <AddTagDialog
-          open={isAddDialogOpen}
-          onOpenChange={setIsAddDialogOpen}
-          onSubmit={onAddTag}
-        />
-      </TagHeader>
-      <TagsTable
-        tags={tags}
-        permissions={ADMIN_TAG_PERMISSIONS}
-        onDeleteTag={onDeleteTag}
+    <div className='space-y-6'>
+      <TagHeader
+        role='admin'
+        showAddButton={false}
+      />
+      <TagTable
+        fetcher={fetcher}
+        onDelete={onDelete}
+        onToggleActive={onToggleActive}
+        mutationState={mutationState}
+        isTagMutating={isTagMutating}
+        mode='admin'
       />
     </div>
   );

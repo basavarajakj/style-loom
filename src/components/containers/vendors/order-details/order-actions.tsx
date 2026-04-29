@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
-import { useUpdateAdminOrderStatus } from '@/hooks/admin/use-admins-orders';
+import { useUpdateAdminOrderStatus } from '@/hooks/admin/use-admin-orders';
 import { useDownloadInvoice } from '@/hooks/store/use-invoice';
 import { useUpdateVendorOrderStatus } from '@/hooks/vendors/use-vendor-orders';
 import type { OrderStatus } from '@/types/order-types';
